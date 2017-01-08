@@ -18,9 +18,9 @@ var monk = require('monk');
 var mongoUri = config.get('mongo.uri');
 var db = monk(mongoUri);
 
-// var index = require('./routes/index');
+var index = require('./routes/index');
 // var buyers = require('./routes/buyers');
-// var developers = require('./routes/developers');
+var developers = require('./routes/developers');
 var github = require('./routes/github');
 // var paypal = require('./routes/paypal');
 // var admin = require('./routes/admin');
@@ -64,10 +64,10 @@ app.use(function(req,res,next){
 });
 
 
-// app.use('/', index);
+app.use('/', index);
 // app.use('/clients', buyers);
 //app.use('/', buyers);
-// app.use('/developers', developers);
+app.use('/developers', developers);
 app.use('/github', github);
 // app.use('/paypal', paypal);
 // app.use('/admin', admin);

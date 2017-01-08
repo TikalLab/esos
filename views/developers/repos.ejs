@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> My Repos</h6></div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>full name</th>
+            <th>actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% repos.forEach(function(repo){ %>
+            <% var trID = repo.id%>
+            <tr id="<%=trID%>">
+              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
+              <td><button class="btn btn-success">Offer Support</button></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

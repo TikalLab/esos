@@ -1,0 +1,166 @@
+.inner-section{
+	padding-top: 100px;
+	padding-bottom: 200px;
+}
+
+.inner-section .sub-heading {
+	margin-bottom: 30px;
+}
+
+.inner-section .button-container {
+	margin-bottom: 60px;
+}
+
+.icon-96{
+	font-size: 96px;
+}
+.connect-storage-left {
+	margin-bottom: 50px;
+}
+
+.connect-storage-middle {
+	margin-bottom: 50px;
+}
+
+.gitter-icon{
+	height: 24px;
+	vertical-align: top;
+}
+
+.paddless-header{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.package-features .column-6p {
+	width: 80%;
+	float: left;
+	text-align: left;
+}
+
+.package-features .column-4p {
+	width: 20%;
+	float: left;
+	text-align: left;
+}
+
+.package-features ul{
+	margin-bottom: 0;
+}
+
+.pricing-table a {
+	margin-top: 20px;
+}
+
+.navbar-brand img {
+	max-height: 32px;
+}
+@media(max-width:767px) {
+
+	.inner-section{
+		padding-top: 75px;
+		padding-bottom: 75px;
+	}
+
+}
+
+/*==========
+Following is the switch of testimonials to grey background
+==========*/
+#testimonials .single-feedback .box{
+	background: #fff;
+}
+
+#testimonials .single-feedback .client-pic{
+	border: 3px solid #f7f8fa;
+	box-shadow: 0px 0px 0px 3px #fff;
+}
+
+#testimonials .single-feedback .box:after{
+	border-top-color: #fff;
+}
+/*==========
+End switch of testimonials to grey background
+==========*/
+
+
+.single-feedback .client-pic {
+	height: 96px;
+	width: 96px;
+}
+
+.sign-in-icon {
+	vertical-align: middle;
+	font-size: 24px;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 396px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {
+  width: 422px;
+  margin: 12px 0;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion .tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}

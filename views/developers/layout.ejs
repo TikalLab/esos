@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeMill - the marketplace for pull requests</title>
+
+<link rel="icon" href="<%=config.get('app.cdn_url')%>/images/icon192.png">
+<link href="<%=config.get('app.cdn_url')%>/londinium/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="<%=config.get('app.cdn_url')%>/londinium/css/londinium-theme.css" rel="stylesheet" type="text/css">
+<link href="<%=config.get('app.cdn_url')%>/londinium/css/styles.css" rel="stylesheet" type="text/css">
+<link href="<%=config.get('app.cdn_url')%>/londinium/css/icons.css" rel="stylesheet" type="text/css">
+<link href="<%=config.get('app.cdn_url')%>/css/londinium-ext.css" rel="stylesheet" type="text/css">
+<link href="<%=config.get('app.cdn_url')%>/css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script></head>
+<!--
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+ -->
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/charts/sparkline.min.js"></script>
+
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/uniform.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/select2.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/inputmask.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/autosize.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/inputlimit.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/listbox.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/multiselect.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/validate.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/tags.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/switch.min.js"></script>
+
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/uploader/plupload.full.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/uploader/plupload.queue.min.js"></script>
+
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/wysihtml5/wysihtml5.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/forms/wysihtml5/toolbar.js"></script>
+
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/daterangepicker.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/fancybox.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/moment.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/jgrowl.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/datatables.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/colorpicker.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/fullcalendar.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/timepicker.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/plugins/interface/collapsible.min.js"></script>
+
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/londinium/js/application.js"></script>
+
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/js/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript" src="<%=config.get('app.cdn_url')%>/js/typeahead.bundle.js"></script>
+
+
+<link rel="stylesheet" href="//releases.flowplayer.org/5.5.2/skin/minimalist.css" >
+<script src="//releases.flowplayer.org/5.5.2/flowplayer.min.js"></script>
+<!-- Include lines below to support multiple resolutions via quality selector plugin -->
+<link rel="stylesheet" href="//flowplayer.org/drive/quality-selector.css">
+<script src="//flowplayer.org/drive/quality-selector.js"></script>
+
+
+</head>
+
+<body class="sidebar-wide">
+
+	<!-- Navbar -->
+	<div class="navbar navbar-inverse" role="navigation">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/developers">
+				<% if(!('owner_org' in config.get('app'))){ %>
+					<img src="<%=config.get('app.cdn_url')%>/images/logo9.png">
+				<% }else{ %>
+					<img src="<%=config.get('app.org_logo')%>"><img src="<%=config.get('app.cdn_url')%>/images/powered-by-codemill-inside.png">
+				<% } %>
+			</a>
+			<a class="sidebar-toggle"><i class="icon-paragraph-justify2"></i></a>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-icons">
+				<span class="sr-only">Toggle navbar</span>
+				<i class="icon-grid3"></i>
+			</button>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar">
+				<span class="sr-only">Toggle navigation</span>
+				<i class="icon-paragraph-justify2"></i>
+			</button>
+		</div>
+
+		<ul class="nav navbar-nav navbar-right collapse" id="navbar-icons">
+			<li class="user dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown">
+					<img src="<%=user.github.avatar_url%>">
+					<span><%=user.github.username%></span>
+					<i class="caret"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right icons-right">
+					<% if(!('owner_org' in config.get('app'))){ %>
+						<li><a href="/clients"><i class="icon-coin"></i> Switch to Clients Dashboard</a></li>
+					<% } %>
+					<li><a href="/logout"><i class="icon-exit"></i> Logout</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<!-- /navbar -->
+
+
+	<!-- Page container -->
+ 	<div class="page-container">
+
+
+		<!-- Sidebar -->
+		<div class="sidebar collapse">
+			<div class="sidebar-content">
+
+
+
+				<!-- Main navigation -->
+				<ul class="navigation">
+					<li class="<%= (active_page == 'dashboard' ? 'active' : '')%>"><a href="/developers/dashboard"><span>Dashboard</span> <i class="icon-screen2"></i></a></li>
+					<li class="<%= (active_page == 'open_tasks' ? 'active' : '')%>"><a href="/developers/tasks/open"><span>Open Tasks</span> <i class="icon-new"></i></a></li>
+					<li class="<%= (active_page == 'working_on_tasks' ? 'active' : '')%>"><a href="/developers/tasks/working-on"><span>Tasks in Work</span> <i class="icon-wrench"></i></a></li>
+					<li class="<%= (active_page == 'waiting_merge_tasks' ? 'active' : '')%>"><a href="/developers/tasks/waiting-merge"><span>Tasks Waiting Merge</span> <i class="icon-tree3"></i></a></li>
+					<li class="<%= (active_page == 'completed_tasks' ? 'active' : '')%>"><a href="/developers/tasks/completed"><span>Completed Tasks</span> <i class="icon-coin"></i></a></li>
+					<li class="<%= (active_page == 'access_granted_tasks' ? 'active' : '')%>"><a href="/developers/tasks/access-granted"><span>Tasks with Granted Access</span> <i class="icon-key"></i></a></li>
+					<li class="<%= (active_page == 'alerts' ? 'active' : '')%>"><a href="/developers/alerts"><span>Configure Alerts</span> <i class="icon-bell"></i></a></li>
+					<li class="<%= (active_page == 'faq' ? 'active' : '')%>"><a href="/developers/faq"><span>FAQ</span> <i class="icon-question4"></i></a></li>
+				</ul>
+				<!-- /main navigation -->
+
+			</div>
+		</div>
+		<!-- /sidebar -->
+
+
+		<!-- Page content -->
+	 	<div class="page-content">
+
+
+			<% if(alert){ %>
+				<div class="page-header">
+					<div class="page-title">
+						&nbsp;
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="alert alert-block alert-<%=alert.type%> fade in block-inner">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						<i class="<%=alertIcons.getIcon(alert.type)%>"></i> <%=alert.message%>
+					</div>
+				</div>
+			<% }%>
+
+
+			<%-body -%>
+
+
+	        <!-- Footer -->
+	        <div class="footer clearfix">
+		        <div class="pull-left">&copy; 2016. CodeMill - the marketplace for pull requests</div>
+	        	<div class="pull-right icons-group">
+	        		<a href="mailto:support@codemill.io"><i class="icon-envelop"></i></a>
+	        		<a href="https://github.com/CodeMillApp/support/issues"><i class="icon-github3"></i></a>
+	        		<a href="https://gitter.im/CodeMillApp/support"><img class="gitter-icon" src="<%=config.get('app.cdn_url')%>/images/gitter.png"></a>
+	        	</div>
+	        </div>
+	        <!-- /footer -->
+
+
+		</div>
+		<!-- /page content -->
+
+
+	</div>
+	<!-- /page container -->
+
+	<!-- Google Analytics -->
+    <% if(app.get('env') == 'production'){%>
+	    <script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-74414822-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+	<% }%>
+	<!-- /Google Analytics -->
+
+</body>
+</html>

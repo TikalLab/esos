@@ -78,7 +78,8 @@ console.log('here %s,%s',githubUser.login,email)
 				$set: {
 					github: {
 						access_token: accessToken,
-						login: githubUser.login
+						login: githubUser.login,
+						avatar_url: githubUser.avatar_url
 					},
 					name: githubUser.name ? githubUser.name : githubUser.login,
 					email: email
