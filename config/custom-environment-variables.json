@@ -1,0 +1,20 @@
+{
+	"github": {
+		"client_secret": "GITHUB_CLIENT_SECRET",
+		"hook_secret": "GITHUB_HOOK_SECRET"
+	},
+	"paypal": {
+		"user_id": "PAYPAL_USER_ID",
+		"password": "PAYPAL_PASSWORD",
+		"signature": "PAYPAL_SIGNATURE"
+	},
+	"auth": {
+		"password": "AUTH_PASSWORD"
+	},
+	"mailgun": {
+		"api_key": "MAILGUN_API_KEY"
+	},
+	"mongo": {
+		"uri": "MONGOLAB_URI"
+	}
+}
