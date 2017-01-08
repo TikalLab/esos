@@ -11,14 +11,28 @@
         </thead>
         <tbody>
           <% repos.forEach(function(repo){ %>
-            <% var trID = repo.id%>
+            <%
+							var trID = repo.id
+							var supportingRepo = _.find(user.supporting_repos,function(supportingRepo){
+								return repo.full_name == supportingRepo.full_name
+							})
+						%>
 	            <tr id="<%=trID%>">
-								<form action="/developers/support-repo" method="POST">
-									<input type="hidden" name="repo" value="<%=repo.full_name%>">
-		              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
-									<td>$<input type="text" id="<%=trID%>-price" name="price"></td>
-		              <td><input type="submit" class="btn btn-success" value="Offer Support"></td>
-								</form>
+								<% if(supportingRepo){ %>
+									<form action="/developers/remove-repo-support" method="POST">
+										<input type="hidden" name="repo" value="<%=repo.full_name%>">
+			              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
+										<td>$<%=supportingRepo.price%></td>
+			              <td><input type="submit" class="btn btn-danger" value="Remove Support"></td>
+									</form>
+								<% }else{ %>
+									<form action="/developers/support-repo" method="POST">
+										<input type="hidden" name="repo" value="<%=repo.full_name%>">
+			              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
+										<td>$<input type="text" id="<%=trID%>-price" name="price"></td>
+			              <td><input type="submit" class="btn btn-success" value="Offer Support"></td>
+									</form>
+								<% } %>
 	            </tr>
           <% }) %>
         </tbody>

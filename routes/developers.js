@@ -8,6 +8,7 @@ var request = require('request');
 var _ = require('underscore');
 var moment = require('moment')
 var github = require('../app_modules/github');
+var alertIcons = require('../app_modules/alert-icons');
 // var users = require('../models/users');
 
 var errorHandler = require('../app_modules/error');
@@ -55,7 +56,7 @@ router.post('/support-repo',function(req,res,next){
 				type: 'success',
 				message: util.format('Repository %s has been hooked successfuly',req.body.repo)
 			};
- 			res.redirect('/repos')
+ 			res.redirect('/developers/repos')
  		}
 	})
 
@@ -82,7 +83,7 @@ function render(req,res,template,params){
 	params.config = config;
 	params.util = util;
 
-	// params.alertIcons = alertIcons;
+	params.alertIcons = alertIcons;
 	params.alert = req.session.alert;
 	delete req.session.alert;
 

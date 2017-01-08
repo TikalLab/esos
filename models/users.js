@@ -6,7 +6,7 @@ module.exports = {
     },{
       $addToSet: {
         supporting_repos: {
-          repo: repo,
+          full_name: repo,
           price: price,
           hook_id: hook.id,
           created_at: new Date()
