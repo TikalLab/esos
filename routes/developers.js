@@ -7,11 +7,11 @@ var async = require('async');
 var request = require('request');
 var _ = require('underscore');
 var moment = require('moment')
-var async = require('async')
 var github = require('../app_modules/github');
 // var users = require('../models/users');
 
 var errorHandler = require('../app_modules/error');
+var users = require('../models/users');
 
 router.get('/repos',function(req,res,next){
 	async.parallel([
@@ -33,7 +33,31 @@ router.get('/repos',function(req,res,next){
 })
 
 
-router.post('/hook-repo',function(req,res,next){
+router.post('/support-repo',function(req,res,next){
+
+	async.waterfall([
+		function(callback){
+			github.hookRepo(req.session.user.github.access_token,req.body.repo,function(err,hook){
+				callback(err,hook)
+			})
+		},
+		function(hook,callback){
+			users.addSupportingRepo(req.db,req.session.user._id.toString(),req.body.repo,req.body.price,hook,function(err,user){
+				callback(err,user)
+			})
+		}
+	],function(err,user){
+		if(err){
+ 			errorHandler.error(req,res,next,err);
+ 		}else{
+			req.session.user = user;
+			req.session.alert = {
+				type: 'success',
+				message: util.format('Repository %s has been hooked successfuly',req.body.repo)
+			};
+ 			res.redirect('/repos')
+ 		}
+	})
 
 /*
 1. create the web hook so we be notified to comments and pull requests coming from paying users

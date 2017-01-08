@@ -83,6 +83,9 @@ console.log('here %s,%s',githubUser.login,email)
 					},
 					name: githubUser.name ? githubUser.name : githubUser.login,
 					email: email
+				},
+				$setOnInsert: {
+					created_at: new Date()
 				}
 			},{
 				new: true,
