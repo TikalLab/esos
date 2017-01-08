@@ -47,6 +47,12 @@ router.post('/support-repo',function(req,res,next){
 				callback(err,user)
 			})
 		}
+		/*
+		1. create the web hook so we be notified to comments and pull requests coming from paying users
+		2. save it in the db along with the price and other definitions of the developer
+		3. add a badge to the readme file of the repo? or at least send a pull request, the way gitter did
+		4. also let the user know the permalink for this, i.e. http://esos.io/subscribe/shaharsol/commandcar
+		*/
 	],function(err,user){
 		if(err){
  			errorHandler.error(req,res,next,err);
@@ -54,20 +60,49 @@ router.post('/support-repo',function(req,res,next){
 			req.session.user = user;
 			req.session.alert = {
 				type: 'success',
-				message: util.format('Repository %s has been hooked successfuly',req.body.repo)
+				message: util.format('Repository %s can now accept subscriptions',req.body.repo)
 			};
  			res.redirect('/developers/repos')
  		}
 	})
 
+
+
+
+})
+
+
+router.post('/remove-repo-support',function(req,res,next){
+	async.waterfall([
+		function(callback){
+			var supportingRepo = _.find(req.session.user.supporting_repos,function(supportingRepo){
+				return supportingRepo.full_name == req.body.repo
+			})
+			github.unhookRepo(req.session.user.github.access_token,req.body.repo,supportingRepo.hook_id,function(err){
+				callback(err)
+			})
+		},
+		function(callback){
+			users.removeRepoSupport(req.db,req.session.user._id.toString(),req.body.repo,function(err,user){
+				callback(err,user)
+			})
+		}
 /*
-1. create the web hook so we be notified to comments and pull requests coming from paying users
-2. save it in the db along with the price and other definitions of the developer
-3. add a badge to the readme file of the repo? or at least send a pull request, the way gitter did
-4. also let the user know the permalink for this, i.e. http://esos.io/subscribe/shaharsol/commandcar
+TBD TBD
+need to stop payments from all clients
 */
-
-
+	],function(err,user){
+		if(err){
+ 			errorHandler.error(req,res,next,err);
+ 		}else{
+			req.session.user = user;
+			req.session.alert = {
+				type: 'success',
+				message: util.format('Repository %s is no longer supported',req.body.repo)
+			};
+ 			res.redirect('/developers/repos')
+ 		}
+	})
 })
 
 function render(req,res,template,params){

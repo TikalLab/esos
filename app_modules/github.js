@@ -176,5 +176,19 @@ module.exports = {
 		});
 	},
 
+	unhookRepo: function(accessToken,repoFullName,hookID,callback){
+		var headers = this.getAPIHeaders(accessToken);
+console.log(repoFullName)
+console.log(hookID)		
+		request.del('https://api.github.com/repos/' + repoFullName + '/hooks/' + hookID,{headers: headers},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null);
+			}
+		})
+	}
 
 }

@@ -17,5 +17,22 @@ module.exports = {
     },function(err,user){
       callback(err,user)
     })
+  },
+  removeRepoSupport: function(db,userID,repo,callback){
+    var users = db.get('users');
+    users.findOneAndUpdate({
+      _id: userID
+    },{
+      $pull: {
+        supporting_repos: {
+            full_name: repo
+        }
+      }
+    },{
+      new: true
+    },function(err,user){
+      callback(err,user)
+    })
   }
+
 }
