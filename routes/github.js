@@ -12,11 +12,8 @@ var path = require('path')
 
 var github = require('../app_modules/github');
 var errorHandler = require('../app_modules/error');
-var mailer = require('../app_modules/mailer');
+// var mailer = require('../app_modules/mailer');
 
-var pushScans = require('../models/push-scans');
-
-var alertTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/alert.ejs'), 'utf8');
 
 router.get('/authorize',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
@@ -26,7 +23,7 @@ router.get('/authorize',function(req,res,next){
 		pathname: '/login/oauth/authorize',
 		query: {
 			client_id: config.get('github.client_id'),
-			redirect_uri: config.get('github.redirect_domain') + '/github/authorized',
+			redirect_uri: 'http://' + config.get('github.redirect_domain') + '/github/authorized',
 			scope: 'user:email,write:repo_hook'
 
 		}
@@ -62,48 +59,33 @@ console.log('data from github: %s',util.inspect(data))
  		},
 		// get the github user record
 		function(accessToken,callback){
-			var headers = github.getAPIHeaders(accessToken);
-			request('https://api.github.com/user',{headers: headers},function(error,response,body){
-				if(error){
-					callback(error);
-				}else if(response.statusCode > 300){
-					callback(response.statusCode + ' : ' + body);
-				}else{
-					callback(null,accessToken,JSON.parse(body));
-				}
-			});
+			github.getUser(accessToken,function(err,githubUser){
+				callback(err,accessToken,githubUser)
+			})
 		},
 		// get the email
 		function(accessToken,githubUser,callback){
-			var headers = github.getAPIHeaders(accessToken);
-			request('https://api.github.com/user/emails',{headers: headers},function(error,response,body){
-				if(error){
-					callback(error);
-				}else if(response.statusCode > 300){
-					callback(response.statusCode + ' : ' + body);
-				}else{
-					var githubUserEmails = JSON.parse(body);
-					var email = _.find(githubUserEmails,function(email){
-						return email.primary;
-					}).email;
-					callback(null,accessToken,githubUser,email);
-				}
-			});
+			github.getUserEmail(accessToken,function(err,email){
+				callback(err,accessToken,githubUser,email)
+			})
 		},
 		function(accessToken,githubUser,email,callback){
+console.log('here %s,%s',githubUser.login,email)
 			var users = req.db.get('users');
 			users.findAndModify({
-				_id: req.session.user._id.toString()
+				'github.login': githubUser.login
 			},{
 				$set: {
 					github: {
-						access_token: accessToken
+						access_token: accessToken,
+						login: githubUser.login
 					},
 					name: githubUser.name ? githubUser.name : githubUser.login,
 					email: email
 				}
 			},{
-				new: true
+				new: true,
+				upsert: true
 			},function(err,user){
 				callback(err,user)
 			})
