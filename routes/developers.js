@@ -33,7 +33,17 @@ router.get('/repos',function(req,res,next){
 })
 
 
+router.post('/hook-repo',function(req,res,next){
 
+/*
+1. create the web hook so we be notified to comments and pull requests coming from paying users
+2. save it in the db along with the price and other definitions of the developer
+3. add a badge to the readme file of the repo? or at least send a pull request, the way gitter did
+4. also let the user know the permalink for this, i.e. http://esos.io/subscribe/shaharsol/commandcar
+*/
+
+
+})
 
 function render(req,res,template,params){
 

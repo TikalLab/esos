@@ -151,6 +151,30 @@ module.exports = {
 		);
 
 	},
+	hookRepo: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+
+		var form = {
+			"name": "web",
+			"active": true,
+			"events": ["pull_request","issue_comment","issues"],
+			"config": {
+				"url": "https://" + config.get('github.webhook_domain') + "/github/repo-webhook",
+				"content_type": "json",
+				"secret": config.get('github.hook_secret')
+			}
+		};
+		request.post('https://api.github.com/repos/' + repoFullName + '/hooks',{headers: headers, body: JSON.stringify(form)},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				var hook = JSON.parse(body);
+				callback(null,hook);
+			}
+		});
+	},
 
 
 }

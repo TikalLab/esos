@@ -5,16 +5,21 @@
         <thead>
           <tr>
             <th>full name</th>
+						<th>monthly sub $</th>
             <th>actions</th>
           </tr>
         </thead>
         <tbody>
           <% repos.forEach(function(repo){ %>
             <% var trID = repo.id%>
-            <tr id="<%=trID%>">
-              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
-              <td><button class="btn btn-success">Offer Support</button></td>
-            </tr>
+						<form action="/developers/hook-repo">
+							<input type="hidden" name="repo" value="<%=repo.full_name%>">
+	            <tr id="<%=trID%>">
+	              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
+								<td>$<input type="text" id="<%=trID%>-price" name="price"></td>
+	              <td><input type="submit" class="btn btn-success" value="Offer Support"></td>
+	            </tr>
+						</form>
           <% }) %>
         </tbody>
       </table>
