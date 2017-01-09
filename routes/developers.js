@@ -45,6 +45,11 @@ router.post('/support-repo',function(req,res,next){
 
 	async.waterfall([
 		function(callback){
+			github.addBadge(req.session.user.github.access_token,req.body.repo,req.body.price,function(err){
+				callback(err)
+			})
+		},
+		function(callback){
 			github.hookRepo(req.session.user.github.access_token,req.body.repo,function(err,hook){
 				callback(err,hook)
 			})
@@ -89,6 +94,11 @@ router.post('/support-repo',function(req,res,next){
 
 
 router.post('/remove-repo-support',function(req,res,next){
+
+	/*
+	TBD remove the badge from the readme
+	*/
+
 	async.waterfall([
 		function(callback){
 			repos.getByUserAndFullName(req.db,req.session.user._id.toString(),req.body.repo,function(err,repo){

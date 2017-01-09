@@ -31,6 +31,8 @@
     "nl2br": "*",
     "marked": "*",
     "html-to-text": "*",
+    "atob": "*",
+    "btoa": "*",
     "serve-favicon": "~2.3.0"
   }
 }

@@ -6,7 +6,8 @@ var parseLinkHeader = require('parse-link-header');
 var util = require('util');
 // var simpleGit = require('simple-git')()
 var url = require('url');
-
+var atob = require('atob');
+var btoa = require('btoa');
 
 module.exports = {
 	getAPIHeaders: function(accessToken){
@@ -255,6 +256,48 @@ module.exports = {
 			}
 		});
 
+	},
+
+	addBadge: function(accessToken,repoFullName,price,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		async.waterfall([
+			// get the readme
+			function(callback){
+				var url = util.format('https://api.github.com/repos/%s/readme',repoFullName);
+				request(url,{headers: headers},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + body);
+					}else{
+						callback(null,JSON.parse(body));
+					}
+				});
+			},
+			// add our badge
+			function(readme,callback){
+				var text = atob(readme.content);
+				text = util.format('[![%s](https://img.shields.io/badge/Enterprise%20Support%20Available-%24%s%2Fm-green.svg)](%s://%s/subscribe/%s)\n',config.get('app.name'),price,config.get('app.protocol'),config.get('app.domain'),repoFullName) + text;
+				var form = {
+					path: readme.path,
+					message: util.format('added %s badge',config.get('app.name')),
+					content: btoa(text),
+					sha: readme.sha
+				}
+				var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,readme.path);
+				request.put(url,{headers: headers, body: JSON.stringify(form)},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + body);
+					}else{
+						callback(null,JSON.parse(body));
+					}
+				});
+			}
+		],function(err){
+			callback(err)
+		})
 	}
 
 
