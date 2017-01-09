@@ -31,7 +31,6 @@ router.get('/repos',function(req,res,next){
 		if(err){
  			errorHandler.error(req,res,next,err);
  		}else{
-console.log(util.inspect(results[1]))
  			render(req,res,'developers/repos',{
 				user_repos: results[0],
 				supporting_repos: results[1]
@@ -51,7 +50,12 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(hook,callback){
-			repos.add(req.db,req.session.user._id.toString(),req.body.repo,req.body.price,hook,function(err,repo){
+			github.getRepo(req.session.user.github.access_token,req.body.repo,function(err,repo){
+				callback(err,hook,repo)
+			})
+		},
+		function(hook,repo,callback){
+			repos.add(req.db,req.session.user._id.toString(),repo,req.body.price,hook,function(err,repo){
 				callback(err,repo)
 			})
 		}
@@ -82,7 +86,7 @@ router.post('/support-repo',function(req,res,next){
 router.post('/remove-repo-support',function(req,res,next){
 	async.waterfall([
 		function(callback){
-			repos.get(req.db,req.session.user._id.toString(),req.body.repo,function(err,repo){
+			repos.getByUserAndFullName(req.db,req.session.user._id.toString(),req.body.repo,function(err,repo){
 				callback(err,repo)
 			})
 		},

@@ -3,7 +3,8 @@ module.exports = {
     var repos = db.get('repos');
     repos.insert({
       user_id: userID,
-      full_name: repo,
+      full_name: repo.full_name,
+      html_url: repo.html_url,
       price: price,
       hook_id: hook.id,
       created_at: new Date()
@@ -26,11 +27,24 @@ module.exports = {
       callback(err,repos)
     })
   },
-  get: function(db,userID,fullName,callback){
+  getByUserAndFullName: function(db,userID,fullName,callback){
     var repos = db.get('repos');
     repos.findOne({user_id: userID, full_name: fullName},function(err,repo){
       callback(err,repo)
     })
+  },
+  getByFullName: function(db,fullName,callback){
+    var repos = db.get('repos');
+    repos.findOne({full_name: fullName},function(err,repo){
+      callback(err,repo)
+    })
+  },
+  get: function(db,repoID,callback){
+    var repos = db.get('repos');
+    repos.findOne({_id: repoID},function(err,repo){
+      callback(err,repo)
+    })
   }
+
 
 }

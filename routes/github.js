@@ -15,7 +15,7 @@ var errorHandler = require('../app_modules/error');
 // var mailer = require('../app_modules/mailer');
 
 
-router.get('/authorize',function(req,res,next){
+router.get('/authorize-developer',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
 	var redirect = {
 		protocol: 'https',
@@ -26,6 +26,21 @@ router.get('/authorize',function(req,res,next){
 			redirect_uri: 'http://' + config.get('github.redirect_domain') + '/github/authorized',
 			scope: 'user:email,admin:repo_hook'
 
+		}
+	}
+	res.redirect(url.format(redirect));
+})
+
+router.get('/authorize-client',function(req,res,next){
+	req.session.afterGithubRedirectTo = req.query.next;
+	var redirect = {
+		protocol: 'https',
+		host: 'github.com',
+		pathname: '/login/oauth/authorize',
+		query: {
+			client_id: config.get('github.client_id'),
+			redirect_uri: 'http://' + config.get('github.redirect_domain') + '/github/authorized',
+			scope: 'user:email'
 		}
 	}
 	res.redirect(url.format(redirect));
@@ -100,7 +115,12 @@ console.log('here %s,%s',githubUser.login,email)
  			errorHandler.error(req,res,next,err);
  		}else{
  			req.session.user = user;
-			res.redirect('/')
+			var next = req.session.afterGithubRedirectTo;
+			delete req.session.afterGithubRedirectTo;
+			if(!next){
+				next = '/';
+			}
+			res.redirect(next)
  		}
  	});
 })

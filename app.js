@@ -19,7 +19,7 @@ var mongoUri = config.get('mongo.uri');
 var db = monk(mongoUri);
 
 var index = require('./routes/index');
-// var buyers = require('./routes/buyers');
+var clients = require('./routes/clients');
 var developers = require('./routes/developers');
 var github = require('./routes/github');
 // var paypal = require('./routes/paypal');
@@ -65,7 +65,7 @@ app.use(function(req,res,next){
 
 
 app.use('/', index);
-// app.use('/clients', buyers);
+app.use('/clients', clients);
 //app.use('/', buyers);
 app.use('/developers', developers);
 app.use('/github', github);

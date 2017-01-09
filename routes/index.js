@@ -10,6 +10,7 @@ var moment = require('moment')
 // var github = require('../app_modules/github');
 
 // var users = require('../models/users');
+var repos = require('../models/repos');
 
 
 router.get('/',function(req,res,next){
@@ -29,7 +30,24 @@ router.get('/logout',function(req,res,next){
 	res.redirect('/')
 })
 
-
+router.get('/subscribe/:owner/:name',function(req,res,next){
+	async.parallel([
+		function(callback){
+			var fullName = util.format('%s/%s',req.params.owner,req.params.name)
+			repos.getByFullName(req.db,fullName,function(err,repo){
+				callback(err,repo)
+			})
+		}
+	],function(err,results){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			render(req,res,'index/subscribe',{
+				repo: results[0]
+			})
+		}
+	})
+})
 
 function render(req,res,template,params){
 

@@ -1,0 +1,33 @@
+<div class="page-header">
+	<div class="page-title">
+		&nbsp;
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> My Repos</h6></div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>full name</th>
+						<th>monthly sub $</th>
+            <th>actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% subscriptions.forEach(function(subscription){ %>
+            <tr>
+							<form action="/clients/stop-subscription" method="POST">
+								<input type="hidden" name="repo" value="<%=subscription.full_name%>">
+	              <td><a href="<%=subscription.repo.html_url%>"><%=subscription.full_name%></a></td>
+								<td>$<%=subscription.repo.price%></td>
+	              <td><input type="submit" class="btn btn-success" value="Cancel subscription"></td>
+							</form>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

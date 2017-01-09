@@ -178,8 +178,6 @@ module.exports = {
 
 	unhookRepo: function(accessToken,repoFullName,hookID,callback){
 		var headers = this.getAPIHeaders(accessToken);
-console.log(repoFullName)
-console.log(hookID)		
 		request.del('https://api.github.com/repos/' + repoFullName + '/hooks/' + hookID,{headers: headers},function(error,response,body){
 			if(error){
 				callback(error);
@@ -189,6 +187,20 @@ console.log(hookID)
 				callback(null);
 			}
 		})
+	},
+
+	getRepo: function(accessToken,fullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		request('https://api.github.com/repos/' + fullName,{headers: headers},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null,JSON.parse(body));
+			}
+		})
+
 	}
 
 }
