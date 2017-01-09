@@ -14,6 +14,8 @@ var github = require('../app_modules/github');
 var errorHandler = require('../app_modules/error');
 // var mailer = require('../app_modules/mailer');
 
+var repos = require('../models/repos');
+var subscriptions = require('../models/subscriptions');
 
 router.get('/authorize-developer',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
@@ -125,57 +127,6 @@ console.log('here %s,%s',githubUser.login,email)
  	});
 })
 
-router.post('/org-webhook',function(req, res, next) {
-	console.log('received a ORG webhook notification from github!');
-	console.log('%s',util.inspect(req.body));
-
-	// calc the signature according to X-Hub-Signature and verify the hook is valid
-	var hmac = crypto.createHmac('sha1', config.get('github.hook_secret'));
-	hmac.update(JSON.stringify(req.body));
-	// hmac.update(req.rawBody);
-	var calcedSignature = hmac.digest('hex');
-	console.log('signature is %s',calcedSignature);
-
-	var githubSignature = req.headers['x-hub-signature'].split('=')[1]; // header content is in format sha1={signature}, we need only the {signature} part
-	if(githubSignature != calcedSignature){
-		console.log('A SPOOFED HOOK RECEIVED!!! github sig: %s, calced sig: %s',githubSignature,calcedSignature);
-	}else{
-		// find the user that signed the organization and use their access_token
-		var users = req.db.get('users');
-		users.find({'hooks.orgs.org_name':{$in: [req.body.organization.login]}},function(err,docs){
-			if(err){
-				console.log('error finding an org-user match: %s',err);
-			}else{
-				if(docs.length > 0){
-					var user = docs[0]; // the first user will do...
-//					processHook(user,req.body);
-
-					// what happened in github that caused us to receive this hook?
-					console.log('headres are : %s',util.inspect(req.headers));
-					switch(req.headers['x-github-event']){
-					case 'push':
-						console.log('this is a push!');
-						processPush(user,req.body,req.db);
-						break;
-					default:
-						console.log('header is : %s',req.headers['x-github-event']);
-						break;
-					}
-
-
-				}else{
-					console.log('find zero matches org-user!!!');
-				}
-			}
-		})
-	}
-
-
-
-	res.sendStatus(200);
-
-})
-
 router.post('/repo-webhook',function(req, res, next) {
 	console.log('received a REPO webhook notification from github!');
 	console.log('%s',util.inspect(req.body));
@@ -191,34 +142,50 @@ router.post('/repo-webhook',function(req, res, next) {
 	if(githubSignature != calcedSignature){
 		console.log('A SPOOFED HOOK RECEIVED!!! github sig: %s, calced sig: %s',githubSignature,calcedSignature);
 	}else{
-		// find the user that signed the organization and use their access_token
-		var users = req.db.get('users');
-		users.find({'hooks.repos.repo.owner': req.body.repository.owner.name,'hooks.repos.repo.name': req.body.repository.name},function(err,docs){
-			if(err){
-				console.log('error finding an repo-user match: %s',err);
-			}else{
-				if(docs.length > 0){
-					var user = docs[0]; // the first user will do...
-//					processHook(user,req.body);
 
-					// what happened in github that caused us to receive this hook?
-					console.log('headres are : %s',util.inspect(req.headers));
+		console.log('verified signature')
+
+		async.waterfall([
+			function(callback){
+				repos.getByFullName(req.db,req.body.repository.full_name,function(err,repo){
+					callback(err,repo)
+				})
+			},
+			function(repo,callback){
+				subscriptions.getByGithubLoginAndRepoID(req.db,req.body.sender.login,repo._id.toString(),function(err,subscription){
+					callback(err,repo,subscription)
+				})
+			}
+		],function(err,repo,subscription){
+			if(err){
+				console.log('err in processing hook: %s',err)
+			}else{
+				if(subscription){
 					switch(req.headers['x-github-event']){
-					case 'push':
+					case 'pull_request':
 						console.log('this is a push!');
-						processPush(user,req.body,req.db);
+						// processPullRequest(user,req.body,req.db);
+						break;
+					case 'issue_comment':
+						console.log('this is a issue_comment!');
+						// processIssueComment(user,req.body,req.db);
+						break;
+					case 'issues':
+						console.log('this is a issues!');
+						// processIssue(user,req.body,req.db);
 						break;
 					default:
 						console.log('header is : %s',req.headers['x-github-event']);
 						break;
 					}
 
-
 				}else{
-					console.log('find zero matches repo-user!!!');
+					console.log('this event wasnt triggered by a subscriber to the repo...')
 				}
+
 			}
 		})
+
 	}
 
 

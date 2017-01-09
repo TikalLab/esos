@@ -29,7 +29,7 @@ router.get('/paid/:owner/:name',function(req,res,next){
 			})
 		},
 		function(repo,callback){
-			subscriptions.add(req.db,req.session.user._id.toString(),repo._id.toString(),fullName,function(err,subscription){
+			subscriptions.add(req.db,req.session.user,repo,function(err,subscription){
 				callback(err,subscription)
 			})
 		}

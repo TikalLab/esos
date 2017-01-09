@@ -1,12 +1,13 @@
 var async = require('async')
 var repos = require('../models/repos')
 module.exports = {
-  add: function(db,userID,repoID,fullName,callback){
+  add: function(db,user,repo,callback){
     var subscriptions = db.get('subscriptions');
     subscriptions.insert({
-      user_id: userID,
-      repo_id: repoID,
-      full_name: fullName,
+      user_id: user._id.toString(),
+      github_login: user.github.login,
+      repo_id: repo._id.toString(),
+      full_name: repo.full_name,
       created_at: new Date()
     },function(err,subscription){
       callback(err,subscription)
@@ -38,6 +39,12 @@ module.exports = {
       }
     ],function(err,subscriptions){
       callback(err,subscriptions)
+    })
+  },
+  getByGithubLoginAndRepoID: function(db,githubLogin,repoID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.findOne({repo_id: repoID, github_login: githubLogin},function(err,subscription){
+      callback(err,subscription)
     })
   }
 }
