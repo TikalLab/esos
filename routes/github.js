@@ -245,7 +245,7 @@ function processIssue(developer,client,event){
 					repo: event.repository.full_name,
 					event_url: event.issue.html_url
 				},
-				'developer-alert',
+				'developer-alert-issue',
 				function(err){
 					callback(err)
 				}
@@ -263,7 +263,7 @@ function processIssue(developer,client,event){
 					repo: event.repository.full_name,
 					event_url: event.issue.html_url
 				},
-				'clinet-acknowledge',
+				'client-acknowledge-issue',
 				function(err){
 					callback(err)
 				}
@@ -285,12 +285,42 @@ function processIssueComment(developer,client,event){
 				callback(err)
 			})
 		},
-		// function(callback){
-		// 	// notify client
-		// },
-		// function(callback){
-		// 	// notify developer
-		// }
+		function(callback){
+			// notify developer
+			mailer.sendMulti(
+				[developer], //recipients
+				'[' + config.get('app.name') + '] A new issue comment that requires your attention',
+				developerEmailTemplate,
+				{
+					event_type: 'issue comment',
+					repo: event.repository.full_name,
+					event_url: event.comment.html_url
+				},
+				'developer-alert-issue-comment',
+				function(err){
+					callback(err)
+				}
+
+			);
+		},
+		function(callback){
+			// notify client
+			mailer.sendMulti(
+				[client], //recipients
+				'[' + config.get('app.name') + '] Acknowleding a new issue comment on ' + event.repository.full_name,
+				clientEmailTemplate,
+				{
+					event_type: 'issue comment',
+					repo: event.repository.full_name,
+					event_url: event.comment.html_url
+				},
+				'client-acknowledge-issue-comment',
+				function(err){
+					callback(err)
+				}
+
+			);
+		}
 
 	],function(err){
 		if(err){
@@ -319,7 +349,7 @@ function processPullRequest(developer,client,event){
 					repo: event.repository.full_name,
 					event_url: event.pull_request.html_url
 				},
-				'developer-alert',
+				'developer-alert-pull-request',
 				function(err){
 					callback(err)
 				}
@@ -337,7 +367,7 @@ function processPullRequest(developer,client,event){
 					repo: event.repository.full_name,
 					event_url: event.pull_request.html_url
 				},
-				'clinet-acknowledge',
+				'client-acknowledge-pull-request',
 				function(err){
 					callback(err)
 				}
