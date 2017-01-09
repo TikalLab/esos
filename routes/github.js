@@ -254,6 +254,21 @@ function processIssue(developer,client,event){
 		},
 		function(callback){
 			// notify client
+			mailer.sendMulti(
+				[client], //recipients
+				'[' + config.get('app.name') + '] Acknowleding a new issue on ' + event.repository.full_name,
+				clientEmailTemplate,
+				{
+					event_type: 'issue',
+					repo: event.repository.full_name,
+					event_url: event.issue.html_url
+				},
+				'clinet-acknowledge',
+				function(err){
+					callback(err)
+				}
+
+			);
 		}
 
 	],function(err){
