@@ -13,7 +13,9 @@
 	"app": {
 		"name": "esos_dev",
 		"domain": "localhost:3000",
+		"protocol": "http",
 		"email": "shahar@gnift.com",
+		"unsubscribe_secret": "FooFighters",
 		"paypal_email": "shahar@gighub.com",
 		"commission": 0.1,
 		"max_tasks_per_developer": 2,

@@ -12,11 +12,16 @@ var path = require('path')
 
 var github = require('../app_modules/github');
 var errorHandler = require('../app_modules/error');
-// var mailer = require('../app_modules/mailer');
+var mailer = require('../app_modules/mailer');
 
 var repos = require('../models/repos');
 var subscriptions = require('../models/subscriptions');
 var users = require('../models/users');
+
+
+var developerEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/developer.ejs'), 'utf8');
+var clientEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/client.ejs'), 'utf8');
+
 
 router.get('/authorize-developer',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
@@ -229,12 +234,27 @@ function processIssue(developer,client,event){
 				callback(err)
 			})
 		},
-		// function(callback){
-		// 	// notify client
-		// },
-		// function(callback){
-		// 	// notify developer
-		// }
+		function(callback){
+			// notify developer
+			mailer.sendMulti(
+				[developer], //recipients
+				'[' + config.get('app.name') + '] A new issue that requires your attention',
+				developerEmailTemplate,
+				{
+					event_type: 'issue',
+					repo: event.repository.full_name,
+					event_url: event.issue.html_url
+				},
+				'developer-alert',
+				function(err){
+					callback(err)
+				}
+
+			);
+		},
+		function(callback){
+			// notify client
+		}
 
 	],function(err){
 

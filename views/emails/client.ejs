@@ -1,0 +1,10 @@
+<p>Hi %recipient.name%,</p>
+<p>We just wanted to acknowledge your new <%=event_type%> on <%=repo%>, and to let you know that the repository owner had been notified and asked to refer to this <%=event_type%> ASAP.</p>
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+To stop getting this email: <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>/unsubscribe/<%=email_type%>/%recipient.id%/%recipient.code%<br/>
+To unsubscribe from all <%=config.get('app.name')%> emails: <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>/unsubscribe/all/%recipient.id%/%recipient.code%
+</p>
