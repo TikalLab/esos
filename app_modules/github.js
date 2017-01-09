@@ -201,6 +201,24 @@ module.exports = {
 			}
 		})
 
+	},
+
+	labelIssue: function(accessToken,repoFullName,issueNumber,label,callback){
+		var headers = this.getAPIHeaders(accessToken);
+
+		var labels = [label];
+		var url = util.format('https://api.github.com/repos/%s/issues/%s/labels',repoFullName,issueNumber)
+		request.post(url,{headers: headers, body: JSON.stringify(labels)},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				var hook = JSON.parse(body);
+				callback(null,label);
+			}
+		});
+
 	}
 
 }

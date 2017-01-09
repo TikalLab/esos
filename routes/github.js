@@ -16,6 +16,7 @@ var errorHandler = require('../app_modules/error');
 
 var repos = require('../models/repos');
 var subscriptions = require('../models/subscriptions');
+var users = require('../models/users');
 
 router.get('/authorize-developer',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
@@ -26,7 +27,7 @@ router.get('/authorize-developer',function(req,res,next){
 		query: {
 			client_id: config.get('github.client_id'),
 			redirect_uri: 'http://' + config.get('github.redirect_domain') + '/github/authorized',
-			scope: 'user:email,admin:repo_hook'
+			scope: 'user:email,admin:repo_hook,public_repo'
 
 		}
 	}
@@ -152,11 +153,25 @@ router.post('/repo-webhook',function(req, res, next) {
 				})
 			},
 			function(repo,callback){
-				subscriptions.getByGithubLoginAndRepoID(req.db,req.body.sender.login,repo._id.toString(),function(err,subscription){
-					callback(err,repo,subscription)
+				users.get(req.db,repo.user_id,function(err,developer){
+					callback(err,repo,developer)
 				})
-			}
-		],function(err,repo,subscription){
+			},
+			function(repo,developer,callback){
+				subscriptions.getByGithubLoginAndRepoID(req.db,req.body.sender.login,repo._id.toString(),function(err,subscription){
+					callback(err,repo,developer,subscription)
+				})
+			},
+			function(repo,developer,subscription,callback){
+				if(!subscription){
+					callback(null,repo,developer,subscription,null)
+				}else{
+					users.get(req.db,subscription.user_id,function(err,client){
+						callback(err,repo,developer,subscription,client)
+					})
+				}
+			},
+		],function(err,repo,developer,subscription,client){
 			if(err){
 				console.log('err in processing hook: %s',err)
 			}else{
@@ -172,7 +187,7 @@ router.post('/repo-webhook',function(req, res, next) {
 						break;
 					case 'issues':
 						console.log('this is a issues!');
-						// processIssue(user,req.body,req.db);
+						processIssue(developer,client,req.body);
 						break;
 					default:
 						console.log('header is : %s',req.headers['x-github-event']);
@@ -194,52 +209,14 @@ router.post('/repo-webhook',function(req, res, next) {
 
 })
 
-
-function processPush(user,push,db){
-	async.waterfall([
-		function(callback){
-			github.scanPush(user.github.access_token,push,function(err,filesWithKeys){
-				callback(err,filesWithKeys)
-			})
-		},
-		function(filesWithKeys,callback){
-			pushScans.create(user._id.toString(),push,filesWithKeys,db,function(err,pushScan){
-				callback(err,filesWithKeys,pushScan)
-			})
-		},
-		function(filesWithKeys,pushScan,callback){
-			if(!filesWithKeys){
-				callback()
-			}else if(filesWithKeys.length == 0){
-				callback()
-			}else{
-				// TBD notify user
-				console.log('need to notify user about files with keys: %s',util.inspect(filesWithKeys,{depth:8}))
-
-				mailer.sendMulti(
-					[user], //recipients
-					'[' + config.get('app.name') + '] Possible private key committed alert',
-					alertTemplate,
-					{
-						push_scan: pushScan
-					},
-					'alert',
-					function(err){
-						callback(err)
-					}
-
-				);
-
-			}
-		}
-	],function(err){
+function processIssue(developer,client,event){
+	github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,'ESOS',function(err,label){
 		if(err){
-			console.log('error processing push: %s',err)
+			console.log('err in creating label : %s',err)
 		}else{
-			console.log('push processed succerssfully')
+			console.log('creatd labvel: %s',util.inspect(label))
 		}
 	})
-
 }
 
 module.exports = router;
