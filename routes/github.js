@@ -178,16 +178,28 @@ router.post('/repo-webhook',function(req, res, next) {
 				if(subscription){
 					switch(req.headers['x-github-event']){
 					case 'pull_request':
-						console.log('this is a push!');
-						// processPullRequest(user,req.body,req.db);
+						if(req.body.action == 'opened'){
+							console.log('this is a pull request!');
+							processPullRequest(developer,client,req.body);
+						}else{
+							console.log('his is a pull request event but action is not "opened"')
+						}
 						break;
 					case 'issue_comment':
-						console.log('this is a issue_comment!');
-						// processIssueComment(user,req.body,req.db);
+						if(req.body.action == 'created'){
+							console.log('this is a issue_comment!');
+							processIssueComment(developer,client,req.body);
+						}else{
+							console.log('his is a issue_comment event but action is not "created"')
+						}
 						break;
 					case 'issues':
-						console.log('this is a issues!');
-						processIssue(developer,client,req.body);
+						if(req.body.action == 'opened'){
+							console.log('this is a issues!');
+							processIssue(developer,client,req.body);
+						}else{
+							console.log('his is a issues event but action is not "opened"')
+						}
 						break;
 					default:
 						console.log('header is : %s',req.headers['x-github-event']);
@@ -210,13 +222,71 @@ router.post('/repo-webhook',function(req, res, next) {
 })
 
 function processIssue(developer,client,event){
-	github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,function(err,label){
+
+	async.waterfall([
+		function(callback){
+			github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,function(err,label){
+				callback(err)
+			})
+		},
+		// function(callback){
+		// 	// notify client
+		// },
+		// function(callback){
+		// 	// notify developer
+		// }
+
+	],function(err){
+
+	})
+
+
+}
+
+function processIssueComment(developer,client,event){
+	async.waterfall([
+		function(callback){
+			github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,function(err,label){
+				callback(err)
+			})
+		},
+		// function(callback){
+		// 	// notify client
+		// },
+		// function(callback){
+		// 	// notify developer
+		// }
+
+	],function(err){
 		if(err){
-			console.log('err in creating label : %s',err)
-		}else{
-			console.log('creatd labvel: %s',util.inspect(label))
+			console.log('err in processIssueComment: %s',err)
 		}
 	})
+
+
+}
+
+function processPullRequest(developer,client,event){
+	async.waterfall([
+		function(callback){
+			github.labelIssue(developer.github.access_token,event.repository.full_name,event.pull_request.number,function(err,label){
+				callback(err)
+			})
+		},
+		// function(callback){
+		// 	// notify client
+		// },
+		// function(callback){
+		// 	// notify developer
+		// }
+
+	],function(err){
+		if(err){
+			console.log('err in processIssueComment: %s',err)
+		}
+	})
+
+
 }
 
 module.exports = router;
