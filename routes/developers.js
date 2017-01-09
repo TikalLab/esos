@@ -13,6 +13,7 @@ var alertIcons = require('../app_modules/alert-icons');
 
 var errorHandler = require('../app_modules/error');
 var users = require('../models/users');
+var repos = require('../models/repos');
 
 router.get('/repos',function(req,res,next){
 	async.parallel([
@@ -20,13 +21,20 @@ router.get('/repos',function(req,res,next){
 			github.getUserRepos(req.session.user.github.access_token,function(err,repos){
 				callback(err,repos)
 			})
+		},
+		function(callback){
+			repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
+				callback(err,repos)
+			})
 		}
 	],function(err,results){
 		if(err){
  			errorHandler.error(req,res,next,err);
  		}else{
+console.log(util.inspect(results[1]))
  			render(req,res,'developers/repos',{
-				repos: results[0]
+				user_repos: results[0],
+				supporting_repos: results[1]
 			})
  		}
 	})
@@ -43,8 +51,8 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(hook,callback){
-			users.addSupportingRepo(req.db,req.session.user._id.toString(),req.body.repo,req.body.price,hook,function(err,user){
-				callback(err,user)
+			repos.add(req.db,req.session.user._id.toString(),req.body.repo,req.body.price,hook,function(err,repo){
+				callback(err,repo)
 			})
 		}
 		/*
@@ -53,11 +61,10 @@ router.post('/support-repo',function(req,res,next){
 		3. add a badge to the readme file of the repo? or at least send a pull request, the way gitter did
 		4. also let the user know the permalink for this, i.e. http://esos.io/subscribe/shaharsol/commandcar
 		*/
-	],function(err,user){
+	],function(err,repo){
 		if(err){
  			errorHandler.error(req,res,next,err);
  		}else{
-			req.session.user = user;
 			req.session.alert = {
 				type: 'success',
 				message: util.format('Repository %s can now accept subscriptions',req.body.repo)
@@ -75,27 +82,28 @@ router.post('/support-repo',function(req,res,next){
 router.post('/remove-repo-support',function(req,res,next){
 	async.waterfall([
 		function(callback){
-			var supportingRepo = _.find(req.session.user.supporting_repos,function(supportingRepo){
-				return supportingRepo.full_name == req.body.repo
+			repos.get(req.db,req.session.user._id.toString(),req.body.repo,function(err,repo){
+				callback(err,repo)
 			})
-			github.unhookRepo(req.session.user.github.access_token,req.body.repo,supportingRepo.hook_id,function(err){
+		},
+		function(repo,callback){
+			github.unhookRepo(req.session.user.github.access_token,req.body.repo,repo.hook_id,function(err){
 				callback(err)
 			})
 		},
 		function(callback){
-			users.removeRepoSupport(req.db,req.session.user._id.toString(),req.body.repo,function(err,user){
-				callback(err,user)
+			repos.remove(req.db,req.session.user._id.toString(),req.body.repo,function(err,user){
+				callback(err)
 			})
 		}
 /*
 TBD TBD
 need to stop payments from all clients
 */
-	],function(err,user){
+	],function(err){
 		if(err){
  			errorHandler.error(req,res,next,err);
  		}else{
-			req.session.user = user;
 			req.session.alert = {
 				type: 'success',
 				message: util.format('Repository %s is no longer supported',req.body.repo)
