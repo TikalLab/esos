@@ -308,12 +308,42 @@ function processPullRequest(developer,client,event){
 				callback(err)
 			})
 		},
-		// function(callback){
-		// 	// notify client
-		// },
-		// function(callback){
-		// 	// notify developer
-		// }
+		function(callback){
+			// notify developer
+			mailer.sendMulti(
+				[developer], //recipients
+				'[' + config.get('app.name') + '] A new pull request that requires your attention',
+				developerEmailTemplate,
+				{
+					event_type: 'pull request',
+					repo: event.repository.full_name,
+					event_url: event.pull_request.html_url
+				},
+				'developer-alert',
+				function(err){
+					callback(err)
+				}
+
+			);
+		},
+		function(callback){
+			// notify client
+			mailer.sendMulti(
+				[client], //recipients
+				'[' + config.get('app.name') + '] Acknowleding a new pull request on ' + event.repository.full_name,
+				clientEmailTemplate,
+				{
+					event_type: 'pull request',
+					repo: event.repository.full_name,
+					event_url: event.pull_request.html_url
+				},
+				'clinet-acknowledge',
+				function(err){
+					callback(err)
+				}
+
+			);
+		}
 
 	],function(err){
 		if(err){
