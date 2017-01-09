@@ -50,6 +50,11 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(hook,callback){
+			github.createLabel(req.session.user.github.access_token,req.body.repo,function(err,label){
+				callback(err,hook)
+			})
+		},
+		function(hook,callback){
 			github.getRepo(req.session.user.github.access_token,req.body.repo,function(err,repo){
 				callback(err,hook,repo)
 			})
@@ -92,6 +97,11 @@ router.post('/remove-repo-support',function(req,res,next){
 		},
 		function(repo,callback){
 			github.unhookRepo(req.session.user.github.access_token,req.body.repo,repo.hook_id,function(err){
+				callback(err)
+			})
+		},
+		function(callback){
+			github.removeLabel(req.session.user.github.access_token,req.body.repo,function(err){
 				callback(err)
 			})
 		},

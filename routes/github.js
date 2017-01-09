@@ -210,7 +210,7 @@ router.post('/repo-webhook',function(req, res, next) {
 })
 
 function processIssue(developer,client,event){
-	github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,'ESOS',function(err,label){
+	github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,function(err,label){
 		if(err){
 			console.log('err in creating label : %s',err)
 		}else{

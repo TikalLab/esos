@@ -203,10 +203,10 @@ module.exports = {
 
 	},
 
-	labelIssue: function(accessToken,repoFullName,issueNumber,label,callback){
+	labelIssue: function(accessToken,repoFullName,issueNumber,callback){
 		var headers = this.getAPIHeaders(accessToken);
 
-		var labels = [label];
+		var labels = [config.get('github.label.name')];
 		var url = util.format('https://api.github.com/repos/%s/issues/%s/labels',repoFullName,issueNumber)
 		request.post(url,{headers: headers, body: JSON.stringify(labels)},function(error,response,body){
 			if(error){
@@ -214,11 +214,49 @@ module.exports = {
 			}else if(response.statusCode > 300){
 				callback(response.statusCode + ' : ' + body);
 			}else{
-				var hook = JSON.parse(body);
+				var label = JSON.parse(body);
 				callback(null,label);
 			}
 		});
 
+	},
+
+	createLabel: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+
+		var form = {
+				name: config.get('github.label.name'),
+				color: config.get('github.label.color'),
+		};
+		var url = util.format('https://api.github.com/repos/%s/labels',repoFullName)
+		request.post(url,{headers: headers, body: JSON.stringify(form)},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null,JSON.parse(body));
+			}
+		});
+
+	},
+
+	removeLabel: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+
+		var url = util.format('https://api.github.com/repos/%s/labels/%s',repoFullName,config.get('github.label.name'))
+		request.del(url,{headers: headers},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null);
+			}
+		});
+
 	}
+
+
 
 }

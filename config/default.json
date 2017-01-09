@@ -4,7 +4,11 @@
 		"client_secret": "bc28a6c628b488fbf7ae1252e96a55661ef59bbf",
 		"redirect_domain": "localhost:3000",
 		"webhook_domain": "facetogether.ngrok.io",
-		"hook_secret": "MyBloodyValentine"
+		"hook_secret": "MyBloodyValentine",
+		"label": {
+			"name": "ESOS",
+			"color": "FF0000"
+		}
 	},
 	"app": {
 		"name": "esos_dev",
