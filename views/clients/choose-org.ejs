@@ -1,0 +1,15 @@
+<div class="page-header">
+	<div class="page-title">
+		<h3>Choose an org to apply your subscription to, or use it personally</h3>
+	</div>
+</div>
+
+<form action="/clients/pay/<%=owner%>/<%=name%>" method="GET">
+  <select name="org">
+    <option value="">Personal use</option>
+    <% orgs.forEach(function(org){ %>
+      <option value="<%=org.login%>"><%=org.login%></option>
+    <% }) %>
+  </select>
+  <input type="submit" class="btn btn-success" value="Choose Organization">
+</form>

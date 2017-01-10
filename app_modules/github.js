@@ -298,6 +298,54 @@ module.exports = {
 		],function(err){
 			callback(err)
 		})
+	},
+	isOrgMember: function(org,login,callback){
+		var url = util.format('https://api.github.com/orgs/%s/public_members/%s',org,login);
+		request.put(url,function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode != 404 && response.statusCode != 204){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null,response.statusCode == 204);
+			}
+		});
+	},
+	getUserOrgs: function(accessToken,callback){
+		var headers = this.getAPIHeaders(accessToken);
+// 		var thisObject = this;
+// 		async.waterfall([
+// 			function(callback){
+// 				thisObject.getUser(accessToken,function(err,user){
+// 					callback(err,user)
+// 				})
+// 			},
+// 			function(user,callback){
+// 				var url = util.format('https://api.github.com/users/%s/orgs',user.login)
+// 				request(url,{headers: headers},function(error,response,body){
+// 					if(error){
+// 						callback(error);
+// 					}else if(response.statusCode > 300){
+// 						callback(response.statusCode + ' : ' + body);
+// 					}else{
+// 						callback(null,JSON.parse(body));
+// 					}
+// 				});
+// 			}
+// 		],function(err,orgs){
+// console.log()
+// 			callback(err,orgs)
+// 		})
+
+		request('https://api.github.com/user/orgs',{headers: headers},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null,JSON.parse(body));
+			}
+		});
 	}
 
 

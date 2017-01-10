@@ -1,15 +1,19 @@
 var async = require('async')
 var repos = require('../models/repos')
 module.exports = {
-  add: function(db,user,repo,callback){
+  add: function(db,user,repo,org,callback){
     var subscriptions = db.get('subscriptions');
-    subscriptions.insert({
+    var subscription = {
       user_id: user._id.toString(),
       github_login: user.github.login,
       repo_id: repo._id.toString(),
       full_name: repo.full_name,
       created_at: new Date()
-    },function(err,subscription){
+    };
+    if(org){
+      subscription.org = org;
+    }
+    subscriptions.insert(subscription,function(err,subscription){
       callback(err,subscription)
     })
   },

@@ -48,7 +48,7 @@ router.get('/authorize-client',function(req,res,next){
 		query: {
 			client_id: config.get('github.client_id'),
 			redirect_uri: 'http://' + config.get('github.redirect_domain') + '/github/authorized',
-			scope: 'user:email'
+			scope: 'user:email,read:org'
 		}
 	}
 	res.redirect(url.format(redirect));

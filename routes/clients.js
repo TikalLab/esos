@@ -16,7 +16,30 @@ var users = require('../models/users');
 var subscriptions = require('../models/subscriptions');
 var repos = require('../models/repos');
 
+router.get('/choose-org/:owner/:name',function(req,res,next){
+	async.parallel([
+		function(callback){
+			github.getUserOrgs(req.session.user.github.access_token,function(err,orgs){
+				callback(err,orgs)
+			})
+		},
+	],function(err,results){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			render(req,res,'clients/choose-org',{
+				orgs: results[0],
+				owner: req.params.owner,
+				name: req.params.name
+			})
+		}
+	})
+})
+
 router.get('/pay/:owner/:name',function(req,res,next){
+	req.session.subscription = {
+		org: req.query.org
+	}
 	res.redirect(util.format('/clients/paid/%s/%s',req.params.owner,req.params.name))
 })
 
@@ -29,7 +52,7 @@ router.get('/paid/:owner/:name',function(req,res,next){
 			})
 		},
 		function(repo,callback){
-			subscriptions.add(req.db,req.session.user,repo,function(err,subscription){
+			subscriptions.add(req.db,req.session.user,repo,req.session.subscription.org,function(err,subscription){
 				callback(err,subscription)
 			})
 		}
