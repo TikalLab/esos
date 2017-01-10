@@ -299,9 +299,10 @@ module.exports = {
 			callback(err)
 		})
 	},
-	isOrgMember: function(org,login,callback){
-		var url = util.format('https://api.github.com/orgs/%s/public_members/%s',org,login);
-		request.put(url,function(error,response,body){
+	isOrgMember: function(accessToken,org,login,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var url = util.format('https://api.github.com/orgs/%s/members/%s',org,login);
+		request.put(url,{headers: headers},function(error,response,body){
 			if(error){
 				callback(error);
 			}else if(response.statusCode != 404 && response.statusCode != 204){

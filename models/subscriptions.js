@@ -50,5 +50,11 @@ module.exports = {
     subscriptions.findOne({repo_id: repoID, github_login: githubLogin},function(err,subscription){
       callback(err,subscription)
     })
+  },
+  getRepoOrgSubscriptions: function(db,repoID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.find({repo_id: repoID, org:{$exists: true}},function(err,repoOrgSubscriptions){
+      callback(err,repoOrgSubscriptions)
+    })
   }
 }

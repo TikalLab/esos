@@ -168,6 +168,15 @@ router.post('/repo-webhook',function(req, res, next) {
 				})
 			},
 			function(repo,developer,subscription,callback){
+				if(subscription){
+					callback(null,repo,developer,subscription)
+				}else{
+					getUserOrgSubscription(req.db,req.body.sender.login,repo,function(err,subscription){
+						callback(null,repo,developer,subscription)
+					})
+				}
+			},
+			function(repo,developer,subscription,callback){
 				if(!subscription){
 					callback(null,repo,developer,subscription,null)
 				}else{
@@ -226,6 +235,39 @@ router.post('/repo-webhook',function(req, res, next) {
 
 })
 
+function getUserOrgSubscription(db,login,repo,callback){
+	async.waterfall([
+		function(callback){
+			subscriptions.getRepoOrgSubscriptions(db,repo._id.toString(),function(err,repoOrgSubscriptions){
+				callback(err,repoOrgSubscriptions)
+			})
+		},
+		function(repoOrgSubscriptions,callback){
+			async.detect(repoOrgSubscriptions,function(repoOrgSubscription,callback){
+				async.waterfall([
+					function(callback){
+						users.get(repoOrgSubscription.user_id,function(err,user){
+							callback(err,user)
+						})
+					},
+					function(user,callback){
+						github.isOrgMember(user.github.access_token,repoOrgSubscription.org,login,function(err,isOrgMember){
+							callback(err,isOrgMember)
+						})
+					}
+				],function(err,isOrgMember){
+					callback(err,isOrgMember)
+				})
+			},function(err,subscription){
+				callback(err,subscription)
+			})
+		}
+	],function(err,subscription){
+		callback(err,subscription)
+	})
+}
+
+
 function processIssue(developer,client,event){
 
 	async.waterfall([
@@ -272,7 +314,9 @@ function processIssue(developer,client,event){
 		}
 
 	],function(err){
-
+		if(err){
+			console.log('err in processIssue: %s',err)
+		}
 	})
 
 
