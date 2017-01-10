@@ -1,4 +1,5 @@
 var async = require('async')
+var util = require('util')
 var repos = require('../models/repos')
 module.exports = {
   add: function(db,user,repo,org,callback){

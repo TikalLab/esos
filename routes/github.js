@@ -246,7 +246,7 @@ function getUserOrgSubscription(db,login,repo,callback){
 			async.detect(repoOrgSubscriptions,function(repoOrgSubscription,callback){
 				async.waterfall([
 					function(callback){
-						users.get(repoOrgSubscription.user_id,function(err,user){
+						users.get(db,repoOrgSubscription.user_id,function(err,user){
 							callback(err,user)
 						})
 					},
