@@ -8,6 +8,11 @@ var util = require('util');
 var url = require('url');
 var atob = require('atob');
 var btoa = require('btoa');
+var fs = require('fs')
+var path = require('path')
+
+var slaTemplate = fs.readFileSync(path.join(__dirname,'../views/sla-template.md'), 'utf8');
+console.log('sla template is %s',slaTemplate)
 
 module.exports = {
 	getAPIHeaders: function(accessToken){
@@ -258,6 +263,29 @@ module.exports = {
 
 	},
 
+	addSLA: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+console.log('slaTemplate is %s',slaTemplate)
+		var form = {
+			path: 'SLA.md',
+			message: util.format('added %s SLA',config.get('app.name')),
+			content: btoa(slaTemplate),
+		}
+console.log('form is %s',util.inspect(form))
+		var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,'SLA.md');
+		request.put(url,{headers: headers, body: JSON.stringify(form)},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				var data = JSON.parse(body);
+console.log('SLA is %s',util.inspect(data))
+				callback(null,data);
+			}
+		});
+	},
+
 	addBadge: function(accessToken,repoFullName,price,callback){
 		var headers = this.getAPIHeaders(accessToken);
 		async.waterfall([
@@ -339,6 +367,19 @@ module.exports = {
 // 		})
 
 		request('https://api.github.com/user/orgs',{headers: headers},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode > 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null,JSON.parse(body));
+			}
+		});
+	},
+	getSLA: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var url = util.format('https://api.github.com/repos/%s/contents/SLA.md',repoFullName);
+		request(url,{headers: headers},function(error,response,body){
 			if(error){
 				callback(error);
 			}else if(response.statusCode > 300){

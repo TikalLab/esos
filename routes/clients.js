@@ -7,6 +7,7 @@ var async = require('async');
 var request = require('request');
 var _ = require('underscore');
 var moment = require('moment')
+var marked = require('marked')
 var github = require('../app_modules/github');
 var alertIcons = require('../app_modules/alert-icons');
 // var users = require('../models/users');
@@ -15,6 +16,7 @@ var errorHandler = require('../app_modules/error');
 var users = require('../models/users');
 var subscriptions = require('../models/subscriptions');
 var repos = require('../models/repos');
+var atob = require('atob')
 
 router.get('/choose-org/:owner/:name',function(req,res,next){
 	async.parallel([
@@ -23,12 +25,35 @@ router.get('/choose-org/:owner/:name',function(req,res,next){
 				callback(err,orgs)
 			})
 		},
+		function(callback){
+			var repoFullName = util.format('%s/%s',req.params.owner,req.params.name);
+			async.waterfall([
+				function(callback){
+					repos.getByFullName(req.db,repoFullName,function(err,repo){
+						callback(err,repo)
+					})
+				},
+				function(repo,callback){
+					users.get(req.db,repo.user_id,function(err,user){
+						callback(err,user)
+					})
+				},
+				function(user,callback){
+					github.getSLA(user.github.access_token,repoFullName,function(err,sla){
+						callback(err,sla)
+					})
+				}
+			],function(err,sla){
+				callback(err,sla)
+			})
+		}
 	],function(err,results){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
 			render(req,res,'clients/choose-org',{
 				orgs: results[0],
+				sla: atob(results[1].content),
 				owner: req.params.owner,
 				name: req.params.name
 			})
@@ -99,6 +124,7 @@ function render(req,res,template,params){
 	params.moment = moment;
 	params.config = config;
 	params.util = util;
+	params.marked = marked;
 
 	params.alertIcons = alertIcons;
 	params.alert = req.session.alert;

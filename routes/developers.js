@@ -50,38 +50,43 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(callback){
+			github.addSLA(req.session.user.github.access_token,req.body.repo,function(err,sla){
+				callback(err,sla)
+			})
+		},
+		function(sla,callback){
 			github.hookRepo(req.session.user.github.access_token,req.body.repo,function(err,hook){
-				callback(err,hook)
+				callback(err,sla,hook)
 			})
 		},
-		function(hook,callback){
+		function(sla,hook,callback){
 			github.createLabel(req.session.user.github.access_token,req.body.repo,function(err,label){
-				callback(err,hook)
+				callback(err,sla,hook)
 			})
 		},
-		function(hook,callback){
+		function(sla,hook,callback){
 			github.getRepo(req.session.user.github.access_token,req.body.repo,function(err,repo){
-				callback(err,hook,repo)
+				callback(err,sla,hook,repo)
 			})
 		},
-		function(hook,repo,callback){
+		function(sla,hook,repo,callback){
 			repos.add(req.db,req.session.user._id.toString(),repo,req.body.price,hook,function(err,repo){
-				callback(err,repo)
+				callback(err,sla,repo)
 			})
-		}
+		},
 		/*
 		1. create the web hook so we be notified to comments and pull requests coming from paying users
 		2. save it in the db along with the price and other definitions of the developer
 		3. add a badge to the readme file of the repo? or at least send a pull request, the way gitter did
 		4. also let the user know the permalink for this, i.e. http://esos.io/subscribe/shaharsol/commandcar
 		*/
-	],function(err,repo){
+	],function(err,sla,repo){
 		if(err){
  			errorHandler.error(req,res,next,err);
  		}else{
 			req.session.alert = {
 				type: 'success',
-				message: util.format('Repository %s can now accept subscriptions',req.body.repo)
+				message: util.format('Repository %s can now accept subscriptions. We\'ve created a SLA file in your repository which will be presented to any potential subscriber before purchase. Please <a href="%s">review it and edit it</a> if you wish.',req.body.repo,sla.content.html_url)
 			};
  			res.redirect('/developers/repos')
  		}
