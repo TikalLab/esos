@@ -8,6 +8,7 @@ var request = require('request');
 var _ = require('underscore');
 var moment = require('moment')
 var github = require('../app_modules/github');
+var paypal = require('../app_modules/paypal');
 var alertIcons = require('../app_modules/alert-icons');
 // var users = require('../models/users');
 
@@ -74,6 +75,17 @@ router.post('/support-repo',function(req,res,next){
 				callback(err,sla,repo)
 			})
 		},
+		function(sla,repo,callback){
+			paypal.createAndActivatePlan(repo,function(err,billingPlan){
+				callback(err,sla,repo,billingPlan)
+			})
+		},
+		function(sla,repo,billingPlan,callback){
+			repos.setPaypalBillingPlan(req.db,repo._id.toString(),billingPlan.id,function(err,repo){
+				callback(err,sla,repo)
+			})
+		}
+
 		/*
 		1. create the web hook so we be notified to comments and pull requests coming from paying users
 		2. save it in the db along with the price and other definitions of the developer
@@ -128,6 +140,7 @@ router.post('/remove-repo-support',function(req,res,next){
 /*
 TBD TBD
 need to stop payments from all clients
+
 */
 	],function(err){
 		if(err){

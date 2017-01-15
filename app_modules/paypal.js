@@ -11,11 +11,11 @@ paypal.configure({
 })
 
 module.exports = {
-  createBillingPlan: function(client,repo,callback){
+  createBillingPlan: function(repo,callback){
 
     var billingPlanAttributes = {
-      name: util.format('plan for %s for %s',client,repo.full_name),
-      description: util.format('plan for %s for %s',client,repo.full_name),
+      name: util.format('Enterprise Support For %s',repo.full_name),
+      description: util.format('Enterprise Support For %s',repo.full_name),
       type: 'INFINITE',
       payment_definitions: [
         {
@@ -44,8 +44,6 @@ module.exports = {
         // "initial_fail_amount_action": "CONTINUE"
       }
     }
-
-    console.log('attr are %s',util.inspect(billingPlanAttributes))
 
     paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
       callback(error,billingPlan)
@@ -111,6 +109,24 @@ console.log('here')
       }
     ],function(err,billingAgreement){
       callback(err,billingAgreement)
+    })
+  },
+
+  createAndActivatePlan: function(repo,callback){
+    var thisObject = this;
+    async.waterfall([
+      function(callback){
+        thisObject.createBillingPlan(repo,function(err,billingPlan){
+          callback(err,billingPlan)
+        })
+      },
+      function(billingPlan,callback){
+        thisObject.activateBillingPlan(billingPlan.id,function(err){
+          callback(err,billingPlan)
+        })
+      },
+    ],function(err,billingPlan){
+      callback(err,billingPlan)
     })
   }
 

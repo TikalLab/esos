@@ -44,6 +44,12 @@ module.exports = {
     repos.findOne({_id: repoID},function(err,repo){
       callback(err,repo)
     })
+  },
+  setPaypalBillingPlan: function(db,repoID,planID,callback){
+    var repos = db.get('repos');
+    repos.findOneAndUpdate({_id: repoID},{$set: {paypal_billing_plan_id: planID}},{new: true}, function(err,repo){
+      callback(err,repo)
+    })
   }
 
 
