@@ -114,7 +114,6 @@ router.get('/pay/:repo_id',function(req,res,next){
 	req.session.subscription = {
 		org: req.query.org
 	}
-
 	async.waterfall([
 		function(callback){
 			repos.get(req.db,req.params.repo_id,function(err,repo){
@@ -122,7 +121,7 @@ router.get('/pay/:repo_id',function(req,res,next){
 			})
 		},
 		function(repo,callback){
-			var client = req.qeury.org ? req.query.org : req.session.user.github.login
+			var client = (req.query.org ? req.query.org : req.session.user.github.login);
 			paypal.getApprovalUrl(client,repo,function(err,billingAgreement){
 				callback(err,billingAgreement)
 			})

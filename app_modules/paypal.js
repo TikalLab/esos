@@ -88,20 +88,23 @@ module.exports = {
     });
   },
 
-  getApprovalUrl: function(client,repo,amount,callback){
+  getApprovalUrl: function(client,repo,callback){
     var thisObject = this;
     async.waterfall([
       function(callback){
+console.log('here')
         thisObject.createBillingPlan(client,repo,function(err,billingPlan){
           callback(err,billingPlan)
         })
       },
       function(billingPlan,callback){
+        console.log('here2')
         thisObject.activateBillingPlan(billingPlan.id,function(err){
           callback(err,billingPlan)
         })
       },
       function(billingPlan,callback){
+        console.log('here3')
         thisObject.createBillingAgreement(billingPlan.id,repo,function(err,billingAgreement){
           callback(err,billingAgreement)
         })
