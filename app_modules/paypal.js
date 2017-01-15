@@ -64,17 +64,17 @@ module.exports = {
     })
   },
 
-  createBillingAgreement: function(planID,repo,callback){
+  createBillingAgreement: function(repo,callback){
     var isoDate = new Date();
     isoDate.setSeconds(isoDate.getSeconds() + 4);
     isoDate.toISOString().slice(0, 19) + 'Z';
 
     var billingAgreementAttributes = {
-        name: util.format('subscription to enterprise support of %s',repo.full_name),
-        description: util.format('subscription to enterprise support of %s',repo.full_name),
+        name: util.format('Enterprise Support for %s',repo.full_name),
+        description: util.format('Enterprise Support for %s',repo.full_name),
         start_date: isoDate,
         plan: {
-            id: planID
+            id: repo.paypal_billing_plan_id
         },
         payer: {
             payment_method: 'paypal'
@@ -86,29 +86,9 @@ module.exports = {
     });
   },
 
-  getApprovalUrl: function(client,repo,callback){
-    var thisObject = this;
-    async.waterfall([
-      function(callback){
-console.log('here')
-        thisObject.createBillingPlan(client,repo,function(err,billingPlan){
-          callback(err,billingPlan)
-        })
-      },
-      function(billingPlan,callback){
-        console.log('here2')
-        thisObject.activateBillingPlan(billingPlan.id,function(err){
-          callback(err,billingPlan)
-        })
-      },
-      function(billingPlan,callback){
-        console.log('here3')
-        thisObject.createBillingAgreement(billingPlan.id,repo,function(err,billingAgreement){
-          callback(err,billingAgreement)
-        })
-      }
-    ],function(err,billingAgreement){
-      callback(err,billingAgreement)
+  executeAgreement: function(token,callback){
+    paypal.billingAgreement.execute(token, {}, function (error, billingAgreement){
+      callback(error, billingAgreement)
     })
   },
 

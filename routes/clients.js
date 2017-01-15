@@ -121,8 +121,7 @@ router.get('/pay/:repo_id',function(req,res,next){
 			})
 		},
 		function(repo,callback){
-			var client = (req.query.org ? req.query.org : req.session.user.github.login);
-			paypal.getApprovalUrl(client,repo,function(err,billingAgreement){
+			paypal.createBillingAgreement(repo,function(err,billingAgreement){
 				callback(err,billingAgreement)
 			})
 		}
@@ -144,26 +143,29 @@ router.get('/paypal/cancelled/:repo_id',function(req,res,next){
 })
 
 router.get('/paypal/paid/:repo_id',function(req,res,next){
-// router.get('/paid/:owner/:name',function(req,res,next){
-	var fullName = util.format('%s/%s',req.params.owner,req.params.name)
 	async.waterfall([
 		function(callback){
-			repos.getByFullName(req.db,fullName,function(err,repo){
-				callback(err,repo)
+			paypal.executeAgreement(req.query.token,function(err,billingAgreement){
+				callback(err,billingAgreement)
 			})
 		},
-		function(repo,callback){
-			subscriptions.add(req.db,req.session.user,repo,req.session.subscription.org,function(err,subscription){
-				callback(err,subscription)
+		function(billingAgreement,callback){
+			repos.get(req.db,req.params.repo_id,function(err,repo){
+				callback(err,billingAgreement,repo)
+			})
+		},
+		function(billingAgreement,repo,callback){
+			subscriptions.add(req.db,req.session.user,repo,req.session.subscription.org,billingAgreement,function(err,subscription){
+				callback(err,repo,subscription)
 			})
 		}
-	],function(err,subscription){
+	],function(err,repo,subscription){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
 			req.session.alert = {
 				type: 'success',
-				message: util.format('You successfuly subscribed to %s support',fullName)
+				message: util.format('You successfuly subscribed to %s support',repo.full_name)
 			}
 			res.redirect('/clients/subscriptions')
 		}
