@@ -2,6 +2,7 @@ var config = require('config');
 var request = require('request');
 var util = require('util');
 var paypal = require('paypal-rest-sdk')
+var async = require('async')
 
 paypal.configure({
   mode: config.get('paypal.mode'),
@@ -10,11 +11,11 @@ paypal.configure({
 })
 
 module.exports = {
-  createBillingPlan: function(client,repo,amount,callback){
+  createBillingPlan: function(client,repo,callback){
 
     var billingPlanAttributes = {
-      name: util.format('plan for %s for %s',client,repo),
-      description: util.format('plan for %s for %s',client,repo),
+      name: util.format('plan for %s for %s',client,repo.full_name),
+      description: util.format('plan for %s for %s',client,repo.full_name),
       type: 'INFINITE',
       payment_definitions: [
         {
@@ -26,7 +27,7 @@ module.exports = {
           cycles: '0',
           amount: {
             currency: 'USD',
-            value: amount
+            value: repo.price
           },
           charge_models: []
         }
@@ -36,8 +37,8 @@ module.exports = {
         //     "currency": "USD",
         //     "value": "1"
         // },
-        cancel_url: util.format('http://%s/paypal/cancelled',config.get('app.domain')),
-        return_url: util.format('http://%s/paypal/paid',config.get('app.domain')),
+        cancel_url: util.format('http://%s/clients/paypal/cancelled/%s',config.get('app.domain'),repo._id),
+        return_url: util.format('http://%s/clients/paypal/paid/%s',config.get('app.domain'),repo._id),
         // "max_fail_attempts": "0",
         // "auto_bill_amount": "YES",
         // "initial_fail_amount_action": "CONTINUE"
@@ -60,8 +61,8 @@ module.exports = {
       }
     }];
 
-    paypal.billingPlan.update(planID,billingPlanUpdateAttributes,function(err,ok){
-      callback(err,ok)
+    paypal.billingPlan.update(planID,billingPlanUpdateAttributes,function(err){
+      callback(err)
     })
   },
 
@@ -71,8 +72,8 @@ module.exports = {
     isoDate.toISOString().slice(0, 19) + 'Z';
 
     var billingAgreementAttributes = {
-        name: util.format('subscription to enterprise support of %s',repo),
-        description: util.format('subscription to enterprise support of %s',repo),
+        name: util.format('subscription to enterprise support of %s',repo.full_name),
+        description: util.format('subscription to enterprise support of %s',repo.full_name),
         start_date: isoDate,
         plan: {
             id: planID
@@ -85,6 +86,29 @@ module.exports = {
     paypal.billingAgreement.create(billingAgreementAttributes, function (error, billingAgreement){
       callback(error,billingAgreement)
     });
+  },
+
+  getApprovalUrl: function(client,repo,amount,callback){
+    var thisObject = this;
+    async.waterfall([
+      function(callback){
+        thisObject.createBillingPlan(client,repo,function(err,billingPlan){
+          callback(err,billingPlan)
+        })
+      },
+      function(billingPlan,callback){
+        thisObject.activateBillingPlan(billingPlan.id,function(err){
+          callback(err,billingPlan)
+        })
+      },
+      function(billingPlan,callback){
+        thisObject.createBillingAgreement(billingPlan.id,repo,function(err,billingAgreement){
+          callback(err,billingAgreement)
+        })
+      }
+    ],function(err,billingAgreement){
+      callback(err,billingAgreement)
+    })
   }
 
 }

@@ -49,6 +49,24 @@ router.get('/subscribe/:owner/:name',function(req,res,next){
 	})
 })
 
+router.get('/subscribe/:repo_id',function(req,res,next){
+	async.parallel([
+		function(callback){
+			repos.get(req.db,req.params.repo_id,function(err,repo){
+				callback(err,repo)
+			})
+		}
+	],function(err,results){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			render(req,res,'index/subscribe',{
+				repo: results[0]
+			})
+		}
+	})
+})
+
 function render(req,res,template,params){
 
 	// params.user = req.session.user;

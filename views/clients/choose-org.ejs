@@ -4,7 +4,7 @@
 	</div>
 </div>
 
-<form action="/clients/pay/<%=owner%>/<%=name%>" method="GET">
+<form action="/clients/pay/<%=repo._id%>" method="GET">
   <select name="org">
     <option value="">Personal use</option>
     <% orgs.forEach(function(org){ %>

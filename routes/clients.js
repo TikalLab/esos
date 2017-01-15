@@ -9,6 +9,7 @@ var _ = require('underscore');
 var moment = require('moment')
 var marked = require('marked')
 var github = require('../app_modules/github');
+var paypal = require('../app_modules/paypal');
 var alertIcons = require('../app_modules/alert-icons');
 // var users = require('../models/users');
 
@@ -61,14 +62,90 @@ router.get('/choose-org/:owner/:name',function(req,res,next){
 	})
 })
 
-router.get('/pay/:owner/:name',function(req,res,next){
+router.get('/choose-org/:repo_id',function(req,res,next){
+	async.parallel([
+		function(callback){
+			github.getUserOrgs(req.session.user.github.access_token,function(err,orgs){
+				callback(err,orgs)
+			})
+		},
+		function(callback){
+			async.waterfall([
+				function(callback){
+					repos.get(req.db,req.params.repo_id,function(err,repo){
+						callback(err,repo)
+					})
+				},
+				function(repo,callback){
+					users.get(req.db,repo.user_id,function(err,developer){
+						callback(err,repo,developer)
+					})
+				},
+				function(repo,developer,callback){
+					github.getSLA(developer.github.access_token,repo.full_name,function(err,sla){
+						callback(err,repo,developer,sla)
+					})
+				}
+			],function(err,repo,developer,sla){
+				callback(err,{
+					repo: repo,
+					developer: developer,
+					sla: sla
+				})
+			})
+		}
+	],function(err,results){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			render(req,res,'clients/choose-org',{
+				orgs: results[0],
+				sla: atob(results[1].sla.content),
+				repo: results[1].repo,
+				developer: results[1].developer
+			})
+		}
+	})
+})
+
+
+router.get('/pay/:repo_id',function(req,res,next){
+
 	req.session.subscription = {
 		org: req.query.org
 	}
-	res.redirect(util.format('/clients/paid/%s/%s',req.params.owner,req.params.name))
+
+	async.waterfall([
+		function(callback){
+			repos.get(req.db,req.params.repo_id,function(err,repo){
+				callback(err,repo)
+			})
+		},
+		function(repo,callback){
+			var client = req.qeury.org ? req.query.org : req.session.user.github.login
+			paypal.getApprovalUrl(client,repo,function(err,billingAgreement){
+				callback(err,billingAgreement)
+			})
+		}
+	],function(err,billingAgreement){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			var redirectUrl = _.find(billingAgreement.links,function(link){
+				return link.rel == 'approval_url'
+			}).href;
+			res.redirect(redirectUrl)
+
+		}
+	})
 })
 
-router.get('/paid/:owner/:name',function(req,res,next){
+router.get('/paypal/cancelled/:repo_id',function(req,res,next){
+
+})
+
+router.get('/paypal/paid/:repo_id',function(req,res,next){
+// router.get('/paid/:owner/:name',function(req,res,next){
 	var fullName = util.format('%s/%s',req.params.owner,req.params.name)
 	async.waterfall([
 		function(callback){
