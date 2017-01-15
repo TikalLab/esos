@@ -33,6 +33,7 @@
     "html-to-text": "*",
     "atob": "*",
     "btoa": "*",
+    "paypal-rest-sdk": "*",
     "serve-favicon": "~2.3.0"
   }
 }
