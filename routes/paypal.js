@@ -15,19 +15,31 @@ var paypal = require('../app_modules/paypal');
 
 
 router.post('/webhook',function(req,res,next){
-	console.log(util.inspect(body))
-	res.sendStatus(200);
+	// console.log(util.inspect(req.body))
 
 	paypal.verifyWebhook(req,function(err){
 		if(err){
+			res.sendStatus(503);
 			console.log('error verifing paypal webbhoook: %s',err)
 		}else{
 			switch(req.body.event_type){
 				case 'BILLING.SUBSCRIPTION.CANCELLED':
-					processBillingSubscriptionCancelled(req.body)
+					processBillingSubscriptionCancelled(req.body,function(err){
+						if(err){
+							res.sendStatus(503)
+						}else{
+							res.sendStatus(200)
+						}
+					})
 					break;
 				case 'PAYMENT.CAPTURE.COMPLETED':
-					processPaymentCaptureCompleted(req.body)
+					processPaymentCaptureCompleted(req.body,function(err){
+						if(err){
+							res.sendStatus(503)
+						}else{
+							res.sendStatus(200)
+						}
+					})
 					break;
 
 			}
@@ -36,11 +48,11 @@ router.post('/webhook',function(req,res,next){
 
 })
 
-function processBillingSubscriptionCancelled(event){
+function processBillingSubscriptionCancelled(event,callback){
 
 }
 
-function processPaymentCaptureCompleted(event){
+function processPaymentCaptureCompleted(event,callback){
 
 }
 

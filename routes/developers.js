@@ -113,7 +113,12 @@ router.post('/support-repo',function(req,res,next){
 router.post('/remove-repo-support',function(req,res,next){
 
 	/*
+	TBD instead of remove from db.repos maybe set status:cancelled?
 	TBD remove the badge from the readme
+	TBD remove the SLA file
+	TBD remove the billing plan?
+	TBD cancel all billing agreements
+	TBD remove from db all subscriptions
 	*/
 
 	async.waterfall([

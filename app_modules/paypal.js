@@ -111,10 +111,11 @@ module.exports = {
   },
 
   verifyWebhook: function(req,callback){
-    paypal.notification.webhookEvent.verify(req.headers, req.rawBody, config.get('paypal.webhook_id'), function (error, response) {
-      if(err){
-        callback(err)
+    paypal.notification.webhookEvent.verify(req.headers, req.body, config.get('paypal.webhook_id'), function (error, response) {
+      if(error){
+        callback(error)
       }else{
+        console.log('response is %s',util.inspect(response))
         callback(response.verification_status !== "SUCCESS")
       }
     })
