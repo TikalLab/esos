@@ -39,6 +39,8 @@
 		"client_id": "AW3SZRKfX-HaD0QST-Mgn44-7neMlo4Nnck8wlkmzp_8kkcyI6lfSp5JPBTLzhMRjF2bLNXom4-6PbCe",
 		"client_secret": "EEuIlfYGNbeqK5oGNFRL9spjNJvOIoQxDKfgLeH2TmQd02Kz4Lkyzb6jvYPpl7yafwL95iTD0tQExTcw",
 		"mode": "sandbox",
+		"webhook_domain": "facetogether.ngrok.io",
+		"webhook_id": "5GK71670UB966135Y",
 		"domain": "api.sandbox.paypal.com",
 		"user_id": "shahar-facilitator_api1.triond.com",
 		"password": "1394532512",

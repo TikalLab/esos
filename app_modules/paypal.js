@@ -108,6 +108,16 @@ module.exports = {
     ],function(err,billingPlan){
       callback(err,billingPlan)
     })
+  },
+
+  verifyWebhook: function(req,callback){
+    paypal.notification.webhookEvent.verify(req.headers, req.rawBody, config.get('paypal.webhook_id'), function (error, response) {
+      if(err){
+        callback(err)
+      }else{
+        callback(response.verification_status !== "SUCCESS")
+      }
+    })
   }
 
 }
