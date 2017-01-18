@@ -11,6 +11,8 @@ var moment = require('moment')
 
 // var users = require('../models/users');
 var repos = require('../models/repos');
+var subscriptions = require('../models/subscriptions');
+
 var paypal = require('../app_modules/paypal');
 
 
@@ -24,35 +26,72 @@ router.post('/webhook',function(req,res,next){
 		}else{
 			switch(req.body.event_type){
 				case 'BILLING.SUBSCRIPTION.CANCELLED':
-					processBillingSubscriptionCancelled(req.body,function(err){
+					processBillingSubscriptionCancelled(req.db,req.body,function(err){
 						if(err){
+							console.log('err in processBillingSubscriptionCancelled: %s',util.inspect(err))
 							res.sendStatus(503)
 						}else{
 							res.sendStatus(200)
 						}
 					})
 					break;
-				case 'PAYMENT.CAPTURE.COMPLETED':
-					processPaymentCaptureCompleted(req.body,function(err){
+				case 'BILLING.SUBSCRIPTION.SUSPENDED':
+					processBillingSubscriptionSuspended(req.db,req.body,function(err){
 						if(err){
+							console.log('err in processBillingSubscriptionSuspended: %s',util.inspect(err))
 							res.sendStatus(503)
 						}else{
 							res.sendStatus(200)
 						}
 					})
 					break;
-
+				case 'BILLING.SUBSCRIPTION.RE-ACTIVATED':
+					processBillingSubscriptionReactivated(req.db,req.body,function(err){
+						if(err){
+							console.log('err in processBillingSubscriptionReactivated: %s',util.inspect(err))
+							res.sendStatus(503)
+						}else{
+							res.sendStatus(200)
+						}
+					})
+					break;
+				case 'PAYMENT.SALE.COMPLETED':
+					processPaymentSaleCompleted(req.db,req.body,function(err){
+						if(err){
+							console.log('err in processPaymentSaleCompleted: %s',util.inspect(err))
+							res.sendStatus(503)
+						}else{
+							res.sendStatus(200)
+						}
+					})
+					break;
+				default:
+					res.sendStatus(200)
 			}
 		}
 	})
 
 })
 
-function processBillingSubscriptionCancelled(event,callback){
-
+function processBillingSubscriptionCancelled(db,event,callback){
+	subscriptions.cancel(db,event.resource.id,function(err){
+		callback(err)
+	})
 }
 
-function processPaymentCaptureCompleted(event,callback){
+function processBillingSubscriptionSuspended(db,event,callback){
+	subscriptions.suspend(db,event.resource.id,function(err){
+		callback(err)
+	})
+}
+
+function processBillingSubscriptionReactivated(db,event,callback){
+	subscriptions.reactivate(db,event.resource.id,function(err){
+		callback(err)
+	})
+}
+
+function processPaymentSaleCompleted(db,event,callback){
 
 }
 

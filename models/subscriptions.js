@@ -10,6 +10,7 @@ module.exports = {
       repo_id: repo._id.toString(),
       full_name: repo.full_name,
       paypal_billing_agreement_id: billingAgreement.id,
+      status: 'active',
       created_at: new Date()
     };
     if(org){
@@ -49,14 +50,54 @@ module.exports = {
   },
   getByGithubLoginAndRepoID: function(db,githubLogin,repoID,callback){
     var subscriptions = db.get('subscriptions');
-    subscriptions.findOne({repo_id: repoID, github_login: githubLogin},function(err,subscription){
+    subscriptions.findOne({repo_id: repoID, github_login: githubLogin, status: 'active'},function(err,subscription){
       callback(err,subscription)
     })
   },
   getRepoOrgSubscriptions: function(db,repoID,callback){
     var subscriptions = db.get('subscriptions');
-    subscriptions.find({repo_id: repoID, org:{$exists: true}},function(err,repoOrgSubscriptions){
+    subscriptions.find({repo_id: repoID, org:{$exists: true}, status: 'active'},function(err,repoOrgSubscriptions){
       callback(err,repoOrgSubscriptions)
     })
+  },
+  cancel: function(db,billingAgreementID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.udpate({
+      paypal_billing_agreement_id: billingAgreementID
+    },{
+      $set: {
+        status: 'cancelled',
+        canclled_at: new Date()
+      }
+    },function(err){
+      callback(err)
+    })
+  },
+  suspend: function(db,billingAgreementID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.udpate({
+      paypal_billing_agreement_id: billingAgreementID
+    },{
+      $set: {
+        status: 'suspended',
+        suspended_at: new Date()
+      }
+    },function(err){
+      callback(err)
+    })
+  },
+  reactivate: function(db,billingAgreementID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.udpate({
+      paypal_billing_agreement_id: billingAgreementID
+    },{
+      $set: {
+        status: 'active',
+        reactivated_at: new Date()
+      }
+    },function(err){
+      callback(err)
+    })
   }
+
 }
