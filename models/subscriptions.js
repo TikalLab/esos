@@ -98,6 +98,12 @@ module.exports = {
     },function(err){
       callback(err)
     })
+  },
+  getByAgreementID: function(db,agreementID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.findOne({paypal_billing_agreement_id: agreementID},function(err,subscription){
+      callback(err,subscription)
+    })
   }
 
 }

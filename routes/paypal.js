@@ -92,7 +92,21 @@ function processBillingSubscriptionReactivated(db,event,callback){
 }
 
 function processPaymentSaleCompleted(db,event,callback){
-
+	async.waterfall([
+		// find subscription
+		function(callback){
+			subscriptions.getByAgreementID(db,event.resource.billing_agreement.id,function(err,subscription){
+				callback(err,subscription)
+			})
+		},
+		function(subscription,callback){
+			payments.add(db,subscription._id.toString(),event.resource.id,function(err,payment){
+				callback(err,payment)
+			})
+		}
+	],function(err){
+		callback(err)
+	})
 }
 
 module.exports = router;
