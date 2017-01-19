@@ -145,33 +145,25 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(sla,repo,callback){
-			async.each(repo.pricing,function(plan,callback){
-				asyn.waterfall([
+			async.each(['personal','team','business','enterprise'],function(plan,callback){
+				async.waterfall([
 					function(callback){
-						paypal.createAndActivatePlan(repo,plan.price,function(err,billingPlan){
-							callback(err,sla,repo,billingPlan)
+						paypal.createAndActivatePlan(repo,repo.pricing[plan].price,function(err,billingPlan){
+							callback(err,billingPlan)
 						})
 					},
 					function(billingPlan,callback){
-						repos.setPaypalBillingPlan(req.db,repo._id.toString(),billingPlan.id,function(err,repo){
-							callback(err,sla,repo)
+						repos.setPaypalBillingPlan(req.db,repo._id.toString(),plan,billingPlan.id,function(err,repo){
+							callback(err,repo)
 						})
 					}
-				],function(err){
-
+				],function(err,repo){
+					callback(err)
 				})
 			},function(err){
-
-			})
-			paypal.createAndActivatePlan(repo,function(err,billingPlan){
-				callback(err,sla,repo,billingPlan)
-			})
-		},
-		function(sla,repo,billingPlan,callback){
-			repos.setPaypalBillingPlan(req.db,repo._id.toString(),billingPlan.id,function(err,repo){
 				callback(err,sla,repo)
 			})
-		}
+		},
 
 		/*
 		1. create the web hook so we be notified to comments and pull requests coming from paying users
@@ -187,7 +179,7 @@ router.post('/support-repo',function(req,res,next){
 				type: 'success',
 				message: util.format('Repository %s can now accept subscriptions. We\'ve created a SLA file in your repository which will be presented to any potential subscriber before purchase. Please <a href="%s">review it and edit it</a> if you wish.',req.body.repo,sla.content.html_url)
 			};
- 			res.redirect('/developers/repos')
+ 			res.redirect('/developers/repos/unsupported')
  		}
 	})
 
@@ -242,7 +234,7 @@ need to stop payments from all clients
 				type: 'success',
 				message: util.format('Repository %s is no longer supported',req.body.repo)
 			};
- 			res.redirect('/developers/repos')
+ 			res.redirect('/developers/repos/supported')
  		}
 	})
 })

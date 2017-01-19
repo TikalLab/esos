@@ -1,3 +1,4 @@
+var util = require('util')
 module.exports = {
   add: function(db,userID,repo,pricing_perosnal,pricing_team,pricing_business,pricing_enterprise,hook,callback){
     var repos = db.get('repos');
@@ -8,13 +9,13 @@ module.exports = {
       pricing: {
         personal: {
           price: pricing_perosnal,
-        }
+        },
         team: {
           price: pricing_team,
-        }
+        },
         business: {
           price: pricing_business,
-        }
+        },
         enterprise: {
           price: pricing_enterprise
         }
@@ -58,9 +59,18 @@ module.exports = {
       callback(err,repo)
     })
   },
-  setPaypalBillingPlan: function(db,repoID,planID,callback){
+  setPaypalBillingPlan: function(db,repoID,plan,planID,callback){
     var repos = db.get('repos');
-    repos.findOneAndUpdate({_id: repoID},{$set: {paypal_billing_plan_id: planID}},{new: true}, function(err,repo){
+    var field = util.format('pricing.%s.paypal_id',plan)
+    var updateSet = {}
+    updateSet[field] = planID
+    repos.findOneAndUpdate({
+      _id: repoID
+    },{
+      $set: updateSet
+    },{
+      new: true
+    }, function(err,repo){
       callback(err,repo)
     })
   }
