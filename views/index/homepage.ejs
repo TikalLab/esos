@@ -1,1 +1,349 @@
-<a href="/github/authorize-developer">connect with github</a>
+
+<!-- =========================
+     SECTION 3
+============================== -->
+<section class="section3" id="how-it-works">
+
+<div class="container">
+
+	<!-- SECTION HEADING -->
+
+	<h2>How It Works</h2>
+
+	<div class="colored-line">
+	</div>
+
+	<div class="features">
+
+		<!-- FEATURES ROW 1 -->
+		<div class="row">
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-4">
+				<div class="feature">
+					<div class="icon">
+						<span class="icon_error-circle_alt"></span>
+					</div>
+					<h4>You Tag a GitHub Issue With a Price Tag</h4>
+					<p>
+hfjsdhfjksdhfkjsd					</p>
+				</div>
+			</div>
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-4">
+				<div class="feature">
+					<div class="icon">
+						<span class="ion-fork-repo"></span>
+					</div>
+					<h4>A Developer Forks Your Repository and Starts Working</h4>
+					<p>
+						Developers are then able to see the work offer. If the repository is private they are able to request access to see it. If they think they are up to the task and they agree to the price, they fork your repository and start working.
+					</p>
+				</div>
+			</div>
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-4">
+				<div class="feature">
+					<div class="icon">
+						<span class="ion-pull-request"></span>
+					</div>
+					<h4>You Receive a Pull Request and Merge It</h4>
+					<p>
+						When the developer completes the task, they send you a pull request. It's like any other pull request you get, except that if you merge this one, the transaction completes and the developer is being paid.
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div> <!-- /END CONTAINER -->
+</section>
+
+
+
+
+<section class="section2 bgcolor-2" id="faq">
+<div class="container">
+
+	<h2>Frequently Asked Questions</h2>
+	<div class="colored-line">
+	</div>
+
+
+
+	<div class="row">
+
+		<div class="col-md-6">
+
+			<!-- DETAILS WITH LIST -->
+			<div class="brief text-left">
+
+
+
+				<!-- FEATURE LIST -->
+				<ul class="feature-list-2">
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="ion-plus-round"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>How do I start using <%=config.get('app.name')%>?</h6>
+						<p>
+							First you need to <a href="/sign-in">sign up using GitHub</a>. Then you'll be asked to apply <%=config.get('app.name')%> to at least one of your repositories or organizations. <%=config.get('app.name')%> will only be triggered for issues of applied organizations and repositories.
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="icon_tag"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>How do I tag an issue so it becomes a task?</h6>
+						<p>
+dhfjdhsfjsdhfkj						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="icon_tool"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>Can I modify a task price offer?</h6>
+						<p>
+							Yes, simply add a comment to the issue with a new price tag. The last one always counts (<a data-toggle="modal" role="button" href="#modify-task-price-example">see example</a>).
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="icon_key"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>Does <%=config.get('app.name')%> work on private repositories as well?</h6>
+						<p>
+							Yes, the only difference is that interested developers won't be able to fork them unless you authorize them. We will send you access requests when developers are interested in looking at your private repositories and you can feel free to grant or deny them.
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="icon_group"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>How do I screen developers?</h6>
+						<p>
+							That's part of the beauty of <%=config.get('app.name')%> -- It's based completely on GitHub, where each developer has their public profile, and you can trace their work and style.
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="ion-ios-game-controller-a"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>Do I have control over which developer work on my tasks?</h6>
+						<p>
+							On private repositories, simply don't grant access to anyone you're not feel comfortable with. On public repositories, any developer can take the task, but you can unassign them for any reason.
+						</p>
+					</div>
+					</li>
+
+
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<!-- DETAILS WITH LIST -->
+			<div class="brief text-left">
+
+
+
+				<!-- FEATURE LIST -->
+				<ul class="feature-list-2">
+
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="ion-ios-people"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>Do many developers work on each task?</h6>
+						<p>
+							No, just one at a time. Once a developer grabs a task, it's theirs. If you're not happy with their progress though, you can unassign them and then other developers will be able to grab it again.
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="ion-shuffle"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>Sometimes developers seem to be be assigned to the issue once they grab it, and sometimes it seems <%=config.get('app.name')%> assigns them via a comment on my behalf. What's the difference?</h6>
+						<p>
+							It depends if it's a personal repository or one that belongs to an organization. With organization repositories, we are given much more flexibility from the GitHub API. For example, we can add collaborators with only the pull permission, and that's what we do in order to assign the developer to the issue. However, with personal repositories, we can only add collaborators will full permissions and we wouldn't want to do that. So we simply add a comment on your behalf, mentioning the developer instead.
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="icon_chat"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>Can I communicate with developers working on my tasks?</h6>
+						<p>
+							Sure, please do. We didn't put our own mechanism in place specifically for that because we want to keep you away from GitHub for as little as possible. The best and most transparent approach is to communicate over comments on the GitHub issue, or alternatively by using <a href="http://gitter.im">Gitter</a>.
+						</p>
+					</div>
+					</li>
+
+					<!-- FEATURE -->
+					<li>
+					<!-- ICON -->
+					<div class="icon-container pull-left">
+						<span class="icon_currency"></span>
+					</div>
+					<!-- DETAILS -->
+					<div class="details pull-left">
+						<h6>How do payments work?</h6>
+						<p>
+							Payments are currently processed via pre-approved Paypal payments. For each new task you create, we'll ask you to pre-approve a payment for it. This preapprovment will only be utilized if you merge a pull request for that task, which implies that you got your job done.
+						</p>
+					</div>
+					</li>
+
+
+
+
+
+
+				</ul>
+			</div>
+		</div>
+
+	</div> <!-- END ROW -->
+
+</div> <!-- END CONTAINER -->
+
+</section>
+
+
+
+<!-- =========================
+     SECTION 8 - CTA
+============================== -->
+<section class="cta-section" id="section8">
+<div class="color-overlay">
+
+	<div class="container">
+
+		<h4>Are You Ready to Enter a World of Software Development</h4>
+		<h2>Never Seen Before?</h2>
+		<div id="cta-4">
+			<a href="/sign-in" class="btn standard-button"><i class="ion-social-github"></i>  Get Started</a>
+		</div>
+
+
+
+	</div>  <!-- /END CONTAINER -->
+</div>  <!-- /END COLOR OVERLAY -->
+
+</section>
+
+
+
+<div id="create-issue-example" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Creating a Task via Submitting a New Issue</h4>
+			</div>
+
+			<div class="modal-body with-padding">
+				<img src="<%=config.get('app.cdn_url')%>/images/create-task.png"/>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="create-issue-comment-example" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Creating a Task via Commenting on an Existing Issue</h4>
+			</div>
+
+			<div class="modal-body with-padding">
+				<img src="<%=config.get('app.cdn_url')%>/images/create-task-from-comment.png"/>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modify-task-price-example" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Modify Task Price</h4>
+			</div>
+
+			<div class="modal-body with-padding">
+				<img src="<%=config.get('app.cdn_url')%>/images/modify-task-price.png"/>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

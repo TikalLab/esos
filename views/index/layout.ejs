@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="CodeMill makes it dead simple to get your software development tasks done by members of the GitHub community. No interviews, no contracts, no hassle. Pay only for satisfactory delivery. Seamlessly integrated into your GitHub workflow.">
+<meta name="keywords" content="Software, freelance, pull request">
+<meta name="author" content="CodeMill">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:image" content="http://codemill.io/images/logo-og.png" />
+
+<!-- SITE TITLE -->
+<title><%=config.get('app.name')%> - the marketplace for pull requests</title>
+
+<!-- =========================
+      FAV AND TOUCH ICONS
+============================== -->
+<link rel="icon" href="<%=config.get('app.cdn_url')%>/images/icon192.png">
+<link rel="apple-touch-icon" href="<%=config.get('app.cdn_url')%>/landx/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="<%=config.get('app.cdn_url')%>/landx/images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="<%=config.get('app.cdn_url')%>/landx/images/apple-touch-icon-114x114.png">
+
+<!-- =========================
+     STYLESHEETS
+============================== -->
+<!-- BOOTSTRAP -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/bootstrap.min.css">
+
+<!-- FONT ICONS -->
+<!-- IonIcons -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/assets/ionicons/css/ionicons.css">
+
+<!-- Font Awesome
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/assets/font-awesome/landx/css/font-awesome.min.css">
+-->
+
+<!-- Elegant Icons -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/assets/elegant-icons/style.css">
+<!--[if lte IE 7]><script src="assets/elegant-icons/lte-ie7.js"></script><![endif]-->
+
+
+
+<!-- CAROUSEL AND LIGHTBOX -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/owl.theme.css">
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/owl.carousel.css">
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/nivo-lightbox.css">
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/nivo_themes/default/default.css">
+
+<!-- COLORS -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/blue.css"> <!-- DEFAULT COLOR/ CURRENTLY USING -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/red.css"> -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/green.css"> -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/purple.css"> -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/orange.css"> -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/blue-munsell.css"> -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/slate.css"> -->
+<!-- <link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/colors/yellow.css"> -->
+
+<!-- CUSTOM STYLESHEETS -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/styles.css">
+
+<!-- RESPONSIVE FIXES -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/landx/css/responsive.css">
+
+<!-- my css extensions -->
+<link rel="stylesheet" href="<%=config.get('app.cdn_url')%>/css/landx-ext.css">
+
+
+<!--[if lt IE 9]>
+			<script src="<%=config.get('app.cdn_url')%>/landx/js/html5shiv.js"></script>
+			<script src="<%=config.get('app.cdn_url')%>/landx/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- ****************
+      After neccessary customization/modification, Please minify HTML/CSS according to http://browserdiet.com/en/ for better performance
+     **************** -->
+
+</head>
+
+<body>
+<!-- =========================
+     PRE LOADER
+============================== -->
+<div class="preloader">
+  <div class="status">&nbsp;</div>
+</div>
+
+<!-- =========================
+     HEADER
+============================== -->
+<header id="<%=(isHomepage? 'hp-header' : 'nhp-header')%>">
+
+<!-- COLOR OVER IMAGE -->
+<div class="color-overlay" id="hp-color-overlay">
+
+	<div class="navigation-header <%=(isHomepage ? '' : 'paddless-header')%>">
+
+		<!-- STICKY NAVIGATION -->
+		<div class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation">
+			<div class="container">
+				<div class="navbar-header">
+
+					<!-- LOGO ON STICKY NAV BAR -->
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#landx-navigation">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+<!-- 					<a class="navbar-brand" href="#"><img src="<%=config.get('app.cdn_url')%>/landx/images/logo-dark.png" alt=""></a>
+ -->					<a class="navbar-brand" href="/">
+                <% if(!('owner_org' in config.get('app'))){ %>
+                  <img src="<%=config.get('app.cdn_url')%>/images/logo6.png">
+                <% }else{ %>
+                  <img src="<%=config.get('app.org_logo')%>"><!--<img src="<%=config.get('app.cdn_url')%>/images/powered-by-codemill-outside.png">-->
+                <% } %>
+              </a>
+
+				</div>
+
+				<!-- NAVIGATION LINKS -->
+				<div class="navbar-collapse collapse" id="landx-navigation">
+					<ul class="nav navbar-nav navbar-right main-navigation">
+						<% if(isHomepage){ %>
+
+							<li><a href="#hp-header">Home</a></li>
+							<li><a href="#how-it-works">How It Works</a></li>
+						 	<li><a href="#faq">FAQ</a></li>
+						<!--	<li><a href="#section5">Video</a></li>
+							<li><a href="#section6">Screenshots</a></li>
+							<li><a href="#section7">Testimonial</a></li>
+							<li><a href="#section8">Contact</a></li>
+							 -->
+						<% } %>
+					</ul>
+				</div>
+
+			</div>
+			<!-- /END CONTAINER -->
+
+		</div>
+
+		<!-- /END STICKY NAVIGATION -->
+
+		<!-- ONLY LOGO ON HEADER -->
+		<div class="navbar non-sticky">
+
+<!-- 			<div class="container">
+
+				<div class="navbar-header">
+ 					<img src="<%=config.get('app.cdn_url')%>/landx/images/logo.png" alt="">
+					<img src="<%=config.get('app.cdn_url')%>/images/logo6.png" alt="">
+				</div>
+
+				<ul class="nav navbar-nav navbar-right social-navigation hidden-xs">
+					<li><a href="#"><i class="social_facebook_circle"></i></a></li>
+					<li><a href="#"><i class="social_twitter_circle"></i></a></li>
+					<li><a href="#"><i class="social_linkedin_circle"></i></a></li>
+				</ul>
+			</div>
+ -->			<!-- /END CONTAINER -->
+
+		</div>
+		<!-- /END ONLY LOGO ON HEADER -->
+
+	</div>
+
+	<% if(isHomepage){ %>
+	<!-- HEADING, FEATURES AND REGISTRATION FORM CONTAINER -->
+	<div class="container  marketing-area">
+
+		<div class="row">
+
+			<!-- LEFT - HEADING AND TEXTS -->
+			<div class="col-md-10 col-md-offset-1 intro-section">
+
+				<h1 class="intro">
+					A <span class="strong colored-text">Marketplace</span> for <strong>Pull Requests</strong>
+
+				</h1>
+
+				<p class="sub-heading">
+	 					<%=config.get('app.name')%> makes it dead simple to get your software development done by <%=('owner_org_display_name' in config.get('app') ? config.get('app.owner_org_display_name') + ' employees' : 'members of the GitHub community')%>.<br/>No interviews, no contracts, no hassle.<br/>Pay only for satisfactory delivery. Seamlessly integrated into your GitHub workflow.
+				</p>
+
+				<!-- CTA BUTTONS -->
+				<div id="cta-5" class="button-container">
+
+				<a href="/github/authorize-developer" class="btn standard-button"><i class="ion-social-github"></i> Get Started</a>
+				<a href="#how-it-works" class="btn secondary-button-white">Learn More</a>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+	<!-- /END HEADING, FEATURES AND REGISTRATION FORM CONTAINER -->
+	<% } %>
+
+</div>
+
+</header>
+
+
+<%-body -%>
+
+
+
+<!-- =========================
+     SECTION 10 - FOOTER
+============================== -->
+<footer class="bgcolor-2">
+<div class="container">
+
+	<div class="footer-logo">
+<!-- 		<img src="<%=config.get('app.cdn_url')%>/landx/images/logo-dark.png" alt="">
+ -->		<% if(!('owner_org' in config.get('app'))){ %>
+   <img src="<%=config.get('app.cdn_url')%>/images/logo6.png">
+ <% }else{ %>
+   <img src="<%=config.get('app.org_logo')%>">
+ <% } %>
+	</div>
+
+	<div class="copyright">
+		 ©2016 <%=config.get('app.name')%>.
+	</div>
+
+	<ul class="social-icons">
+		<li><a href="mailto:support@codemill.io"><span class="ion-android-mail"></span></a></li>
+		<li><a href="https://github.com/CodeMillApp/support/issues"><span class="ion-social-github"></span></a></li>
+		<li><a href="https://gitter.im/CodeMillApp/support"><img class="gitter-icon" src="<%=config.get('app.cdn_url')%>/images/gitter.png"></a></li>
+	</ul>
+
+  <% if('owner_org' in config.get('app')){ %>
+    <div>
+      <img class="powered-by-logo" src="<%=config.get('app.cdn_url')%>/images/powered-by-codemill-outside.png">
+    </div>
+  <% } %>
+</div>
+</footer>
+
+
+<!-- =========================
+     SCRIPTS
+============================== -->
+<script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.min.js"></script>
+
+<script>
+/* =================================
+   LOADER
+=================================== */
+// makes sure the whole site is loaded
+jQuery(window).load(function() {
+	"use strict";
+        // will first fade out the loading animation
+	jQuery(".status").fadeOut();
+        // will fade out the whole DIV that covers the website.
+	jQuery(".preloader").delay(1000).fadeOut("slow");
+})
+
+</script>
+
+<script src="<%=config.get('app.cdn_url')%>/landx/js/bootstrap.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/retina-1.1.0.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/smoothscroll.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.scrollTo.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.localScroll.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/owl.carousel.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/nivo-lightbox.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/simple-expand.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.nav.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.fitvids.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.ajaxchimp.min.js"></script>
+<script src="<%=config.get('app.cdn_url')%>/landx/js/custom.js"></script>
+<!-- ****************
+      After neccessary customization/modification, Please minify JavaScript/jQuery according to http://browserdiet.com/en/ for better performance
+     **************** -->
+
+     <!-- Google Analytics -->
+    <% if(app.get('env') == 'production'){%>
+	    <script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-74414822-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+	<% }%>
+	<!-- /Google Analytics -->
+
+</body>
+</html>

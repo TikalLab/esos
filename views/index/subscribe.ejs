@@ -1,3 +1,22 @@
-<h3>Subscribe to support for <%=repo.full_name%></h3>
-<h4>price is <%=repo.price%></h4>
-<a href="/github/authorize-client?next=/clients/choose-org/<%=repo._id%>">connect with github</a>
+<section class="inner-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2 connect-storage-top">
+
+				<h2>Subscribe to support for <%=repo.full_name%></h2>
+
+				<div class="colored-line">
+				</div>
+
+
+ 				<div class="sub-heading">
+ 					price is $<%=repo.price%>/month
+				</div>
+
+				<div class="button-container">
+					<a id="connect-dropbox-button" href="/github/authorize-client?next=/clients/choose-org/<%=repo._id%>" class="btn standard-button inner-button"><i class="ion-social-github"></i> Sign In With GitHub</a>
+				</div>
+		</div>
+
+	</div>
+</section>

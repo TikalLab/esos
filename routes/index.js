@@ -15,7 +15,9 @@ var repos = require('../models/repos');
 
 router.get('/',function(req,res,next){
 	if(!req.session.user){
-		render(req,res,'index/homepage',{})
+		render(req,res,'index/homepage',{
+			isHomepage: true
+		})
 	}else{
 		res.redirect('/dashboard')
 	}
