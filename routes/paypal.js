@@ -18,7 +18,7 @@ var paypal = require('../app_modules/paypal');
 
 router.post('/webhook',function(req,res,next){
 	// console.log(util.inspect(req.body))
-
+console.log('paypal event is %s',req.body.event_type)
 	paypal.verifyWebhook(req,function(err){
 		if(err){
 			res.sendStatus(503);

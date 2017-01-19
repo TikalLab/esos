@@ -3,14 +3,14 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2 connect-storage-top">
 
-				<h2>Subscribe to support for <%=repo.full_name%></h2>
+				<h2>Subscribe to <strong><%=repo.full_name%></strong> Enterprise Level Support</h2>
 
 				<div class="colored-line">
 				</div>
 
 
  				<div class="sub-heading">
- 					price is $<%=repo.price%>/month
+ 					starting at $<%=repo.pricing.personal.price%>/month
 				</div>
 
 				<div class="button-container">
@@ -19,4 +19,161 @@
 		</div>
 
 	</div>
+</section>
+
+
+
+<section class="section4 bgcolor-2" id="section4">
+<div class="container">
+
+	<!-- SECTION HEADING -->
+	<h2>Subscribe to <strong><%=repo.full_name%></strong> Enterprise Level Support</h2>
+	<div class="colored-line">
+	</div>
+
+	<div class="sub-heading">
+		Get your issues and pull requests priorotized and rapidly addressed according to the <a href="#">SLA</a>.
+	</div>
+
+	<div class="pricing-table">
+
+		<!-- PRICING TABLES -->
+		<div class="row">
+
+			<!-- PACKAGE ONE -->
+			<div class="col-md-3">
+				<div class="package bgcolor-white">
+					<div class="header dark-bg">
+						<h3>Personal</h3>
+						<div class="sub-heading">
+							<span class="colored-text strong">$<%=repo.pricing.personal.price%></span> per month
+						</div>
+					</div>
+
+					<!-- PACKAGE FEATURES -->
+					<div class="package-features">
+						<ul>
+							<li>
+							<div class="column-7p">
+								Total Users
+							</div>
+							<div class="column-3p">
+								1
+							</div>
+							</li>
+						</ul>
+						<div class="bottom-row">
+              <div class="pull-right">
+								<div id="cta-1">
+									<a href="/github/authorize-client?next=/clients/choose-org/<%=repo._id%>" class="btn secondary-button"><i class="ion-social-github"></i> SIGN UP</a>
+								</div>
+              </div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- /END PACKAGE -->
+
+			<!-- PACKAGE TWO -->
+			<div class="col-md-3">
+				<div class="package bgcolor-white">
+					<div class="header color-bg">
+						<h3>Team</h3>
+						<div class="sub-heading">
+							<span class=" strong">$<%=repo.pricing.team.price%></span> per month
+						</div>
+					</div>
+
+					<!-- PACKAGE FEATURES -->
+					<div class="package-features">
+						<ul>
+							<li>
+							<div class="column-7p">
+								Total Users
+							</div>
+							<div class="column-3p">
+								Upto 10
+							</div>
+							</li>
+						</ul>
+						<div class="bottom-row">
+							<div class="pull-right">
+								<div id="cta-2">
+									<a href="/github/authorize-client?next=/clients/choose-org/<%=repo._id%>" class="btn standard-button"><i class="ion-social-github"></i> SIGN UP</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- /END PACKAGE -->
+
+			<!-- PACKAGE THREE -->
+			<div class="col-md-3">
+				<div class="package bgcolor-white">
+					<div class="header dark-bg">
+						<h3>Business</h3>
+						<div class="sub-heading">
+							<span class="colored-text strong">$<%=repo.pricing.business.price%></span> per month
+						</div>
+					</div>
+
+					<!-- PACKAGE FEATURES -->
+					<div class="package-features">
+						<ul>
+              <li>
+							<div class="column-7p">
+								Total Users
+							</div>
+							<div class="column-3p">
+								Upto 50
+							</div>
+							</li>
+						</ul>
+						<div class="bottom-row">
+							<div class="pull-right">
+								<div id="cta-3">
+									<a href="/github/authorize-client?next=/clients/choose-org/<%=repo._id%>" class="btn secondary-button"><i class="ion-social-github"></i> SIGN UP</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- /END PACKAGE -->
+
+      <!-- PACKAGE TWO -->
+			<div class="col-md-3">
+				<div class="package bgcolor-white">
+					<div class="header color-bg">
+						<h3>Enterprise</h3>
+						<div class="sub-heading">
+							<span class=" strong">$<%=repo.pricing.enterprise.price%></span> per month
+						</div>
+					</div>
+
+					<!-- PACKAGE FEATURES -->
+					<div class="package-features">
+						<ul>
+							<li>
+							<div class="column-7p">
+								Total Users
+							</div>
+							<div class="column-3p">
+								Unlimited
+							</div>
+							</li>
+						<div class="bottom-row">
+							<div class="pull-right">
+								<div id="cta-2">
+									<a href="/github/authorize-client?next=/clients/choose-org/<%=repo._id%>" class="btn standard-button"><i class="ion-social-github"></i> SIGN UP</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- /END PACKAGE -->
+
+		</div> <!-- /END ROW -->
+	</div> <!-- /END ALL PACKAGE -->
+
+</div> <!-- /END CONTAINER -->
+
 </section>
