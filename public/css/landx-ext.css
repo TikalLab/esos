@@ -48,6 +48,10 @@
 	margin-bottom: 0;
 }
 
+.package-features .bottom-row {
+	padding-right: 20px;
+}
+
 .pricing-table a {
 	margin-top: 20px;
 }
