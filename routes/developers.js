@@ -41,6 +41,67 @@ router.get('/repos',function(req,res,next){
 
 })
 
+router.get('/repos/unsupported',function(req,res,next){
+	async.parallel([
+		function(callback){
+			github.getUserRepos(req.session.user.github.access_token,function(err,repos){
+				callback(err,repos)
+			})
+		},
+		function(callback){
+			repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
+				callback(err,repos)
+			})
+		}
+	],function(err,results){
+		if(err){
+ 			errorHandler.error(req,res,next,err);
+ 		}else{
+
+			var allRepos = results[0]
+			var supportedRepos = results[1]
+
+			// filter
+			var unsupportedRepos = _.filter(allRepos,function(repo){
+				return !_.find(supportedRepos,function(supportedRepo){
+					repo.full_name == supportedRepo.full_name
+				})
+			})
+
+ 			render(req,res,'developers/unsupported-repos',{
+				unsupported_repos: unsupportedRepos,
+				active_page: 'unsupported_repos'
+			})
+ 		}
+	})
+
+})
+
+router.get('/repos/supported',function(req,res,next){
+	async.parallel([
+		// function(callback){
+		// 	github.getUserRepos(req.session.user.github.access_token,function(err,repos){
+		// 		callback(err,repos)
+		// 	})
+		// },
+		function(callback){
+			repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
+				callback(err,repos)
+			})
+		}
+	],function(err,results){
+		if(err){
+ 			errorHandler.error(req,res,next,err);
+ 		}else{
+ 			render(req,res,'developers/supported-repos',{
+				supported_repos: results[0],
+				active_page: 'supported_repos'
+			})
+ 		}
+	})
+
+})
+
 
 router.post('/support-repo',function(req,res,next){
 

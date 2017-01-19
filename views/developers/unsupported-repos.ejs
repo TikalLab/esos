@@ -1,0 +1,36 @@
+<div class="page-header">
+	<div class="page-title">
+		&nbsp;
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> My Repos</h6></div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>full name</th>
+						<th>monthly sub $</th>
+            <th>actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% unsupported_repos.forEach(function(repo){ %>
+            <%
+							var trID = repo._id
+						%>
+	            <tr id="<%=trID%>">
+								<form action="/developers/support-repo" method="POST">
+									<input type="hidden" name="repo" value="<%=repo.full_name%>">
+									<td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
+									<td>$<input type="text" id="<%=trID%>-price" name="price"></td>
+									<td><input type="submit" class="btn btn-success" value="Offer Support"></td>
+								</form>
+	            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
