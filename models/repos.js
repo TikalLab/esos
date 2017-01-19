@@ -6,10 +6,18 @@ module.exports = {
       full_name: repo.full_name,
       html_url: repo.html_url,
       pricing: {
-        personal: pricing_perosnal,
-        team: pricing_team,
-        business: pricing_business,
-        enterprise: pricing_enterprise
+        personal: {
+          price: pricing_perosnal,
+        }
+        team: {
+          price: pricing_team,
+        }
+        business: {
+          price: pricing_business,
+        }
+        enterprise: {
+          price: pricing_enterprise
+        }
       },
       hook_id: hook.id,
       created_at: new Date()

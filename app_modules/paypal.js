@@ -11,7 +11,7 @@ paypal.configure({
 })
 
 module.exports = {
-  createBillingPlan: function(repo,callback){
+  createBillingPlan: function(repo,price,callback){
 
     var billingPlanAttributes = {
       name: util.format('Enterprise Support For %s',repo.full_name),
@@ -27,7 +27,7 @@ module.exports = {
           cycles: '0',
           amount: {
             currency: 'USD',
-            value: repo.price
+            value: price
           },
           charge_models: []
         }
@@ -92,11 +92,11 @@ module.exports = {
     })
   },
 
-  createAndActivatePlan: function(repo,callback){
+  createAndActivatePlan: function(repo,price,callback){
     var thisObject = this;
     async.waterfall([
       function(callback){
-        thisObject.createBillingPlan(repo,function(err,billingPlan){
+        thisObject.createBillingPlan(repo,price,function(err,billingPlan){
           callback(err,billingPlan)
         })
       },

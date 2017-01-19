@@ -145,6 +145,24 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(sla,repo,callback){
+			async.each(repo.pricing,function(plan,callback){
+				asyn.waterfall([
+					function(callback){
+						paypal.createAndActivatePlan(repo,plan.price,function(err,billingPlan){
+							callback(err,sla,repo,billingPlan)
+						})
+					},
+					function(billingPlan,callback){
+						repos.setPaypalBillingPlan(req.db,repo._id.toString(),billingPlan.id,function(err,repo){
+							callback(err,sla,repo)
+						})
+					}
+				],function(err){
+
+				})
+			},function(err){
+
+			})
 			paypal.createAndActivatePlan(repo,function(err,billingPlan){
 				callback(err,sla,repo,billingPlan)
 			})
