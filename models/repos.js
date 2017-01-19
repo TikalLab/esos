@@ -1,11 +1,16 @@
 module.exports = {
-  add: function(db,userID,repo,price,hook,callback){
+  add: function(db,userID,repo,pricing_perosnal,pricing_team,pricing_business,pricing_enterprise,hook,callback){
     var repos = db.get('repos');
     repos.insert({
       user_id: userID,
       full_name: repo.full_name,
       html_url: repo.html_url,
-      price: price,
+      pricing: {
+        personal: pricing_perosnal,
+        team: pricing_team,
+        business: pricing_business,
+        enterprise: pricing_enterprise
+      },
       hook_id: hook.id,
       created_at: new Date()
     },function(err,repo){

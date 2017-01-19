@@ -18,8 +18,13 @@
 		"unsubscribe_secret": "FooFighters",
 		"paypal_email": "shahar@gighub.com",
 		"commission": 0.1,
-		"max_tasks_per_developer": 2,
-		"cdn_url": ""
+		"cdn_url": "",
+		"default_pricing": {
+			"personal": 4.99,
+			"team": 19.99,
+			"business": 49.99,
+			"enterprise": 99.99
+		}
 	},
 	"mongo": {
 		"uri": "mongodb://localhost:27017/esos"

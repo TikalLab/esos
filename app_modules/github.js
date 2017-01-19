@@ -305,7 +305,7 @@ console.log('SLA is %s',util.inspect(data))
 			// add our badge
 			function(readme,callback){
 				var text = atob(readme.content);
-				text = util.format('[![%s](https://img.shields.io/badge/Enterprise%20Support%20Available-%24%s%2Fm-green.svg)](%s://%s/subscribe/%s)\n',config.get('app.name'),price,config.get('app.protocol'),config.get('app.domain'),repoFullName) + text;
+				text = util.format('[![%s](https://img.shields.io/badge/Enterprise%20Support%20Available-starting%20at%20%24%s%2Fm-green.svg)](%s://%s/subscribe/%s)\n',config.get('app.name'),price,config.get('app.protocol'),config.get('app.domain'),repoFullName) + text;
 				var form = {
 					path: readme.path,
 					message: util.format('added %s badge',config.get('app.name')),

@@ -1,0 +1,36 @@
+<div class="page-header">
+	<div class="page-title">
+		&nbsp;
+	</div>
+</div>
+
+
+<form role="form" action="/developers/support-repo"  method="POST">
+	<input type="hidden" name="repo" value="<%=repo%>">
+	<div class="panel panel-default">
+		<div class="panel-heading"><h6 class="panel-title"><i class="icon-new"></i> Define Support for <%=repo%></h6></div>
+			<div class="panel-body">
+
+		        <div class="form-group">
+		            <label>$/m for personal plan:</label>
+	            	<input type="text" name="pricing_personal" class="form-control" value="<%=config.get('app.default_pricing.personal')%>" placeholder="$/m for personal plan">
+		        </div>
+		        <div class="form-group">
+		            <label>$/m for team plan (upto 5 members):</label>
+	            	<input type="text" name="pricing_team" class="form-control" value="<%=config.get('app.default_pricing.team')%>" placeholder="$/m for team plan">
+		        </div>
+            <div class="form-group">
+		            <label>$/m for business plan (upto 50 members):</label>
+	            	<input type="text" name="pricing_business" class="form-control" value="<%=config.get('app.default_pricing.business')%>" placeholder="$/m for team plan">
+		        </div>
+		        <div class="form-group">
+		            <label>$/m for enterprise plan (above 50 members):</label>
+	            	<input type="text" name="pricing_enterprise" class="form-control" value="<%=config.get('app.default_pricing.enterprise')%>" placeholder="$/m for business plan">
+		        </div>
+
+		        <div class="form-actions text-right">
+                <input type="submit" value="Offer Support" class="btn btn-success">
+            </div>
+	    </div>
+	</div>
+</form>

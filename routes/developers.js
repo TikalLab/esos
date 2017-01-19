@@ -61,11 +61,14 @@ router.get('/repos/unsupported',function(req,res,next){
 			var allRepos = results[0]
 			var supportedRepos = results[1]
 
+
 			// filter
 			var unsupportedRepos = _.filter(allRepos,function(repo){
-				return !_.find(supportedRepos,function(supportedRepo){
-					repo.full_name == supportedRepo.full_name
+				var alreadySupported = _.find(supportedRepos,function(supportedRepo){
+					return repo.full_name == supportedRepo.full_name
 				})
+				return alreadySupported ? false : true;
+
 			})
 
  			render(req,res,'developers/unsupported-repos',{
@@ -102,12 +105,17 @@ router.get('/repos/supported',function(req,res,next){
 
 })
 
+router.get('/support-repo',function(req,res,next){
+	render(req,res,'developers/define-support',{
+		repo: req.query.repo
+	})
+})
 
 router.post('/support-repo',function(req,res,next){
 
 	async.waterfall([
 		function(callback){
-			github.addBadge(req.session.user.github.access_token,req.body.repo,req.body.price,function(err){
+			github.addBadge(req.session.user.github.access_token,req.body.repo,req.body.pricing_personal,function(err){
 				callback(err)
 			})
 		},
@@ -132,7 +140,7 @@ router.post('/support-repo',function(req,res,next){
 			})
 		},
 		function(sla,hook,repo,callback){
-			repos.add(req.db,req.session.user._id.toString(),repo,req.body.price,hook,function(err,repo){
+			repos.add(req.db,req.session.user._id.toString(),repo,req.body.pricing_personal,req.body.pricing_team,req.body.pricing_business,req.body.pricing_enterprise,hook,function(err,repo){
 				callback(err,sla,repo)
 			})
 		},
