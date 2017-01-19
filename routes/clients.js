@@ -19,6 +19,9 @@ var subscriptions = require('../models/subscriptions');
 var repos = require('../models/repos');
 var atob = require('atob')
 
+
+var priceCalculator = require('../view_helpers/price-calculator')
+
 router.get('/choose-org/:owner/:name',function(req,res,next){
 	async.parallel([
 		function(callback){
@@ -127,12 +130,13 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 		}else{
 console.log('orgs are %s',util.inspect(results[0]))
 console.log('teams are %s',util.inspect(results[2]))
-			render(req,res,'clients/choose-org',{
+			render(req,res,'index/choose-org',{
 				orgs: results[0],
 				sla: atob(results[1].sla.content),
 				repo: results[1].repo,
 				developer: results[1].developer,
-				teams: results[2]
+				teams: results[2],
+				price_calculator: priceCalculator
 			})
 		}
 	})

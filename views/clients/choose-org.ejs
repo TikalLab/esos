@@ -1,6 +1,6 @@
 <div class="page-header">
 	<div class="page-title">
-		<h3>Choose an org to apply your subscription to, or use it personally</h3>
+		<h3>Choose an org or team to apply your subscription to, or use it personally</h3>
 	</div>
 </div>
 
@@ -8,7 +8,10 @@
   <select name="org">
     <option value="">Personal use</option>
     <% orgs.forEach(function(org){ %>
-      <option value="<%=org.login%>"><%=org.login%></option>
+      <option value="org-<%=org.login%>">Org <%=org.login%> $(<%=price_calculator.calc(org.members_count,repo)%>)</option>
+    <% }) %>
+    <% teams.forEach(function(team){ %>
+      <option value="team-<%=team.id%>">Team <%=team.org.login%>/<%=team.name%> $(<%=price_calculator.calc(team.members_count,repo)%>)</option>
     <% }) %>
   </select>
   <input type="submit" class="btn btn-success" value="Choose Organization">
