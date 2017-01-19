@@ -15,17 +15,18 @@
 
 				<div>
 					<form action="/clients/pay/<%=repo._id%>" method="GET">
-					  <select name="org">
-					    <option value="">Personal use</option>
-					    <% orgs.forEach(function(org){ %>
-					      <option value="org-<%=org.login%>">Org <%=org.login%> $(<%=price_calculator.calc(org.members_count,repo)%>)</option>
-					    <% }) %>
-					    <% teams.forEach(function(team){ %>
-					      <option value="team-<%=team.id%>">Team <%=team.org.login%>/<%=team.name%> $(<%=price_calculator.calc(team.members_count,repo)%>)</option>
-					    <% }) %>
-					  </select>
-
-						<div class="button-container">
+						<div class="field-wrapper col-md-6 col-md-offset-3">
+						  <select name="org" class="form-control">
+						    <option value="">Personal use</option>
+						    <% orgs.forEach(function(org){ %>
+						      <option value="org-<%=org.login%>">Org <%=org.login%> $(<%=price_calculator.calc(org.members_count,repo)%>)</option>
+						    <% }) %>
+						    <% teams.forEach(function(team){ %>
+						      <option value="team-<%=team.id%>">Team <%=team.org.login%>/<%=team.name%> ($<%=price_calculator.calc(team.members_count,repo)%>)</option>
+						    <% }) %>
+						  </select>
+						</div>
+						<div class="field-wrapper col-md-12">
 							<input type="submit" class="btn standard-button inner-button" value="Subscribe">
 						</div>
 					</form>
