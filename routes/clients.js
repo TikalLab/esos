@@ -65,7 +65,29 @@ router.get('/choose-org/:owner/:name',function(req,res,next){
 router.get('/choose-org/:repo_id',function(req,res,next){
 	async.parallel([
 		function(callback){
-			github.getUserOrgs(req.session.user.github.access_token,function(err,orgs){
+			async.waterfall([
+				function(callback){
+					github.getUserOrgs(req.session.user.github.access_token,function(err,orgs){
+						callback(err,orgs)
+					})
+				},
+				function(orgs,callback){
+					var orgsWithMembersCount = [];
+					async.each(orgs,function(org,callback){
+						github.getOrgMembersCount(req.session.user.github.access_token,org.login,function(err,count){
+							if(err){
+								callback(err)
+							}else{
+								org.members_count = count;
+								orgsWithMembersCount.push(org)
+								callback()
+							}
+						})
+					},function(err){
+						callback(err,orgsWithMembersCount)
+					})
+				}
+			],function(err,orgs){
 				callback(err,orgs)
 			})
 		},
@@ -93,16 +115,24 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 					sla: sla
 				})
 			})
+		},
+		function(callback){
+			github.getUserTeams(req.session.user.github.access_token,function(err,teams){
+				callback(err,teams)
+			})
 		}
 	],function(err,results){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
+console.log('orgs are %s',util.inspect(results[0]))
+console.log('teams are %s',util.inspect(results[2]))
 			render(req,res,'clients/choose-org',{
 				orgs: results[0],
 				sla: atob(results[1].sla.content),
 				repo: results[1].repo,
-				developer: results[1].developer
+				developer: results[1].developer,
+				teams: results[2]
 			})
 		}
 	})

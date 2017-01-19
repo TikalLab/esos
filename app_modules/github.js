@@ -87,6 +87,40 @@ module.exports = {
 		);
 
 	},
+	getUserTeams: function(accessToken,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var teams = [];
+		var page = 1;
+		var linkHeader;
+
+		async.whilst(
+			function(){
+				return page;
+			},
+			function(callback){
+				var qs = {
+					page: page
+				}
+				request('https://api.github.com/user/teams',{headers: headers, qs: qs},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + arguments.callee.toString() + ' : ' + body);
+					}else{
+						var data = JSON.parse(body)
+						teams = teams.concat(data);
+						linkHeader = parseLinkHeader(response.headers.link);
+						page = (linkHeader? ('next' in linkHeader ? linkHeader.next.page : false) : false);
+						callback(null,teams);
+					}
+				});
+			},
+			function(err,teams){
+				callback(err,teams)
+			}
+		);
+
+	},
 	getOrgRepos: function(accessToken,orgName,callback){
 		// console.log('getting org repos for %s',orgName)
 		var headers = this.getAPIHeaders(accessToken);
@@ -340,42 +374,6 @@ console.log('SLA is %s',util.inspect(data))
 			}
 		});
 	},
-	getUserOrgs: function(accessToken,callback){
-		var headers = this.getAPIHeaders(accessToken);
-// 		var thisObject = this;
-// 		async.waterfall([
-// 			function(callback){
-// 				thisObject.getUser(accessToken,function(err,user){
-// 					callback(err,user)
-// 				})
-// 			},
-// 			function(user,callback){
-// 				var url = util.format('https://api.github.com/users/%s/orgs',user.login)
-// 				request(url,{headers: headers},function(error,response,body){
-// 					if(error){
-// 						callback(error);
-// 					}else if(response.statusCode > 300){
-// 						callback(response.statusCode + ' : ' + body);
-// 					}else{
-// 						callback(null,JSON.parse(body));
-// 					}
-// 				});
-// 			}
-// 		],function(err,orgs){
-// console.log()
-// 			callback(err,orgs)
-// 		})
-
-		request('https://api.github.com/user/orgs',{headers: headers},function(error,response,body){
-			if(error){
-				callback(error);
-			}else if(response.statusCode > 300){
-				callback(response.statusCode + ' : ' + body);
-			}else{
-				callback(null,JSON.parse(body));
-			}
-		});
-	},
 	getSLA: function(accessToken,repoFullName,callback){
 		var headers = this.getAPIHeaders(accessToken);
 		var url = util.format('https://api.github.com/repos/%s/contents/SLA.md',repoFullName);
@@ -388,6 +386,42 @@ console.log('SLA is %s',util.inspect(data))
 				callback(null,JSON.parse(body));
 			}
 		});
+	},
+	getOrgMembersCount: function(accessToken,org,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var members = [];
+		var page = 1;
+		var linkHeader;
+
+		async.whilst(
+			function(){
+				return page;
+			},
+			function(callback){
+				var qs = {
+					page: page
+				}
+				var url = util.format('https://api.github.com/orgs/%s/members',org);
+				request(url,{headers: headers, qs: qs},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + arguments.callee.toString() + ' : ' + body);
+					}else{
+						var data = JSON.parse(body)
+						members = members.concat(data);
+						linkHeader = parseLinkHeader(response.headers.link);
+						page = (linkHeader? ('next' in linkHeader ? linkHeader.next.page : false) : false);
+						callback(null,members);
+					}
+				});
+			},
+			function(err,members){
+				callback(err,members.length)
+			}
+		);
+
+
 	}
 
 
