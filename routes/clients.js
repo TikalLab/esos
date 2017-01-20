@@ -128,6 +128,7 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
+console.log('teams are %s',util.inspect(results[2]))
 			render(req,res,'index/choose-org',{
 				orgs: results[0],
 				sla: atob(results[1].sla.content),
@@ -160,8 +161,6 @@ router.get('/pay/:repo_id',function(req,res,next){
 			}
 		}
 	}
-
-console.log('plan is %s',plan)
 
 	async.waterfall([
 		function(callback){
