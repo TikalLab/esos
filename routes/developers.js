@@ -148,7 +148,7 @@ router.post('/support-repo',function(req,res,next){
 			async.each(['personal','team','business','enterprise'],function(plan,callback){
 				async.waterfall([
 					function(callback){
-						paypal.createAndActivatePlan(repo,repo.pricing[plan].price,function(err,billingPlan){
+						paypal.createAndActivatePlan(repo,plan,repo.pricing[plan].price,function(err,billingPlan){
 							callback(err,billingPlan)
 						})
 					},

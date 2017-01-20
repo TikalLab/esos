@@ -20,7 +20,7 @@ var repos = require('../models/repos');
 var atob = require('atob')
 
 
-var priceCalculator = require('../view_helpers/price-calculator')
+var plansCalculator = require('../view_helpers/plans-calculator')
 
 router.get('/choose-org/:owner/:name',function(req,res,next){
 	async.parallel([
@@ -128,15 +128,13 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
-console.log('orgs are %s',util.inspect(results[0]))
-console.log('teams are %s',util.inspect(results[2]))
 			render(req,res,'index/choose-org',{
 				orgs: results[0],
 				sla: atob(results[1].sla.content),
 				repo: results[1].repo,
 				developer: results[1].developer,
 				teams: results[2],
-				price_calculator: priceCalculator
+				plans_calculator: plansCalculator
 			})
 		}
 	})
@@ -146,8 +144,25 @@ console.log('teams are %s',util.inspect(results[2]))
 router.get('/pay/:repo_id',function(req,res,next){
 
 	req.session.subscription = {
-		org: req.query.org
+		plan: 'personal'
 	}
+	if(req.query.team_or_org){
+		var parts = req.query.team_or_org.split(':')
+		if(parts[0] == 'org'){
+			req.session.subscription = {
+				org: parts[2],
+				plan: parts[1]
+			}
+		}else if(parts[0] == 'team'){
+			req.session.subscription = {
+				team: parts[2],
+				plan: parts[1]
+			}
+		}
+	}
+
+console.log('plan is %s',plan)
+
 	async.waterfall([
 		function(callback){
 			repos.get(req.db,req.params.repo_id,function(err,repo){
@@ -155,7 +170,7 @@ router.get('/pay/:repo_id',function(req,res,next){
 			})
 		},
 		function(repo,callback){
-			paypal.createBillingAgreement(repo,function(err,billingAgreement){
+			paypal.createBillingAgreement(repo,req.session.subscription.plan,function(err,billingAgreement){
 				callback(err,billingAgreement)
 			})
 		}
@@ -189,7 +204,7 @@ router.get('/paypal/paid/:repo_id',function(req,res,next){
 			})
 		},
 		function(billingAgreement,repo,callback){
-			subscriptions.add(req.db,req.session.user,repo,req.session.subscription.org,billingAgreement,function(err,subscription){
+			subscriptions.add(req.db,req.session.user,repo,req.session.subscription.plan,req.session.subscription.org,req.session.subscription.team,billingAgreement,function(err,subscription){
 				callback(err,repo,subscription)
 			})
 		}
@@ -197,6 +212,7 @@ router.get('/paypal/paid/:repo_id',function(req,res,next){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
+			delete req.session.subscription;
 			req.session.alert = {
 				type: 'success',
 				message: util.format('You successfuly subscribed to %s support',repo.full_name)

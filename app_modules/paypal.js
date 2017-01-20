@@ -11,11 +11,11 @@ paypal.configure({
 })
 
 module.exports = {
-  createBillingPlan: function(repo,price,callback){
+  createBillingPlan: function(repo,plan,price,callback){
 
     var billingPlanAttributes = {
-      name: util.format('Enterprise Support For %s',repo.full_name),
-      description: util.format('Enterprise Support For %s',repo.full_name),
+      name: util.format('Enterprise Support For %s, %s Level',repo.full_name,plan),
+      description: util.format('Enterprise Support For %s, % Level',repo.full_name,plan),
       type: 'INFINITE',
       payment_definitions: [
         {
@@ -64,17 +64,17 @@ module.exports = {
     })
   },
 
-  createBillingAgreement: function(repo,callback){
+  createBillingAgreement: function(repo,plan,callback){
     var isoDate = new Date();
     isoDate.setSeconds(isoDate.getSeconds() + 4);
     isoDate.toISOString().slice(0, 19) + 'Z';
 
     var billingAgreementAttributes = {
-        name: util.format('Enterprise Support for %s',repo.full_name),
-        description: util.format('Enterprise Support for %s',repo.full_name),
+        name: util.format('Enterprise Support for %s, %s Level',repo.full_name,plan),
+        description: util.format('Enterprise Support for %s, %s Level',repo.full_name,plan),
         start_date: isoDate,
         plan: {
-            id: repo.paypal_billing_plan_id
+            id: repo.pricing[plan].paypal_id
         },
         payer: {
             payment_method: 'paypal'
@@ -92,11 +92,11 @@ module.exports = {
     })
   },
 
-  createAndActivatePlan: function(repo,price,callback){
+  createAndActivatePlan: function(repo,plan,price,callback){
     var thisObject = this;
     async.waterfall([
       function(callback){
-        thisObject.createBillingPlan(repo,price,function(err,billingPlan){
+        thisObject.createBillingPlan(repo,plan,price,function(err,billingPlan){
           callback(err,billingPlan)
         })
       },

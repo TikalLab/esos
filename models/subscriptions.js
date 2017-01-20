@@ -2,19 +2,23 @@ var async = require('async')
 var util = require('util')
 var repos = require('../models/repos')
 module.exports = {
-  add: function(db,user,repo,org,billingAgreement,callback){
+  add: function(db,user,repo,plan,org,team,billingAgreement,callback){
     var subscriptions = db.get('subscriptions');
     var subscription = {
       user_id: user._id.toString(),
       github_login: user.github.login,
       repo_id: repo._id.toString(),
       full_name: repo.full_name,
+      plan: plan,
       paypal_billing_agreement_id: billingAgreement.id,
       status: 'active',
       created_at: new Date()
     };
     if(org){
       subscription.org = org;
+    }
+    if(team){
+      subscription.team = team;
     }
     subscriptions.insert(subscription,function(err,subscription){
       callback(err,subscription)
