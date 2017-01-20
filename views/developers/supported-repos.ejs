@@ -5,13 +5,17 @@
 </div>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> My Repos</h6></div>
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> My Supported Repos</h6></div>
     <div class="datatable">
       <table class="table">
         <thead>
           <tr>
             <th>full name</th>
-						<th>monthly sub $</th>
+						<th>personal subs (# @ $)</th>
+						<th>team subs (# @ $)</th>
+						<th>business subs (# @ $)</th>
+						<th>enterprise subs (# @ $)</th>
+						<th>monthly $</th>
             <th>actions</th>
           </tr>
         </thead>
@@ -24,7 +28,11 @@
 								<form action="/developers/remove-repo-support" method="POST">
 									<input type="hidden" name="repo" value="<%=repo.full_name%>">
 		              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
-									<td>$<%=repo.price%></td>
+									<td><%=repo.pricing.personal.subscribers_count%> @ $<%=repo.pricing.personal.price%></td>
+									<td><%=repo.pricing.team.subscribers_count%> @ $<%=repo.pricing.team.price%></td>
+									<td><%=repo.pricing.business.subscribers_count%> @ $<%=repo.pricing.business.price%></td>
+									<td><%=repo.pricing.enterprise.subscribers_count%> @ $<%=repo.pricing.enterprise.price%></td>
+									<td>$<%=repo.pricing.personal.subscribers_count * repo.pricing.personal.price + repo.pricing.team.subscribers_count * repo.pricing.team.price + repo.pricing.business.subscribers_count * repo.pricing.business.price + repo.pricing.enterprise.subscribers_count * repo.pricing.enterprise.price %></td>
 		              <td><input type="submit" class="btn btn-danger" value="Remove Support"></td>
 								</form>
 	            </tr>

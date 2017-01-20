@@ -15,6 +15,7 @@ var alertIcons = require('../app_modules/alert-icons');
 var errorHandler = require('../app_modules/error');
 var users = require('../models/users');
 var repos = require('../models/repos');
+var subscriptions = require('../models/subscriptions');
 
 router.get('/repos',function(req,res,next){
 	async.parallel([
@@ -81,7 +82,7 @@ router.get('/repos/unsupported',function(req,res,next){
 })
 
 router.get('/repos/supported',function(req,res,next){
-	async.parallel([
+	async.waterfall([
 		// function(callback){
 		// 	github.getUserRepos(req.session.user.github.access_token,function(err,repos){
 		// 		callback(err,repos)
@@ -91,13 +92,31 @@ router.get('/repos/supported',function(req,res,next){
 			repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
 				callback(err,repos)
 			})
+		},
+		function(repos,callback){
+			var reposWithCounts = [];
+			async.each(repos,function(repo,callback){
+				subscriptions.countPerRepo(req.db,repo._id.toString(),function(err,counts){
+					if(err){
+						callback(err)
+					}else{
+						_.each(['personal','team','business','enterprise'],function(plan){
+							repo.pricing[plan].subscribers_count = counts[plan]
+						})
+						reposWithCounts.push(repo)
+						callback()
+					}
+				})
+			},function(err){
+				callback(err,reposWithCounts)
+			})
 		}
-	],function(err,results){
+	],function(err,repos){
 		if(err){
  			errorHandler.error(req,res,next,err);
  		}else{
  			render(req,res,'developers/supported-repos',{
-				supported_repos: results[0],
+				supported_repos: repos,
 				active_page: 'supported_repos'
 			})
  		}

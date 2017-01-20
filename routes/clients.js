@@ -213,11 +213,15 @@ router.get('/paypal/paid/:repo_id',function(req,res,next){
 			errorHandler.error(req,res,next,err);
 		}else{
 			delete req.session.subscription;
-			req.session.alert = {
-				type: 'success',
-				message: util.format('You successfuly subscribed to %s support',repo.full_name)
-			}
-			res.redirect('/clients/subscriptions')
+			// req.session.alert = {
+			// 	type: 'success',
+			// 	message: util.format('You successfuly subscribed to %s support',repo.full_name)
+			// }
+			// res.redirect('/clients/subscriptions')
+			render(req,res,'index/thank-you',{
+				repo: repo,
+				subscription: subscription
+			})
 		}
 	})
 })

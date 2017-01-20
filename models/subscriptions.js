@@ -108,6 +108,22 @@ module.exports = {
     subscriptions.findOne({paypal_billing_agreement_id: agreementID},function(err,subscription){
       callback(err,subscription)
     })
+  },
+  countPerRepo: function(db,repoID,callback){
+    var counts = {};
+    var subscriptions = db.get('subscriptions');
+    async.each(['personal','team','business','enterprise'],function(plan,callback){
+      subscriptions.count({repo_id: repoID, status: 'active', plan: plan},function(err,count){
+        if(err){
+          callback(err)
+        }else{
+          counts[plan] = count;
+          callback()
+        }
+      })
+    },function(err){
+      callback(err,counts)
+    })
   }
 
 }
