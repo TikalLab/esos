@@ -19,7 +19,7 @@ router.get('/',function(req,res,next){
 			isHomepage: true
 		})
 	}else{
-		res.redirect('/dashboard')
+		res.redirect('/developers/dashboard')
 	}
 })
 

@@ -1,0 +1,31 @@
+<section class="inner-section">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+
+				<span class="icon-96">
+	      			<i class="ion-email"></i>
+	    		</span>
+
+				<h2>Please Confirm Your PayPal Email</h2>
+
+				<div class="colored-line">
+				</div>
+
+				<div class="sub-heading">
+					In case it's different than the one you use for GitHub... We need it so we can pay you...
+				</div>
+
+				<form class="contact-form" method="POST" action="/developers/confirm-paypal-email">
+					<div class="field-wrapper col-md-6 col-md-offset-3">
+						<input class="form-control input-box" type="text" name="paypal_email" placeholder="Your PayPal email" value="<%=user.email%>"></p>
+					</div>
+					<div class="field-wrapper col-md-12">
+						<button id="submit-button" class="btn standard-button" type="submit" data-style="expand-left">Confirm PayPal Email</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

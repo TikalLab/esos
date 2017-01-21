@@ -17,6 +17,32 @@ var users = require('../models/users');
 var repos = require('../models/repos');
 var subscriptions = require('../models/subscriptions');
 
+
+router.get('/dashboard',function(req,res,next){
+	if(!('paypal_email' in req.session.user)){
+		res.redirect('/developers/confirm-paypal-email')
+	}else{
+		render(req,res,'developers/dashboard',{
+			active_page: 'dashboard'
+		})
+	}
+})
+
+router.get('/confirm-paypal-email',function(req,res,next){
+	render(req,res,'index/confirm-paypal-email',{})
+})
+
+router.post('/confirm-paypal-email',function(req,res,next){
+	users.setPaypalEmail(req.db,req.session.user._id.toString(),req.body.paypal_email,function(err,user){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			req.session.user = user;
+			res.redirect('/developers/dashboard')
+		}
+	})
+})
+
 router.get('/repos',function(req,res,next){
 	async.parallel([
 		function(callback){

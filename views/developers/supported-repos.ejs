@@ -25,7 +25,7 @@
 							var trID = repo._id
 						%>
 	            <tr id="<%=trID%>">
-								<form action="/developers/remove-repo-support" method="POST">
+								<form action="/developers/remove-repo-support" method="POST" onsubmit="return confirm('Do you really want to stop supporting this repo?');">
 									<input type="hidden" name="repo" value="<%=repo.full_name%>">
 		              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
 									<td><%=repo.pricing.personal.subscribers_count%> @ $<%=repo.pricing.personal.price%></td>
