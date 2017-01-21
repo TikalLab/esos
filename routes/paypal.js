@@ -93,7 +93,6 @@ function processBillingSubscriptionReactivated(db,event,callback){
 }
 
 function processPaymentSaleCompleted(db,event,callback){
-	console.log('event is %s',util.inspect(event))
 	async.waterfall([
 		// find subscription
 		function(callback){
@@ -102,6 +101,9 @@ function processPaymentSaleCompleted(db,event,callback){
 			})
 		},
 		function(subscription,callback){
+			// PAY attention
+			// if we get the payment.sale.completed event before the billing.agreement.created, the lack of subscrion id
+			// here will fail this method, and a 503 will be returned so paypal will fire it again untul successful ;-)
 			payments.add(db,subscription._id.toString(),event.resource.id,event.resource.amount.total,function(err,payment){
 				callback(err,payment)
 			})
