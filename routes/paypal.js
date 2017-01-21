@@ -12,6 +12,7 @@ var moment = require('moment')
 // var users = require('../models/users');
 var repos = require('../models/repos');
 var subscriptions = require('../models/subscriptions');
+var payments = require('../models/payments');
 
 var paypal = require('../app_modules/paypal');
 
@@ -92,15 +93,16 @@ function processBillingSubscriptionReactivated(db,event,callback){
 }
 
 function processPaymentSaleCompleted(db,event,callback){
+	console.log('event is %s',util.inspect(event))
 	async.waterfall([
 		// find subscription
 		function(callback){
-			subscriptions.getByAgreementID(db,event.resource.billing_agreement.id,function(err,subscription){
+			subscriptions.getByAgreementID(db,event.resource.billing_agreement_id,function(err,subscription){
 				callback(err,subscription)
 			})
 		},
 		function(subscription,callback){
-			payments.add(db,subscription._id.toString(),event.resource.id,function(err,payment){
+			payments.add(db,subscription._id.toString(),event.resource.id,event.resource.amount.total,function(err,payment){
 				callback(err,payment)
 			})
 		}
