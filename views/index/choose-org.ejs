@@ -19,10 +19,10 @@
 						  <select name="team_or_org" class="form-control">
 						    <option value="">Personal use ($<%=repo.pricing.personal.price%>)</option>
 						    <% orgs.forEach(function(org){ %>
-						      <option value="org:<%=plans_calculator.getPlan(org.members_count)%>:<%=org.login%>">Org <%=org.login%> $(<%=plans_calculator.getPrice(org.members_count,repo)%>)</option>
+						      <option value="org:<%=plans_calculator.getPlan(org.members_count)%>:<%=org.login%>">Org <%=org.login%> (<%=org.members_count%> members, $<%=plans_calculator.getPrice(org.members_count,repo)%>)</option>
 						    <% }) %>
 						    <% teams.forEach(function(team){ %>
-						      <option value="team:<%=plans_calculator.getPlan(team.members_count)%>:<%=team.id%>">Team <%=team.organization.login%>/<%=team.name%> ($<%=plans_calculator.getPrice(team.members_count,repo)%>)</option>
+						      <option value="team:<%=plans_calculator.getPlan(team.members_count)%>:<%=team.id%>:<%=team.organization.login%>:<%=team.name%>">Team <%=team.organization.login%>/<%=team.name%> (<%=team.members_count%> members, $<%=plans_calculator.getPrice(team.members_count,repo)%>)</option>
 						    <% }) %>
 						  </select>
 						</div>

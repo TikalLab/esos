@@ -156,7 +156,11 @@ router.get('/pay/:repo_id',function(req,res,next){
 			}
 		}else if(parts[0] == 'team'){
 			req.session.subscription = {
-				team: parts[2],
+				team: {
+					id: parts[2],
+					org: parts[3],
+					name: parts[4]
+				},
 				plan: parts[1]
 			}
 		}
