@@ -11,6 +11,8 @@ var btoa = require('btoa');
 var fs = require('fs')
 var path = require('path')
 
+var s3 = require('../app_modules/s3')
+
 var slaTemplate = fs.readFileSync(path.join(__dirname,'../views/sla-template.md'), 'utf8');
 console.log('sla template is %s',slaTemplate)
 
@@ -336,10 +338,16 @@ console.log('SLA is %s',util.inspect(data))
 					}
 				});
 			},
-			// add our badge
 			function(readme,callback){
+				s3.getBadgeUrl(price,function(err,badgeUrl){
+					callback(err,readme,badgeUrl)
+				})
+			},
+			// add our badge
+			function(readme,badgeUrl,callback){
 				var text = atob(readme.content);
-				text = util.format('[![%s](https://img.shields.io/badge/Enterprise%20Support%20Available-starting%20at%20%24%s%2Fm-green.svg)](%s://%s/subscribe/%s)\n',config.get('app.name'),price,config.get('app.protocol'),config.get('app.domain'),repoFullName) + text;
+				// text = util.format('[![%s](https://img.shields.io/badge/Enterprise%20Support%20Available-starting%20at%20%24%s%2Fm-green.svg)](%s://%s/subscribe/%s)\n',config.get('app.name'),price,config.get('app.protocol'),config.get('app.domain'),repoFullName) + text;
+				text = util.format('[![%s](%s)](%s://%s/subscribe/%s)\n',config.get('app.name'),badgeUrl,config.get('app.protocol'),config.get('app.domain'),repoFullName) + text;
 				var form = {
 					path: readme.path,
 					message: util.format('added %s badge',config.get('app.name')),

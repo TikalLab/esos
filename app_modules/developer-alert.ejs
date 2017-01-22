@@ -1,0 +1,14 @@
+<p>Hi %recipient.name%,</p>
+<p>A new <a href="<%=event_url%>"><%=event_type%></a> has been created by an <%=config.get('app.name')%> user on <%=repo%>, which requires your immediate attention.</p>
+<p>Please refer to this ASAP here: <a href="<%=event_url%>"><%=event_url%></a></p>
+
+<p>Cheers,<br/>
+The <%=config.get('app.name')%> team<br/>
+<%=config.get('app.protocol')%>://<%=config.get('app.domain')%>  
+</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+To stop getting this email: <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>/unsubscribe/<%=email_type%>/%recipient.id%/%recipient.code%<br/>
+To unsubscribe from all <%=config.get('app.name')%> emails: <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>/unsubscribe/all/%recipient.id%/%recipient.code%
+</p>

@@ -45,17 +45,11 @@
 		"client_secret": "EEuIlfYGNbeqK5oGNFRL9spjNJvOIoQxDKfgLeH2TmQd02Kz4Lkyzb6jvYPpl7yafwL95iTD0tQExTcw",
 		"mode": "sandbox",
 		"webhook_domain": "facetogether.ngrok.io",
-		"webhook_id": "83A26787U23184350",
-		"domain": "api.sandbox.paypal.com",
-		"user_id": "shahar-facilitator_api1.triond.com",
-		"password": "1394532512",
-		"signature": "AwngU0uSCy6mCufwjCzfcJi.MNYfABz8Eqcml7JC.z1EdbupTIj8f-ES",
-		"app_id": "APP-80W284485P519543T",
-		"domains": {
-			"svcs": "svcs.sandbox.paypal.com",
-			"www": "www.sandbox.paypal.com"
-		},
-		"sandbox": true,
-		"ipn_domain": "facetogether.ngrok.io"
+		"webhook_id": "83A26787U23184350"
+	},
+	"aws": {
+		"access_key_id": "",
+		"secret_access_key": "",
+		"svg_bucket": "dev.pstrs.xcut.me"
 	}
 }
