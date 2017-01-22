@@ -18,6 +18,10 @@ var users = require('../models/users');
 var subscriptions = require('../models/subscriptions');
 var repos = require('../models/repos');
 var atob = require('atob')
+var fs = require('fs')
+var path = require('path')
+var mailer = require('../app_modules/mailer');
+var developerNewSubscriberEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/developer-new-subscriber.ejs'), 'utf8');
 
 
 var plansCalculator = require('../view_helpers/plans-calculator')
@@ -210,7 +214,7 @@ router.get('/paypal/paid/:repo_id',function(req,res,next){
 			subscriptions.add(req.db,req.session.user,repo,req.session.subscription.plan,req.session.subscription.org,req.session.subscription.team,billingAgreement,function(err,subscription){
 				callback(err,repo,subscription)
 			})
-		}
+		},
 	],function(err,repo,subscription){
 		if(err){
 			errorHandler.error(req,res,next,err);
@@ -225,10 +229,47 @@ router.get('/paypal/paid/:repo_id',function(req,res,next){
 				repo: repo,
 				subscription: subscription
 			})
+			// shoot this async, if it fails, dont fail the client..
+			notifyDeveloperOnNewClient(req.db,repo,subscription,function(err){
+				// nothing to do here, error, no error, all is good
+				if(err){
+					console.log('error sending new subscriber mail to developer: %s',err)
+				}
+			})
 		}
 	})
 })
 
+function notifyDeveloperOnNewClient(db,repo,subscription,callback){
+
+	async.waterfall([
+		function(callback){
+			users.get(db,repo.user_id,function(err,developer){
+				callback(err,developer)
+			})
+		},
+		function(developer,callback){
+			mailer.sendMulti(
+				[developer], //recipients
+				util.format('[%s] Ka Ching! A new subscriber for %s',config.get('app.name'),repo.full_name),
+				developerNewSubscriberEmailTemplate,
+				{
+					repo: repo,
+					subscription: subscription,
+				},
+				'developer-alert-new-subscriber',
+				function(err){
+					callback(err)
+				}
+
+			);
+		}
+	],function(err){
+		callback(err)
+	})
+
+
+}
 router.get('/subscriptions',function(req,res,next){
 	async.parallel([
 		function(callback){

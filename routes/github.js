@@ -19,7 +19,7 @@ var subscriptions = require('../models/subscriptions');
 var users = require('../models/users');
 
 
-var developerEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/developer.ejs'), 'utf8');
+var developerEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/developer-alert.ejs'), 'utf8');
 var clientEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/client.ejs'), 'utf8');
 
 
@@ -335,24 +335,24 @@ function processIssue(developer,client,event){
 
 			);
 		},
-		function(callback){
-			// notify client
-			mailer.sendMulti(
-				[client], //recipients
-				'[' + config.get('app.name') + '] Acknowleding a new issue on ' + event.repository.full_name,
-				clientEmailTemplate,
-				{
-					event_type: 'issue',
-					repo: event.repository.full_name,
-					event_url: event.issue.html_url
-				},
-				'client-acknowledge-issue',
-				function(err){
-					callback(err)
-				}
-
-			);
-		}
+		// function(callback){
+		// 	// notify client
+		// 	mailer.sendMulti(
+		// 		[client], //recipients
+		// 		'[' + config.get('app.name') + '] Acknowleding a new issue on ' + event.repository.full_name,
+		// 		clientEmailTemplate,
+		// 		{
+		// 			event_type: 'issue',
+		// 			repo: event.repository.full_name,
+		// 			event_url: event.issue.html_url
+		// 		},
+		// 		'client-acknowledge-issue',
+		// 		function(err){
+		// 			callback(err)
+		// 		}
+		//
+		// 	);
+		// }
 
 	],function(err){
 		if(err){
@@ -388,24 +388,24 @@ function processIssueComment(developer,client,event){
 
 			);
 		},
-		function(callback){
-			// notify client
-			mailer.sendMulti(
-				[client], //recipients
-				'[' + config.get('app.name') + '] Acknowleding a new issue comment on ' + event.repository.full_name,
-				clientEmailTemplate,
-				{
-					event_type: 'issue comment',
-					repo: event.repository.full_name,
-					event_url: event.comment.html_url
-				},
-				'client-acknowledge-issue-comment',
-				function(err){
-					callback(err)
-				}
-
-			);
-		}
+		// function(callback){
+		// 	// notify client
+		// 	mailer.sendMulti(
+		// 		[client], //recipients
+		// 		'[' + config.get('app.name') + '] Acknowleding a new issue comment on ' + event.repository.full_name,
+		// 		clientEmailTemplate,
+		// 		{
+		// 			event_type: 'issue comment',
+		// 			repo: event.repository.full_name,
+		// 			event_url: event.comment.html_url
+		// 		},
+		// 		'client-acknowledge-issue-comment',
+		// 		function(err){
+		// 			callback(err)
+		// 		}
+		//
+		// 	);
+		// }
 
 	],function(err){
 		if(err){
@@ -441,24 +441,24 @@ function processPullRequest(developer,client,event){
 
 			);
 		},
-		function(callback){
-			// notify client
-			mailer.sendMulti(
-				[client], //recipients
-				'[' + config.get('app.name') + '] Acknowleding a new pull request on ' + event.repository.full_name,
-				clientEmailTemplate,
-				{
-					event_type: 'pull request',
-					repo: event.repository.full_name,
-					event_url: event.pull_request.html_url
-				},
-				'client-acknowledge-pull-request',
-				function(err){
-					callback(err)
-				}
-
-			);
-		}
+		// function(callback){
+		// 	// notify client
+		// 	mailer.sendMulti(
+		// 		[client], //recipients
+		// 		'[' + config.get('app.name') + '] Acknowleding a new pull request on ' + event.repository.full_name,
+		// 		clientEmailTemplate,
+		// 		{
+		// 			event_type: 'pull request',
+		// 			repo: event.repository.full_name,
+		// 			event_url: event.pull_request.html_url
+		// 		},
+		// 		'client-acknowledge-pull-request',
+		// 		function(err){
+		// 			callback(err)
+		// 		}
+		//
+		// 	);
+		// }
 
 	],function(err){
 		if(err){

@@ -1,0 +1,14 @@
+<p>Hi %recipient.name%,</p>
+<p>We're happy to inform you about a new subscriber to the <%=subscription.plan%> plan. That's $<%=repo.pricing[subscription.plan].price%>/month for you!</p>
+<p>The new subscriber by the way is a <%=('org' in subscription ? 'org' : ('team' in subscription ? 'team' : 'person'))%> that goes by <%=('org' in subscription? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : subscription.github_login))%></p>
+
+<p>Cheers,<br/>
+The <%=config.get('app.name')%> team<br/>
+<%=config.get('app.protocol')%>://<%=config.get('app.domain')%>
+</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+To stop getting this email: <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>/unsubscribe/<%=email_type%>/%recipient.id%/%recipient.code%<br/>
+To unsubscribe from all <%=config.get('app.name')%> emails: <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>/unsubscribe/all/%recipient.id%/%recipient.code%
+</p>
