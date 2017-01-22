@@ -70,8 +70,8 @@ module.exports = {
     isoDate.toISOString().slice(0, 19) + 'Z';
 
     var billingAgreementAttributes = {
-        name: util.format('Enterprise Support for %s, %s Level',repo.full_name,plan),
-        description: util.format('Enterprise Support for %s, %s Level',repo.full_name,plan),
+        name: util.format('Enterprise Support for %s, %s Plan',repo.full_name,capitalizeFirstLetter(plan)),
+        description: util.format('Enterprise Support for %s, %s Plan, $%s/month ',repo.full_name,capitalizeFirstLetter(plan),repo.pricing[plan].price),
         start_date: isoDate,
         plan: {
             id: repo.pricing[plan].paypal_id
@@ -121,4 +121,8 @@ module.exports = {
     })
   }
 
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
