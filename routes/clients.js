@@ -29,7 +29,7 @@ var plansCalculator = require('../view_helpers/plans-calculator')
 router.get('/choose-org/:owner/:name',function(req,res,next){
 	async.parallel([
 		function(callback){
-			github.getUserOrgs(req.session.user.github.access_token,function(err,orgs){
+			github.getUserOrgs(req.session.user.github.access_tokens.client,function(err,orgs){
 				callback(err,orgs)
 			})
 		},
@@ -47,7 +47,7 @@ router.get('/choose-org/:owner/:name',function(req,res,next){
 					})
 				},
 				function(user,callback){
-					github.getSLA(user.github.access_token,repoFullName,function(err,sla){
+					github.getSLA(user.github.access_tokens.client,repoFullName,function(err,sla){
 						callback(err,sla)
 					})
 				}
@@ -74,14 +74,14 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 		function(callback){
 			async.waterfall([
 				function(callback){
-					github.getUserOrgs(req.session.user.github.access_token,function(err,orgs){
+					github.getUserOrgs(req.session.user.github.access_tokens.client,function(err,orgs){
 						callback(err,orgs)
 					})
 				},
 				function(orgs,callback){
 					var orgsWithMembersCount = [];
 					async.each(orgs,function(org,callback){
-						github.getOrgMembersCount(req.session.user.github.access_token,org.login,function(err,count){
+						github.getOrgMembersCount(req.session.user.github.access_tokens.client,org.login,function(err,count){
 							if(err){
 								callback(err)
 							}else{
@@ -111,7 +111,7 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 					})
 				},
 				function(repo,developer,callback){
-					github.getSLA(developer.github.access_token,repo.full_name,function(err,sla){
+					github.getSLA(developer.github.access_tokens.developer,repo.full_name,function(err,sla){
 						callback(err,repo,developer,sla)
 					})
 				}
@@ -124,7 +124,7 @@ router.get('/choose-org/:repo_id',function(req,res,next){
 			})
 		},
 		function(callback){
-			github.getUserTeams(req.session.user.github.access_token,function(err,teams){
+			github.getUserTeams(req.session.user.github.access_tokens.client,function(err,teams){
 				callback(err,teams)
 			})
 		}

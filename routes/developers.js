@@ -43,35 +43,35 @@ router.post('/confirm-paypal-email',function(req,res,next){
 	})
 })
 
-router.get('/repos',function(req,res,next){
-	async.parallel([
-		function(callback){
-			github.getUserRepos(req.session.user.github.access_token,function(err,repos){
-				callback(err,repos)
-			})
-		},
-		function(callback){
-			repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
-				callback(err,repos)
-			})
-		}
-	],function(err,results){
-		if(err){
- 			errorHandler.error(req,res,next,err);
- 		}else{
- 			render(req,res,'developers/repos',{
-				user_repos: results[0],
-				supporting_repos: results[1]
-			})
- 		}
-	})
-
-})
+// router.get('/repos',function(req,res,next){
+// 	async.parallel([
+// 		function(callback){
+// 			github.getUserRepos(req.session.user.github.access_token,function(err,repos){
+// 				callback(err,repos)
+// 			})
+// 		},
+// 		function(callback){
+// 			repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
+// 				callback(err,repos)
+// 			})
+// 		}
+// 	],function(err,results){
+// 		if(err){
+//  			errorHandler.error(req,res,next,err);
+//  		}else{
+//  			render(req,res,'developers/repos',{
+// 				user_repos: results[0],
+// 				supporting_repos: results[1]
+// 			})
+//  		}
+// 	})
+//
+// })
 
 router.get('/repos/unsupported',function(req,res,next){
 	async.parallel([
 		function(callback){
-			github.getUserRepos(req.session.user.github.access_token,function(err,repos){
+			github.getUserRepos(req.session.user.github.access_tokens.developer,function(err,repos){
 				callback(err,repos)
 			})
 		},
@@ -160,27 +160,27 @@ router.post('/support-repo',function(req,res,next){
 
 	async.waterfall([
 		function(callback){
-			github.addBadge(req.session.user.github.access_token,req.body.repo,req.body.pricing_personal,function(err){
+			github.addBadge(req.session.user.github.access_tokens.developer,req.body.repo,req.body.pricing_personal,function(err){
 				callback(err)
 			})
 		},
 		function(callback){
-			github.addSLA(req.session.user.github.access_token,req.body.repo,function(err,sla){
+			github.addSLA(req.session.user.github.access_tokens.developer,req.body.repo,function(err,sla){
 				callback(err,sla)
 			})
 		},
 		function(sla,callback){
-			github.hookRepo(req.session.user.github.access_token,req.body.repo,function(err,hook){
+			github.hookRepo(req.session.user.github.access_tokens.developer,req.body.repo,function(err,hook){
 				callback(err,sla,hook)
 			})
 		},
 		function(sla,hook,callback){
-			github.createLabel(req.session.user.github.access_token,req.body.repo,function(err,label){
+			github.createLabel(req.session.user.github.access_tokens.developer,req.body.repo,function(err,label){
 				callback(err,sla,hook)
 			})
 		},
 		function(sla,hook,callback){
-			github.getRepo(req.session.user.github.access_token,req.body.repo,function(err,repo){
+			github.getRepo(req.session.user.github.access_tokens.developer,req.body.repo,function(err,repo){
 				callback(err,sla,hook,repo)
 			})
 		},
@@ -252,15 +252,18 @@ router.post('/remove-repo-support',function(req,res,next){
 			})
 		},
 		function(repo,callback){
-			github.unhookRepo(req.session.user.github.access_token,req.body.repo,repo.hook_id,function(err){
+			github.unhookRepo(req.session.user.github.access_tokens.developer,req.body.repo,repo.hook_id,function(err){
 				callback(err)
 			})
 		},
 		function(callback){
-			github.removeLabel(req.session.user.github.access_token,req.body.repo,function(err){
+			github.removeLabel(req.session.user.github.access_tokens.developer,req.body.repo,function(err){
 				callback(err)
 			})
 		},
+		/*
+		TBD remove SLA as well
+		*/
 		function(callback){
 			repos.remove(req.db,req.session.user._id.toString(),req.body.repo,function(err,user){
 				callback(err)

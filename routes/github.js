@@ -25,6 +25,7 @@ var clientEmailTemplate = fs.readFileSync(path.join(__dirname,'../views/emails/c
 
 router.get('/authorize-developer',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
+	req.session.loginAs = 'developer';
 	var redirect = {
 		protocol: 'https',
 		host: 'github.com',
@@ -41,6 +42,7 @@ router.get('/authorize-developer',function(req,res,next){
 
 router.get('/authorize-client',function(req,res,next){
 	req.session.afterGithubRedirectTo = req.query.next;
+	req.session.loginAs = 'client';
 	var redirect = {
 		protocol: 'https',
 		host: 'github.com',
@@ -94,16 +96,14 @@ console.log('data from github: %s',util.inspect(data))
 		},
 		function(accessToken,githubUser,email,callback){
 console.log('here %s,%s',githubUser.login,email)
+
 			var users = req.db.get('users');
 			users.findAndModify({
 				'github.login': githubUser.login
 			},{
 				$set: {
-					github: {
-						access_token: accessToken,
-						login: githubUser.login,
-						avatar_url: githubUser.avatar_url
-					},
+					'github.login': githubUser.login,
+					'github.avatar_url': githubUser.avatar_url,
 					name: githubUser.name ? githubUser.name : githubUser.login,
 					email: email
 				},
@@ -114,9 +114,29 @@ console.log('here %s,%s',githubUser.login,email)
 				new: true,
 				upsert: true
 			},function(err,user){
-				callback(err,user)
+				callback(err,accessToken,user)
 			})
 
+		},
+		function(accessToken,user,callback){
+			var users = req.db.get('users');
+
+			var updateSet = {}
+			if(req.session.loginAs == 'client'){
+				updateSet['github.access_tokens.client'] = accessToken;
+			}else if(req.session.loginAs == 'developer'){
+				updateSet['github.access_tokens.developer'] = accessToken;
+			}
+
+			users.findAndModify({
+				_id: user._id
+			},{
+				$set: updateSet
+			},{
+				new: true,
+			},function(err,user){
+				callback(err,user)
+			})
 		}
  	],function(err,user){
  		if(err){
@@ -260,7 +280,7 @@ function getUserOrgSubscription(db,login,repo,callback){
 						})
 					},
 					function(user,callback){
-						github.isOrgMember(user.github.access_token,repoOrgSubscription.org,login,function(err,isOrgMember){
+						github.isOrgMember(user.github.access_tokens.client,repoOrgSubscription.org,login,function(err,isOrgMember){
 							callback(err,isOrgMember)
 						})
 					}
@@ -292,7 +312,7 @@ function getUserTeamSubscription(db,login,repo,callback){
 						})
 					},
 					function(user,callback){
-						github.isTeamMember(user.github.access_token,repoTeamSubscription.team.id,login,function(err,isTeamMember){
+						github.isTeamMember(user.github.access_tokens.client,repoTeamSubscription.team.id,login,function(err,isTeamMember){
 							callback(err,isTeamMember)
 						})
 					}
@@ -313,7 +333,7 @@ function processIssue(developer,client,event){
 
 	async.waterfall([
 		function(callback){
-			github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,function(err,label){
+			github.labelIssue(developer.github.access_tokens.developer,event.repository.full_name,event.issue.number,function(err,label){
 				callback(err)
 			})
 		},
@@ -366,7 +386,7 @@ function processIssue(developer,client,event){
 function processIssueComment(developer,client,event){
 	async.waterfall([
 		function(callback){
-			github.labelIssue(developer.github.access_token,event.repository.full_name,event.issue.number,function(err,label){
+			github.labelIssue(developer.github.access_tokens.developer,event.repository.full_name,event.issue.number,function(err,label){
 				callback(err)
 			})
 		},
@@ -419,7 +439,7 @@ function processIssueComment(developer,client,event){
 function processPullRequest(developer,client,event){
 	async.waterfall([
 		function(callback){
-			github.labelIssue(developer.github.access_token,event.repository.full_name,event.pull_request.number,function(err,label){
+			github.labelIssue(developer.github.access_tokens.developer,event.repository.full_name,event.pull_request.number,function(err,label){
 				callback(err)
 			})
 		},
