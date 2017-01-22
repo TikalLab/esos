@@ -64,6 +64,12 @@ module.exports = {
       callback(err,repoOrgSubscriptions)
     })
   },
+  getRepoTeamSubscriptions: function(db,repoID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscriptions.find({repo_id: repoID, team:{$exists: true}, status: 'active'},function(err,repoTeamSubscriptions){
+      callback(err,repoTeamSubscriptions)
+    })
+  },
   cancel: function(db,billingAgreementID,callback){
     var subscriptions = db.get('subscriptions');
     subscriptions.udpate({

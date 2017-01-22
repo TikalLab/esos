@@ -374,6 +374,19 @@ console.log('SLA is %s',util.inspect(data))
 			}
 		});
 	},
+	isTeamMember: function(accessToken,teamID,login,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var url = util.format('https://api.github.com/teams/%s/memberships/%s',teamID,login);
+		request(url,{headers: headers},function(error,response,body){
+			if(error){
+				callback(error);
+			}else if(response.statusCode != 404 && response.statusCode >= 300){
+				callback(response.statusCode + ' : ' + body);
+			}else{
+				callback(null,response.statusCode != 404);
+			}
+		});
+	},
 	getSLA: function(accessToken,repoFullName,callback){
 		var headers = this.getAPIHeaders(accessToken);
 		var url = util.format('https://api.github.com/repos/%s/contents/SLA.md',repoFullName);

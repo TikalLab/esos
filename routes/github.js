@@ -177,6 +177,15 @@ router.post('/repo-webhook',function(req, res, next) {
 				}
 			},
 			function(repo,developer,subscription,callback){
+				if(subscription){
+					callback(null,repo,developer,subscription)
+				}else{
+					getUserTeamSubscription(req.db,req.body.sender.login,repo,function(err,subscription){
+						callback(null,repo,developer,subscription)
+					})
+				}
+			},
+			function(repo,developer,subscription,callback){
 				if(!subscription){
 					callback(null,repo,developer,subscription,null)
 				}else{
@@ -257,6 +266,38 @@ function getUserOrgSubscription(db,login,repo,callback){
 					}
 				],function(err,isOrgMember){
 					callback(err,isOrgMember)
+				})
+			},function(err,subscription){
+				callback(err,subscription)
+			})
+		}
+	],function(err,subscription){
+		callback(err,subscription)
+	})
+}
+
+function getUserTeamSubscription(db,login,repo,callback){
+	async.waterfall([
+		function(callback){
+			subscriptions.getRepoTeamSubscriptions(db,repo._id.toString(),function(err,repoTeamSubscriptions){
+				callback(err,repoTeamSubscriptions)
+			})
+		},
+		function(repoTeamSubscriptions,callback){
+			async.detect(repoTeamSubscriptions,function(repoTeamSubscription,callback){
+				async.waterfall([
+					function(callback){
+						users.get(db,repoTeamSubscription.user_id,function(err,user){
+							callback(err,user)
+						})
+					},
+					function(user,callback){
+						github.isTeamMember(user.github.access_token,repoTeamSubscription.team.id,login,function(err,isTeamMember){
+							callback(err,isTeamMember)
+						})
+					}
+				],function(err,isTeamMember){
+					callback(err,isTeamMember)
 				})
 			},function(err,subscription){
 				callback(err,subscription)
