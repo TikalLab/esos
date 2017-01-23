@@ -4,9 +4,7 @@
 		"hook_secret": "GITHUB_HOOK_SECRET"
 	},
 	"paypal": {
-		"user_id": "PAYPAL_USER_ID",
-		"password": "PAYPAL_PASSWORD",
-		"signature": "PAYPAL_SIGNATURE"
+		"client_secret": "PAYPAL_CLIENT_SECRET",
 	},
 	"auth": {
 		"password": "AUTH_PASSWORD"
@@ -20,5 +18,8 @@
 	"aws": {
 		"access_key_id": "AWS_ACCESS_KEY_ID",
 		"secret_access_key": "AWS_SECRET_ACCESS_KEY"
+	},
+	"app": {
+		"unsubscribe_secret": "APP_UNSUBSCRIBE_SECRET"
 	}
 }

@@ -1,0 +1,55 @@
+{
+	"github": {
+		"client_id": "7547c19e666bf1a7f4f1",
+		"client_secret": "",
+		"redirect_domain": "esos-staging.herokuapp.com",
+		"webhook_domain": "esos-staging.herokuapp.com",
+		"hook_secret": "",
+		"label": {
+			"name": "ESOS_STAGING",
+			"color": "FF0000"
+		}
+	},
+	"app": {
+		"name": "esos_staging",
+		"domain": "esos-staging.herokuapp.com",
+		"protocol": "http",
+		"email": "shahar@gnift.com",
+		"unsubscribe_secret": "",
+		"paypal_email": "shahar@gighub.com",
+		"commission": 0.1,
+		"cdn_url": "",
+		"default_pricing": {
+			"personal": 4.99,
+			"team": 19.99,
+			"business": 49.99,
+			"enterprise": 99.99
+		}
+	},
+	"mongo": {
+		"uri": ""
+	},
+	"auth": {
+		"username": "admin",
+		"password": ""
+	},
+	"view": {
+		"list_limit": 2
+	},
+	"mailgun": {
+		"api_key": "",
+		"domain": "infoxicate.com"
+	},
+	"paypal": {
+		"client_id": "Abq5fKJBHD9AN8207PIIGNuFQP7nj9u-Ch1m6g3cCBVPQ-RjmqZWtGEs1rNY7i83PFjbNrwXgkqR-w5Z",
+		"client_secret": "",
+		"mode": "sandbox",
+		"webhook_domain": "esos-staging.herokuapp.com",
+		"webhook_id": "50P00658NX1941012"
+	},
+	"aws": {
+		"access_key_id": "",
+		"secret_access_key": "",
+		"svg_bucket": "dev.pstrs.xcut.me"
+	}
+}
