@@ -4,7 +4,7 @@
 		"hook_secret": "GITHUB_HOOK_SECRET"
 	},
 	"paypal": {
-		"client_secret": "PAYPAL_CLIENT_SECRET",
+		"client_secret": "PAYPAL_CLIENT_SECRET"
 	},
 	"auth": {
 		"password": "AUTH_PASSWORD"
