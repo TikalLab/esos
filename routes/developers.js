@@ -261,9 +261,11 @@ router.post('/remove-repo-support',function(req,res,next){
 				callback(err)
 			})
 		},
-		/*
-		TBD remove SLA as well
-		*/
+		function(callback){
+			github.deleteSLA(req.session.user.github.access_tokens.developer,req.body.repo,function(err){
+				callback(err)
+			})
+		},
 		function(callback){
 			repos.remove(req.db,req.session.user._id.toString(),req.body.repo,function(err,user){
 				callback(err)

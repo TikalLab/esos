@@ -321,6 +321,38 @@ console.log('SLA is %s',util.inspect(data))
 			}
 		});
 	},
+	deleteSLA: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var thisObject = this;
+		async.waterfall([
+			function(callback){
+				thisObject.getSLA(accessToken,repoFullName,function(err,sla){
+					callback(err,sla)
+				})
+			},
+			function(sla,callback){
+				var form = {
+					path: 'SLA.md',
+					message: util.format('deleted %s SLA',config.get('app.name')),
+					sha: sla.sha,
+				}
+				var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,'SLA.md');
+				request.delete(url,{headers: headers, body: JSON.stringify(form)},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + body);
+					}else{
+						var data = JSON.parse(body);
+						callback(null,data);
+					}
+				});
+			}
+		],function(err){
+			callback(err)
+		})
+
+	},
 
 	addBadge: function(accessToken,repoFullName,price,callback){
 		var headers = this.getAPIHeaders(accessToken);
