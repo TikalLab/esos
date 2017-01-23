@@ -13,7 +13,7 @@
 		"api_key": "MAILGUN_API_KEY"
 	},
 	"mongo": {
-		"uri": "MONGOLAB_URI"
+		"uri": "MONGODB_URI"
 	},
 	"aws": {
 		"access_key_id": "AWS_ACCESS_KEY_ID",
