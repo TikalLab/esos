@@ -8,7 +8,8 @@
 		"label": {
 			"name": "ESOS",
 			"color": "FF0000"
-		}
+		},
+		"sla": "SLA-DEV.md"
 	},
 	"app": {
 		"name": "esos_dev",

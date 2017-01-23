@@ -8,7 +8,8 @@
 		"label": {
 			"name": "ESOS_STAGING",
 			"color": "FF0000"
-		}
+		},
+		"sla": "SLA-STAGING.md"
 	},
 	"app": {
 		"name": "esos_staging",

@@ -303,12 +303,12 @@ module.exports = {
 		var headers = this.getAPIHeaders(accessToken);
 console.log('slaTemplate is %s',slaTemplate)
 		var form = {
-			path: 'SLA.md',
+			path: config.get('github.sla'),
 			message: util.format('added %s SLA',config.get('app.name')),
 			content: btoa(slaTemplate),
 		}
 console.log('form is %s',util.inspect(form))
-		var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,'SLA.md');
+		var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,config.get('github.sla'));
 		request.put(url,{headers: headers, body: JSON.stringify(form)},function(error,response,body){
 			if(error){
 				callback(error);
@@ -332,11 +332,11 @@ console.log('SLA is %s',util.inspect(data))
 			},
 			function(sla,callback){
 				var form = {
-					path: 'SLA.md',
+					path: config.get('github.sla'),
 					message: util.format('deleted %s SLA',config.get('app.name')),
 					sha: sla.sha,
 				}
-				var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,'SLA.md');
+				var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,config.get('github.sla'));
 				request.delete(url,{headers: headers, body: JSON.stringify(form)},function(error,response,body){
 					if(error){
 						callback(error);
@@ -429,7 +429,7 @@ console.log('SLA is %s',util.inspect(data))
 	},
 	getSLA: function(accessToken,repoFullName,callback){
 		var headers = this.getAPIHeaders(accessToken);
-		var url = util.format('https://api.github.com/repos/%s/contents/SLA.md',repoFullName);
+		var url = util.format('https://api.github.com/repos/%s/contents/%s',repoFullName,config.get('github.sla'));
 		request(url,{headers: headers},function(error,response,body){
 			if(error){
 				callback(error);
