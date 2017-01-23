@@ -127,7 +127,7 @@ router.get('/repos/supported',function(req,res,next){
 						callback(err)
 					}else{
 						_.each(['personal','team','business','enterprise'],function(plan){
-							repo.pricing[plan].subscribers_count = counts[plan]
+							repo.plans[plan].subscribers_count = counts[plan]
 						})
 						reposWithCounts.push(repo)
 						callback()
@@ -193,7 +193,7 @@ router.post('/support-repo',function(req,res,next){
 			async.each(['personal','team','business','enterprise'],function(plan,callback){
 				async.waterfall([
 					function(callback){
-						paypal.createAndActivatePlan(repo,plan,repo.pricing[plan].price,function(err,billingPlan){
+						paypal.createAndActivatePlan(repo,plan,repo.plans[plan].price,function(err,billingPlan){
 							callback(err,billingPlan)
 						})
 					},

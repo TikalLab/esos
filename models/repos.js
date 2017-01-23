@@ -6,7 +6,7 @@ module.exports = {
       user_id: userID,
       full_name: repo.full_name,
       html_url: repo.html_url,
-      pricing: {
+      plans: {
         personal: {
           price: pricing_perosnal,
         },
@@ -61,7 +61,7 @@ module.exports = {
   },
   setPaypalBillingPlan: function(db,repoID,plan,planID,callback){
     var repos = db.get('repos');
-    var field = util.format('pricing.%s.paypal_id',plan)
+    var field = util.format('plans.%s.paypal_id',plan)
     var updateSet = {}
     updateSet[field] = planID
     repos.findOneAndUpdate({

@@ -71,10 +71,10 @@ module.exports = {
 
     var billingAgreementAttributes = {
         name: util.format('Enterprise Support for %s, %s Plan',repo.full_name,capitalizeFirstLetter(plan)),
-        description: util.format('Enterprise Support for %s, %s Plan, $%s/month ',repo.full_name,capitalizeFirstLetter(plan),repo.pricing[plan].price),
+        description: util.format('Enterprise Support for %s, %s Plan, $%s/month ',repo.full_name,capitalizeFirstLetter(plan),repo.plans[plan].price),
         start_date: isoDate,
         plan: {
-            id: repo.pricing[plan].paypal_id
+            id: repo.plans[plan].paypal_id
         },
         payer: {
             payment_method: 'paypal'

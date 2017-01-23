@@ -28,11 +28,11 @@
 								<form action="/developers/remove-repo-support" method="POST" onsubmit="return confirm('Do you really want to stop supporting this repo?');">
 									<input type="hidden" name="repo" value="<%=repo.full_name%>">
 		              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
-									<td><%=repo.pricing.personal.subscribers_count%> @ $<%=repo.pricing.personal.price%></td>
-									<td><%=repo.pricing.team.subscribers_count%> @ $<%=repo.pricing.team.price%></td>
-									<td><%=repo.pricing.business.subscribers_count%> @ $<%=repo.pricing.business.price%></td>
-									<td><%=repo.pricing.enterprise.subscribers_count%> @ $<%=repo.pricing.enterprise.price%></td>
-									<td>$<%=(repo.pricing.personal.subscribers_count * repo.pricing.personal.price + repo.pricing.team.subscribers_count * repo.pricing.team.price + repo.pricing.business.subscribers_count * repo.pricing.business.price + repo.pricing.enterprise.subscribers_count * repo.pricing.enterprise.price).toFixed(2) %></td>
+									<td><%=repo.plans.personal.subscribers_count%> @ $<%=repo.plans.personal.price%></td>
+									<td><%=repo.plans.team.subscribers_count%> @ $<%=repo.plans.team.price%></td>
+									<td><%=repo.plans.business.subscribers_count%> @ $<%=repo.plans.business.price%></td>
+									<td><%=repo.plans.enterprise.subscribers_count%> @ $<%=repo.plans.enterprise.price%></td>
+									<td>$<%=(repo.plans.personal.subscribers_count * repo.plans.personal.price + repo.plans.team.subscribers_count * repo.plans.team.price + repo.plans.business.subscribers_count * repo.plans.business.price + repo.plans.enterprise.subscribers_count * repo.plans.enterprise.price).toFixed(2) %></td>
 		              <td><input type="submit" class="btn btn-danger" value="Remove Support"></td>
 								</form>
 	            </tr>

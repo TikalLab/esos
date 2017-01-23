@@ -1,5 +1,5 @@
 <p>Hi %recipient.name%,</p>
-<p>We're happy to inform you about a new subscriber to the <%=subscription.plan%> plan. That's $<%=repo.pricing[subscription.plan].price%>/month for you!</p>
+<p>We're happy to inform you about a new subscriber to the <%=subscription.plan%> plan. That's $<%=repo.plans[subscription.plan].price%>/month for you!</p>
 <p>The new subscriber by the way is a <%=('org' in subscription ? 'org' : ('team' in subscription ? 'team' : 'person'))%> that goes by <%=('org' in subscription? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : subscription.github_login))%></p>
 
 <p>Cheers,<br/>

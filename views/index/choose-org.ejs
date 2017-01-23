@@ -17,7 +17,7 @@
 					<form action="/clients/pay/<%=repo._id%>" method="GET">
 						<div class="field-wrapper col-md-6 col-md-offset-3">
 						  <select name="team_or_org" class="form-control">
-						    <option value="">Personal use ($<%=repo.pricing.personal.price%>)</option>
+						    <option value="">Personal use ($<%=repo.plans.personal.price%>)</option>
 						    <% orgs.forEach(function(org){ %>
 						      <option value="org:<%=plans_calculator.getPlan(org.members_count)%>:<%=org.login%>">Org <%=org.login%> (<%=org.members_count%> members, $<%=plans_calculator.getPrice(org.members_count,repo)%>)</option>
 						    <% }) %>
