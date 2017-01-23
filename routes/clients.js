@@ -215,32 +215,168 @@ router.get('/paypal/paid/:repo_id',function(req,res,next){
 				callback(err,repo,subscription)
 			})
 		},
-	],function(err,repo,subscription){
+
+		function(repo,subscription,callback){
+console.log('a')
+			labelSubscriptionOpenIssues(req.db,repo,subscription,function(err,labeledIssues){
+				console.log('b')
+				callback(err,repo,subscription,labeledIssues)
+			})
+		},
+		function(repo,subscription,labeledIssues,callback){
+			console.log('c')
+			labelSubscriptionOpenPullRequests(req.db,repo,subscription,function(err,labeledPullRequests){
+				console.log('d')
+				callback(err,repo,subscription,labeledIssues,labeledPullRequests)
+			})
+		},
+		function(repo,subscription,labeledIssues,labeledPullRequests,callback){
+			console.log('e')
+			notifyDeveloperOnNewClient(req.db,repo,subscription,labeledIssues,labeledPullRequests,function(err){
+				callback(err,repo,subscription,labeledIssues,labeledPullRequests)
+			})
+		}
+
+	],function(err,repo,subscription,labeledIssues,labeledPullRequests){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
 			delete req.session.subscription;
-			// req.session.alert = {
-			// 	type: 'success',
-			// 	message: util.format('You successfuly subscribed to %s support',repo.full_name)
-			// }
-			// res.redirect('/clients/subscriptions')
 			render(req,res,'index/thank-you',{
 				repo: repo,
-				subscription: subscription
-			})
-			// shoot this async, if it fails, dont fail the client..
-			notifyDeveloperOnNewClient(req.db,repo,subscription,function(err){
-				// nothing to do here, error, no error, all is good
-				if(err){
-					console.log('error sending new subscriber mail to developer: %s',err)
-				}
+				subscription: subscription,
+				labeled_issues: labeledIssues,
+				labeled_pull_requests: labeledPullRequests
 			})
 		}
 	})
 })
 
-function notifyDeveloperOnNewClient(db,repo,subscription,callback){
+function labelSubscriptionOpenIssues(db,repo,subscription,callback){
+	async.waterfall([
+		function(callback){
+			users.get(db,repo.user_id,function(err,developer){
+				callback(err,developer)
+			})
+		},
+		function(developer,callback){
+			users.get(db,subscription.user_id,function(err,client){
+				callback(err,developer,client)
+			})
+		},
+		function(developer,client,callback){
+			github.getRepoOpenIssues(developer.github.access_tokens.developer,repo.full_name,function(err,issues){
+				callback(err,developer,client,issues)
+			})
+		},
+		function(developer,client,issues,callback){
+			var labeledIssues = [];
+			async.each(issues,function(issue,callback){
+				async.waterfall([
+					function(callback){
+						if('org' in subscription){
+							github.isOrgMember(client.github.access_tokens.client,subscription.org,issue.user.login,function(err,isOrgMember){
+								callback(err,isOrgMember)
+							})
+						}else	if('team' in subscription){
+							github.isTeamMember(client.github.access_tokens.client,subscription.team.id,issue.user.login,function(err,isTeamMember){
+								callback(err,isTeamMember)
+							})
+						}else{
+							callback(null,issue.user.login == subscription.github_login)
+						}
+					},
+					function(shouldLabel,callback){
+						if(!shouldLabel){
+							callback(null,false)
+						}else{
+							github.labelIssue(developer.github.access_tokens.developer,repo.full_name,issue.number,function(err,label){
+								callback(err,true)
+							})
+						}
+					}
+				],function(err,isLabeled){
+					if(err){
+						callback(err)
+					}else{
+						if(isLabeled){
+							labeledIssues.push(issue)
+						}
+						callback()
+					}
+				})
+			},function(err){
+				callback(err,labeledIssues)
+			})
+		}
+	],function(err,labeledIssues){
+		callback(err,labeledIssues)
+	})
+}
+
+function labelSubscriptionOpenPullRequests(db,repo,subscription,callback){
+	async.waterfall([
+		function(callback){
+			users.get(db,repo.user_id,function(err,developer){
+				callback(err,developer)
+			})
+		},
+		function(developer,callback){
+			users.get(db,subscription.user_id,function(err,client){
+				callback(err,developer,client)
+			})
+		},
+		function(developer,client,callback){
+			github.getRepoOpenPullRequests(developer.github.access_tokens.developer,repo.full_name,function(err,pullRequests){
+				callback(err,developer,client,pullRequests)
+			})
+		},
+		function(developer,client,pullRequests,callback){
+			var labeledPullRequests = [];
+			async.each(pullRequests,function(pullRequest,callback){
+				async.waterfall([
+					function(callback){
+						if('org' in subscription){
+							github.isOrgMember(client.github.access_tokens.client,subscription.org,pullRequest.user.login,function(err,isOrgMember){
+								callback(err,isOrgMember)
+							})
+						}else	if('team' in subscription){
+							github.isTeamMember(client.github.access_tokens.client,subscription.team.id,pullRequest.user.login,function(err,isTeamMember){
+								callback(err,isTeamMember)
+							})
+						}else{
+							callback(null,pullRequest.user.login == subscription.github_login)
+						}
+					},
+					function(shouldLabel,callback){
+						if(!shouldLabel){
+							callback(null,false)
+						}else{
+							github.labelIssue(developer.github.access_tokens.developer,repo.full_name,pullRequest.number,function(err,label){
+								callback(err,true)
+							})
+						}
+					}
+				],function(err,isLabeled){
+					if(err){
+						callback(err)
+					}else{
+						if(isLabeled){
+							labeledPullRequests.push(issue)
+						}
+						callback()
+					}
+				})
+			},function(err){
+				callback(err,labeledPullRequests)
+			})
+		}
+	],function(err,labeledPullRequests){
+		callback(err,labeledPullRequests)
+	})
+}
+
+function notifyDeveloperOnNewClient(db,repo,subscription,labeledIssues,labeledPullRequests,callback){
 
 	async.waterfall([
 		function(callback){
@@ -256,6 +392,8 @@ function notifyDeveloperOnNewClient(db,repo,subscription,callback){
 				{
 					repo: repo,
 					subscription: subscription,
+					labeled_issues: labeledIssues,
+					labeled_pull_requests: labeledPullRequests
 				},
 				'developer-alert-new-subscriber',
 				function(err){

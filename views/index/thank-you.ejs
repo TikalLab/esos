@@ -3,8 +3,15 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="info-box">
-					<h3>Thanks <%=user.name%>. You have successfully signed <%= 'org' in subscription? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : '')%> up to <strong><%=repo.full_name%></strong> support.<br/>
-					Please notice that from now on, any new issue or pull request you submit will be tagged with the <strong>ESOS</strong> tag.</h3>
+					<h3>Thanks <%=user.name%>. You have successfully signed <%= 'org' in subscription? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : '')%> up to <strong><%=repo.full_name%></strong> support.</h3>
+					<h3>Please notice that from now on, any new issue or pull request you submit will be tagged with the <strong>ESOS</strong> tag.</h3>
+          <% if(labeled_issues.length > 0 && labeled_pull_requests.length > 0){ %>
+            <h3>We have already tagged your <%=labeled_issues.length%> open issues and <%=labeled_pull_requests.length%> open pull requests.</h3>
+          <% }else if(labeled_issues.length > 0){ %>
+            <h3>We have already tagged your <%=labeled_issues.length%> open issues.</h3>
+          <% }else if(labeled_pull_requests.length > 0){ %>
+            <h3>We have already tagged your <%=labeled_pull_requests.length%> open pull requests.</h3>
+          <% } %>
 				</div>
 			</div>
 		</div>

@@ -443,7 +443,80 @@ console.log('SLA is %s',util.inspect(data))
 		);
 
 
-	}
+	},
+	getRepoOpenIssues: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var issues = [];
+		var page = 1;
+		var linkHeader;
+		var url = util.format('https://api.github.com/repos/%s/issues',repoFullName)
+
+		async.whilst(
+			function(){
+				return page;
+			},
+			function(callback){
+				var qs = {
+					page: page,
+					state: 'open'
+				}
+				request(url,{headers: headers, qs: qs},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + arguments.callee.toString() + ' : ' + body);
+					}else{
+						var data = JSON.parse(body)
+						issues = issues.concat(data);
+						linkHeader = parseLinkHeader(response.headers.link);
+						page = (linkHeader? ('next' in linkHeader ? linkHeader.next.page : false) : false);
+						callback(null,issues);
+					}
+				});
+			},
+			function(err,issues){
+				callback(err,issues)
+			}
+		);
+
+	},
+	getRepoOpenPullRequests: function(accessToken,repoFullName,callback){
+		var headers = this.getAPIHeaders(accessToken);
+		var pullRequests = [];
+		var page = 1;
+		var linkHeader;
+		var url = util.format('https://api.github.com/repos/%s/pulls',repoFullName)
+
+		async.whilst(
+			function(){
+				return page;
+			},
+			function(callback){
+				var qs = {
+					page: page,
+					state: 'open'
+				}
+				request(url,{headers: headers, qs: qs},function(error,response,body){
+					if(error){
+						callback(error);
+					}else if(response.statusCode > 300){
+						callback(response.statusCode + ' : ' + arguments.callee.toString() + ' : ' + body);
+					}else{
+						var data = JSON.parse(body)
+						pullRequests = pullRequests.concat(data);
+						linkHeader = parseLinkHeader(response.headers.link);
+						page = (linkHeader? ('next' in linkHeader ? linkHeader.next.page : false) : false);
+						callback(null,pullRequests);
+					}
+				});
+			},
+			function(err,pullRequests){
+				callback(err,pullRequests)
+			}
+		);
+
+	},
+
 
 
 

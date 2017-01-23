@@ -2,6 +2,22 @@
 <p>We're happy to inform you about a new subscriber to the <%=subscription.plan%> plan. That's $<%=repo.plans[subscription.plan].price%>/month for you!</p>
 <p>The new subscriber by the way is a <%=('org' in subscription ? 'org' : ('team' in subscription ? 'team' : 'person'))%> that goes by <%=('org' in subscription? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : subscription.github_login))%></p>
 
+<% if(labeled_issues.length > 0) {%>
+<p>Oh, they had already open issues, and we tagged them with ESOS:
+  <% labeled_issues.forEach(function(issue){ %>
+    <a href="<%=issue.html_url%>"><%=issue.title%></a>
+  <% }) %>
+</p>
+<% }%>
+<% if(labeled_pull_requests.length > 0) {%>
+<p>Oh, they had already open pull requests, and we tagged them with ESOS:
+  <% labeled_pull_requests.forEach(function(pullRequest){ %>
+    <a href="<%=pullRequest.html_url%>"><%=pullRequest.title%></a>
+  <% }) %>
+</p>
+<% }%>
+
+
 <p>Cheers,<br/>
 The <%=config.get('app.name')%> team<br/>
 <%=config.get('app.protocol')%>://<%=config.get('app.domain')%>
