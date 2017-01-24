@@ -1,1 +1,55 @@
-hello
+<%
+var subscribersCount = _.reduce(supported_repos,function(memo,repo){
+  return repo.plans.personal.subscribers_count + repo.plans.team.subscribers_count + repo.plans.business.subscribers_count + repo.plans.enterprise.subscribers_count;
+},0)
+
+var monthlyRevenue = _.reduce(supported_repos,function(memo,repo){
+  return (repo.plans.personal.subscribers_count * repo.plans.personal.price + repo.plans.team.subscribers_count * repo.plans.team.price + repo.plans.business.subscribers_count * repo.plans.business.price + repo.plans.enterprise.subscribers_count * repo.plans.enterprise.price).toFixed(2)
+},0)
+
+%>
+
+<div class="page-header">
+	<div class="page-title">
+		<h3>Welcome <%=user.name%></h3>
+	</div>
+</div>
+
+<div class="row">
+	<ul class="info-blocks">
+		<li class="bg-primary">
+			<div class="top-info">
+				<a href="/developers/tasks/open">Supported Repositories</a>
+				<small></small>
+			</div>
+			<a href="/developers/tasks/open"><%=supported_repos.length%></a>
+			<span class="bottom-info bg-danger"><div><i class="icon-cart"></i></div> supported repositories</span>
+		</li>
+		<li class="bg-success">
+			<div class="top-info">
+				<a href="/developers/tasks/working-on">Subscribers</a>
+				<small></small>
+			</div>
+			<a href="/developers/tasks/working-on"><%=subscribersCount%></a>
+			<span class="bottom-info bg-primary"><div><i class="icon-wrench"></i></div> subscribers</span>
+		</li>
+		<li class="bg-danger">
+			<div class="top-info">
+				<a href="/developers/tasks/waiting-merge">Monthly $</a>
+				<small></small>
+			</div>
+			<a href="/developers/tasks/waiting-merge">$<%=monthlyRevenue%></a>
+			<span class="bottom-info bg-primary"><div><i class="icon-tree3"></i></div> monthly $</span>
+		</li>
+		<li class="bg-info">
+			<div class="top-info">
+				<a href="/developers/tasks/completed">Lifetime $</a>
+				<small></small>
+			</div>
+			<a href="/developers/tasks/completed"><%=supported_repos.length%></a>
+			<span class="bottom-info bg-primary"><div><i class="icon-coin"></i></div> lifetime $</span>
+		</li>
+
+
+	</ul>
+</div>

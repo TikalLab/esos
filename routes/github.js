@@ -98,7 +98,7 @@ console.log('data from github: %s',util.inspect(data))
 console.log('here %s,%s',githubUser.login,email)
 
 			var users = req.db.get('users');
-			users.findAndModify({
+			users.findOneAndUpdate({
 				'github.login': githubUser.login
 			},{
 				$set: {
@@ -128,7 +128,7 @@ console.log('here %s,%s',githubUser.login,email)
 				updateSet['github.access_tokens.developer'] = accessToken;
 			}
 
-			users.findAndModify({
+			users.findOneAndUpdate({
 				_id: user._id
 			},{
 				$set: updateSet

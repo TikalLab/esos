@@ -22,9 +22,45 @@ router.get('/dashboard',function(req,res,next){
 	if(!('paypal_email' in req.session.user)){
 		res.redirect('/developers/confirm-paypal-email')
 	}else{
-		render(req,res,'developers/dashboard',{
-			active_page: 'dashboard'
+		async.waterfall([
+			function(callback){
+				repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
+					callback(err,repos)
+				})
+			},
+			function(repos,callback){
+				var reposWithCounts = [];
+				async.each(repos,function(repo,callback){
+					subscriptions.countPerRepo(req.db,repo._id.toString(),function(err,counts){
+						if(err){
+							callback(err)
+						}else{
+							_.each(['personal','team','business','enterprise'],function(plan){
+								repo.plans[plan].subscribers_count = counts[plan]
+							})
+							reposWithCounts.push(repo)
+							callback()
+						}
+					})
+				},function(err){
+					callback(err,reposWithCounts)
+				})
+			}
+		],function(err,supporetdRepos){
+			if(supporetdRepos.length == 0){
+				req.session.alert = {
+					type: 'warning',
+					message: 'First thing to do is to choose which repository you want to support and setup support for it'
+				}
+				res.redirect('/developers/repos/unsupported')
+			}else{
+				render(req,res,'developers/dashboard',{
+					active_page: 'dashboard',
+					supported_repos: supporetdRepos
+				})
+			}
 		})
+
 	}
 })
 
