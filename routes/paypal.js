@@ -101,10 +101,15 @@ function processPaymentSaleCompleted(db,event,callback){
 			})
 		},
 		function(subscription,callback){
+			repos.get(db,subscription.repo_id,function(err,repo){
+				callback(err,subscription,repo)
+			})
+		},
+		function(subscription,repo,callback){
 			// PAY attention
 			// if we get the payment.sale.completed event before the billing.agreement.created, the lack of subscrion id
 			// here will fail this method, and a 503 will be returned so paypal will fire it again untul successful ;-)
-			payments.add(db,subscription._id.toString(),event.resource.id,event.resource.amount.total,function(err,payment){
+			payments.add(db,subscription._id.toString(),event.resource.id,event.resource.amount.total,repo.user_id,function(err,payment){
 				callback(err,payment)
 			})
 		}

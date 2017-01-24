@@ -1,12 +1,15 @@
 <%
 var subscribersCount = _.reduce(supported_repos,function(memo,repo){
-  return repo.plans.personal.subscribers_count + repo.plans.team.subscribers_count + repo.plans.business.subscribers_count + repo.plans.enterprise.subscribers_count;
+  return memo + (repo.plans.personal.subscribers_count + repo.plans.team.subscribers_count + repo.plans.business.subscribers_count + repo.plans.enterprise.subscribers_count);
 },0)
 
 var monthlyRevenue = _.reduce(supported_repos,function(memo,repo){
-  return (repo.plans.personal.subscribers_count * repo.plans.personal.price + repo.plans.team.subscribers_count * repo.plans.team.price + repo.plans.business.subscribers_count * repo.plans.business.price + repo.plans.enterprise.subscribers_count * repo.plans.enterprise.price).toFixed(2)
+  return memo + Number((repo.plans.personal.subscribers_count * repo.plans.personal.price + repo.plans.team.subscribers_count * repo.plans.team.price + repo.plans.business.subscribers_count * repo.plans.business.price + repo.plans.enterprise.subscribers_count * repo.plans.enterprise.price).toFixed(2))
 },0)
 
+var lifetimeEarning = _.reduce(payments,function(memo,payment){
+  return memo + (payment.status == 'paid' ? payment.amount : 0)
+},0)
 %>
 
 <div class="page-header">
@@ -46,7 +49,7 @@ var monthlyRevenue = _.reduce(supported_repos,function(memo,repo){
 				<a href="/developers/tasks/completed">Lifetime $</a>
 				<small></small>
 			</div>
-			<a href="/developers/tasks/completed"><%=supported_repos.length%></a>
+			<a href="/developers/tasks/completed">$<%=lifetimeEarning%></a>
 			<span class="bottom-info bg-primary"><div><i class="icon-coin"></i></div> lifetime $</span>
 		</li>
 

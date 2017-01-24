@@ -16,38 +16,54 @@ var errorHandler = require('../app_modules/error');
 var users = require('../models/users');
 var repos = require('../models/repos');
 var subscriptions = require('../models/subscriptions');
+var payments = require('../models/payments');
 
 
 router.get('/dashboard',function(req,res,next){
 	if(!('paypal_email' in req.session.user)){
 		res.redirect('/developers/confirm-paypal-email')
 	}else{
-		async.waterfall([
+		async.parallel([
 			function(callback){
-				repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
-					callback(err,repos)
+				async.waterfall([
+					function(callback){
+						repos.getUserRepos(req.db,req.session.user._id.toString(),function(err,repos){
+							callback(err,repos)
+						})
+					},
+					function(repos,callback){
+						var reposWithCounts = [];
+						async.each(repos,function(repo,callback){
+							subscriptions.countPerRepo(req.db,repo._id.toString(),function(err,counts){
+								if(err){
+									callback(err)
+								}else{
+									_.each(['personal','team','business','enterprise'],function(plan){
+										repo.plans[plan].subscribers_count = counts[plan]
+									})
+									reposWithCounts.push(repo)
+									callback()
+								}
+							})
+						},function(err){
+							callback(err,reposWithCounts)
+						})
+					}
+				],function(err,supportedRepos){
+					callback(err,supportedRepos)
 				})
 			},
-			function(repos,callback){
-				var reposWithCounts = [];
-				async.each(repos,function(repo,callback){
-					subscriptions.countPerRepo(req.db,repo._id.toString(),function(err,counts){
-						if(err){
-							callback(err)
-						}else{
-							_.each(['personal','team','business','enterprise'],function(plan){
-								repo.plans[plan].subscribers_count = counts[plan]
-							})
-							reposWithCounts.push(repo)
-							callback()
-						}
-					})
-				},function(err){
-					callback(err,reposWithCounts)
+			function(callback){
+				payments.getPerDeveloper(req.db,req.session.user._id.toString(),function(err,payments){
+					callback(err,payments)
 				})
 			}
-		],function(err,supporetdRepos){
-			if(supporetdRepos.length == 0){
+		],function(err,results){
+			var supportedRepos = results[0];
+console.log('suppored repos: %s',util.inspect(supportedRepos,{depth:8}))			
+			var payments = results[1];
+
+			if(supportedRepos.length == 0){
 				req.session.alert = {
 					type: 'warning',
 					message: 'First thing to do is to choose which repository you want to support and setup support for it'
@@ -56,7 +72,8 @@ router.get('/dashboard',function(req,res,next){
 			}else{
 				render(req,res,'developers/dashboard',{
 					active_page: 'dashboard',
-					supported_repos: supporetdRepos
+					supported_repos: supportedRepos,
+					payments: payments
 				})
 			}
 		})
