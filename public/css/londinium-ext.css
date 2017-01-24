@@ -25,7 +25,7 @@
 }
 
 .twitter-typeahead {
-	width: 100%;	
+	width: 100%;
 }
 
 .twitter-typeahead .tt-query,
@@ -84,10 +84,23 @@
 }
 
 .loading-animation{
-	text-align:center; 
+	text-align:center;
 	padding: 30px 0 90px;
 }
 
 .fa {
 	font-size: 16px;
+}
+
+.info-blocks > li > a {
+  font-size: 48px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.info-blocks > li > span > div > i {
+  font-size: 36px;
+  display: inline-block;
+	margin-top: 12px;
+  margin-bottom: 20px;
 }

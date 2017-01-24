@@ -22,34 +22,34 @@ var lifetimeEarning = _.reduce(payments,function(memo,payment){
 	<ul class="info-blocks">
 		<li class="bg-primary">
 			<div class="top-info">
-				<a href="/developers/tasks/open">Supported Repositories</a>
+				<a href="/developers/repos/supported">Supported Repositories</a>
 				<small></small>
 			</div>
-			<a href="/developers/tasks/open"><%=supported_repos.length%></a>
-			<span class="bottom-info bg-danger"><div><i class="icon-cart"></i></div> supported repositories</span>
+			<a href="/developers/repos/supported"><%=supported_repos.length%></a>
+			<span class="bottom-info bg-danger"><div><i class="icon-database"></i></div> supported repositories</span>
 		</li>
 		<li class="bg-success">
 			<div class="top-info">
-				<a href="/developers/tasks/working-on">Subscribers</a>
+				<a href="/developers/repos/supported">Subscribers</a>
 				<small></small>
 			</div>
-			<a href="/developers/tasks/working-on"><%=subscribersCount%></a>
-			<span class="bottom-info bg-primary"><div><i class="icon-wrench"></i></div> subscribers</span>
+			<a href="/developers/repos/supported"><%=subscribersCount%></a>
+			<span class="bottom-info bg-primary"><div><i class="icon-people"></i></div> subscribers</span>
 		</li>
 		<li class="bg-danger">
 			<div class="top-info">
-				<a href="/developers/tasks/waiting-merge">Monthly $</a>
+				<a href="/developers/repos/supported">Monthly $</a>
 				<small></small>
 			</div>
-			<a href="/developers/tasks/waiting-merge">$<%=monthlyRevenue%></a>
-			<span class="bottom-info bg-primary"><div><i class="icon-tree3"></i></div> monthly $</span>
+			<a href="/developers/repos/supported">$<%=monthlyRevenue%></a>
+			<span class="bottom-info bg-primary"><div><i class="icon-calendar"></i></div> monthly $</span>
 		</li>
 		<li class="bg-info">
 			<div class="top-info">
-				<a href="/developers/tasks/completed">Lifetime $</a>
+				<a href="/developers/payments">Lifetime $</a>
 				<small></small>
 			</div>
-			<a href="/developers/tasks/completed">$<%=lifetimeEarning%></a>
+			<a href="/developers/payments">$<%=lifetimeEarning%></a>
 			<span class="bottom-info bg-primary"><div><i class="icon-coin"></i></div> lifetime $</span>
 		</li>
 
