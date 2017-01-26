@@ -1,0 +1,34 @@
+<div class="page-header">
+	<div class="page-title">
+		&nbsp;
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Developers</h6></div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+						<th>id</th>
+						<th>name</th>
+            <th>github login</th>
+						<th>email</th>
+						<th>member since</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clients.forEach(function(client){ %>
+	            <tr>
+									<td><%=client._id%></td>
+									<td><%=client.name%></td>
+									<td><%=client.github.login%></td>
+									<td><%=client.email%></td>
+									<td><%=moment(client.created_at).format('YYYY-MM-DD')%></td>
+	            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

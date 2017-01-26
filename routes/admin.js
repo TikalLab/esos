@@ -45,32 +45,21 @@ router.get('/',auth,function(req,res,next){
 router.get('/developers',auth,function(req,res,next){
 	async.waterfall([
 		function(callback){
-			repos.getAllDevlopers(req.db,function(err,developers){
-				callback(err,developers)
+			repos.getAllDevelopers(req.db,function(err,developerIDs){
+				callback(err,developerIDs)
 			})
 		},
-		function(developers,callback){
-			var developersWithUserData = [];
-			async.each(developers,function(developer,callback){
-				users.get(req.db,developer,function(err,user){
-					if(err){
-						callback(err)
-					}else{
-						user.reposData = developer
-						developersWithUserData.push(user)
-						callback()
-					}
-				})
-			},function(err){
-				callback(err,developersWithUserData)
+		function(developerIDs,callback){
+			users.getByIDs(req.db,developerIDs,function(err,developers){
+				callback(err,developers)
 			})
 		}
-	],function(err,repos){
+	],function(err,developers){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
 			render(req,res,'admin/developers',{
-				developers: developersWithUserData,
+				developers: developers,
 				active_page: 'developers'
 			})
 		}
@@ -78,6 +67,30 @@ router.get('/developers',auth,function(req,res,next){
 
 })
 
+router.get('/clients',auth,function(req,res,next){
+	async.waterfall([
+		function(callback){
+			repos.getAllDevelopers(req.db,function(err,developerIDs){
+				callback(err,developerIDs)
+			})
+		},
+		function(developerIDs,callback){
+			users.getByIDsNegative(req.db,developerIDs,function(err,clients){
+				callback(err,clients)
+			})
+		}
+	],function(err,clients){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			render(req,res,'admin/clients',{
+				clients: clients,
+				active_page: 'clients'
+			})
+		}
+	})
+
+})
 router.get('/repos',auth,function(req,res,next){
 	async.waterfall([
 		function(callback){

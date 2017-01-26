@@ -1,3 +1,4 @@
+var _ = require('underscore')
 module.exports = {
   get: function(db,userID,callback){
     var users = db.get('users');
@@ -18,6 +19,32 @@ module.exports = {
     },function(err,user){
       callback(err,user)
     })
+  },
+  getByIDs: function(db,list,callback){
+    var users = db.get('users');
+
+    var userIDs = [];
+    _.each(list,function(item){
+      userIDs.push(users.id(item))
+    })
+
+    users.find({_id: {$in: userIDs}},function(err,users){
+      callback(err,users)
+    })
+
+  },
+  getByIDsNegative: function(db,list,callback){
+    var users = db.get('users');
+
+    var userIDs = [];
+    _.each(list,function(item){
+      userIDs.push(users.id(item))
+    })
+
+    users.find({_id: {$nin: userIDs}},function(err,users){
+      callback(err,users)
+    })
+
   }
 
 }
