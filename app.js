@@ -23,7 +23,7 @@ var clients = require('./routes/clients');
 var developers = require('./routes/developers');
 var github = require('./routes/github');
 var paypal = require('./routes/paypal');
-// var admin = require('./routes/admin');
+var admin = require('./routes/admin');
 //var admin = require('./routes/admin');
 
 var app = express();
@@ -70,7 +70,7 @@ app.use('/clients', clients);
 app.use('/developers', developers);
 app.use('/github', github);
 app.use('/paypal', paypal);
-// app.use('/admin', admin);
+app.use('/admin', admin);
 //app.use('/admin', admin);
 
 

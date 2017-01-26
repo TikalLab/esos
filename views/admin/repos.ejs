@@ -1,0 +1,46 @@
+<div class="page-header">
+	<div class="page-title">
+		&nbsp;
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> My Supported Repos</h6></div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+						<th>id</th>
+						<th>developer id</th>
+            <th>full name</th>
+						<th>personal subs (# @ $)</th>
+						<th>team subs (# @ $)</th>
+						<th>business subs (# @ $)</th>
+						<th>enterprise subs (# @ $)</th>
+						<th>monthly $</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% repos.forEach(function(repo){ %>
+            <%
+							var trID = repo._id
+						%>
+	            <tr id="<%=trID%>">
+								<form action="/developers/remove-repo-support" method="POST" onsubmit="return confirm('Do you really want to stop supporting this repo?');">
+									<input type="hidden" name="repo" value="<%=repo.full_name%>">
+									<td><%=repo._id%></td>
+									<td><%=repo.user_id%></td>
+		              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
+									<td><%=repo.plans.personal.subscribers_count%> @ $<%=repo.plans.personal.price%></td>
+									<td><%=repo.plans.team.subscribers_count%> @ $<%=repo.plans.team.price%></td>
+									<td><%=repo.plans.business.subscribers_count%> @ $<%=repo.plans.business.price%></td>
+									<td><%=repo.plans.enterprise.subscribers_count%> @ $<%=repo.plans.enterprise.price%></td>
+									<td>$<%=(repo.plans.personal.subscribers_count * repo.plans.personal.price + repo.plans.team.subscribers_count * repo.plans.team.price + repo.plans.business.subscribers_count * repo.plans.business.price + repo.plans.enterprise.subscribers_count * repo.plans.enterprise.price).toFixed(2) %></td>
+								</form>
+	            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

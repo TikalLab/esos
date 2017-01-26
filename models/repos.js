@@ -41,6 +41,18 @@ module.exports = {
       callback(err,repos)
     })
   },
+  getAll: function(db,callback){
+    var repos = db.get('repos');
+    repos.find({},function(err,repos){
+      callback(err,repos)
+    })
+  },
+  getAllDevelopers: function(db,callback){
+    var repos = db.get('repos');
+    repos.distinct('user_id',function(err,develoeprs){
+      callback(err,develoeprs)
+    })
+  },
   getByUserAndFullName: function(db,userID,fullName,callback){
     var repos = db.get('repos');
     repos.findOne({user_id: userID, full_name: fullName},function(err,repo){
