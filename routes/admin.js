@@ -91,6 +91,7 @@ router.get('/clients',auth,function(req,res,next){
 	})
 
 })
+
 router.get('/repos',auth,function(req,res,next){
 	async.waterfall([
 		function(callback){
@@ -128,6 +129,36 @@ router.get('/repos',auth,function(req,res,next){
 	})
 })
 
+router.get('/repo/:repo_id',auth,function(req,res,next){
+	async.waterfall([
+		function(callback){
+			repos.get(req.db,req.params.repo_id,function(err,repo){
+				callback(err,repo)
+			})
+		},
+		function(repo,callback){
+			users.get(req.db,repo.user_id,function(err,developer){
+				callback(err,repo,developer)
+			})
+		},
+		function(repo,developer,callback){
+			subscriptions.getPerRepo(req.db,req.params.repo_id,function(err,subscriptions){
+				callback(err,repo,developer,subscriptions)
+			})
+		}
+	],function(err,repo,developer,subscriptions){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+			render(req,res,'admin/repo',{
+				developer: developer,
+				repo: repo,
+				subscriptions: subscriptions,
+				active_page: 'repos'
+			})
+		}
+	})
+})
 function render(req,res,template,params){
 
 	// params.user = req.session.user;

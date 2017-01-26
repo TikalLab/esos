@@ -130,6 +130,12 @@ module.exports = {
     },function(err){
       callback(err,counts)
     })
+  },
+  getPerRepo: function(db,repoID,callback){
+    var subscriptions = db.get('subscriptions');
+    subscription.find({repo_id: repoID},function(err,subscriptions){
+      callback(err,subscriptions)
+    })
   }
 
 }
