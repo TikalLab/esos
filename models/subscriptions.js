@@ -133,7 +133,7 @@ module.exports = {
   },
   getPerRepo: function(db,repoID,callback){
     var subscriptions = db.get('subscriptions');
-    subscription.find({repo_id: repoID},function(err,subscriptions){
+    subscriptions.find({repo_id: repoID},function(err,subscriptions){
       callback(err,subscriptions)
     })
   }

@@ -5,7 +5,7 @@
 </div>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Developers</h6></div>
+	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Clients</h6></div>
     <div class="datatable">
       <table class="table">
         <thead>
@@ -20,7 +20,7 @@
         <tbody>
           <% clients.forEach(function(client){ %>
 	            <tr>
-									<td><%=client._id%></td>
+									<td><a href="/admin/user/<%=client._id%>"><%=client._id%></a></td>
 									<td><%=client.name%></td>
 									<td><%=client.github.login%></td>
 									<td><%=client.email%></td>

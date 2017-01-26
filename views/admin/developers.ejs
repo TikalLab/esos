@@ -20,7 +20,7 @@
         <tbody>
           <% developers.forEach(function(developer){ %>
 	            <tr>
-									<td><%=developer._id%></td>
+									<td><a href="/admin/user/<%=developer._id%>"><%=developer._id%></a></td>
 									<td><%=developer.name%></td>
 									<td><%=developer.github.login%></td>
 									<td><%=developer.email%></td>

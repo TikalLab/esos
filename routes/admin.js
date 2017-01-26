@@ -159,6 +159,39 @@ router.get('/repo/:repo_id',auth,function(req,res,next){
 		}
 	})
 })
+
+router.get('/user/:user_id',auth,function(req,res,next){
+	async.parallel([
+		function(callback){
+			users.get(req.db,req.params.user_id,function(err,user){
+				callback(err,user)
+			})
+		},
+		function(callback){
+			repos.getUserRepos(req.db,req.params.user_id,function(err,repos){
+				callback(err,repos)
+			})
+		},
+		function(callback){
+			subscriptions.getForUser(req.db,req.params.user_id,function(err,subscriptions){
+				callback(err,subscriptions)
+			})
+		}
+	],function(err,results){
+		if(err){
+			errorHandler.error(req,res,next,err);
+		}else{
+
+			render(req,res,'admin/user',{
+				user: results[0],
+				supported_repos: results[1],
+				subscriptions: results[2],
+				active_page: 'users'
+			})
+		}
+	})
+})
+
 function render(req,res,template,params){
 
 	// params.user = req.session.user;
@@ -176,7 +209,7 @@ function render(req,res,template,params){
 	params.alert = req.session.alert;
 	delete req.session.alert;
 
-	params.user = req.session.user;
+	// params.user = req.session.user;
 
 	if(!('active_page' in params)){
 		params.active_page = false;

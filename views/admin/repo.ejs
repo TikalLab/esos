@@ -10,7 +10,6 @@
 						<div class="form-group">
 								<label>id:</label>
 								<input readonly type="text" class="form-control" value="<%=repo._id%>">
-								<a href="<%=repo.html_url%>">Github Link</a>
 						</div>
 						<div class="form-group">
 								<label>name:</label>
@@ -18,7 +17,7 @@
 						</div>
 		        <div class="form-group">
 		            <label>github link:</label>
-								<a href="<%=repo.html_url%>">Github Link</a>
+								<a target="_blank" href="<%=repo.html_url%>">Github Link</a>
 		        </div>
 	    </div>
 	</div>
@@ -46,7 +45,7 @@
 	</div>
 
 	<form id="address-form" role="form" action="/admin/crm/update-user-address" method="POST">
-		<input type="hidden" name="user_id" value="<%=user._id%>">
+		<input type="hidden" name="user_id" value="<%=developer._id%>">
 		<div class="panel panel-default">
 			<div class="panel-heading"><h6 class="panel-title"><i class="icon-new"></i> Developer</h6></div>
 				<div class="panel-body">
@@ -90,7 +89,7 @@
 	          <% subscriptions.forEach(function(subscription){ %>
 		            <tr>
 			              <td><%=subscription._id%></td>
-										<td><%=subscription.user_id%></td>
+										<td><a href="/admin/user/<%=subscription.user_id%>"><%=subscription.user_id%></a></td>
 										<td><%=subscription.github_login%></td>
 										<td><%=subscription.plan%></td>
 	                  <td><%=moment(subscription.created_at).format('YYYY-MM-DD')%></td>

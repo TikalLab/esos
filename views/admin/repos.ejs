@@ -18,19 +18,21 @@
 						<th>business subs (# @ $)</th>
 						<th>enterprise subs (# @ $)</th>
 						<th>monthly $</th>
+						<th>since</th>
           </tr>
         </thead>
         <tbody>
           <% repos.forEach(function(repo){ %>
 	            <tr>
 									<td><a href="/admin/repo/<%=repo._id%>"><%=repo._id%></a</td>
-									<td><%=repo.user_id%></td>
+									<td><a href="/admin/user/<%=repo.user_id%>"><%=repo.user_id%></a></td>
 		              <td><a href="<%=repo.html_url%>"><%=repo.full_name%></a></td>
 									<td><%=repo.plans.personal.subscribers_count%> @ $<%=repo.plans.personal.price%></td>
 									<td><%=repo.plans.team.subscribers_count%> @ $<%=repo.plans.team.price%></td>
 									<td><%=repo.plans.business.subscribers_count%> @ $<%=repo.plans.business.price%></td>
 									<td><%=repo.plans.enterprise.subscribers_count%> @ $<%=repo.plans.enterprise.price%></td>
 									<td>$<%=(repo.plans.personal.subscribers_count * repo.plans.personal.price + repo.plans.team.subscribers_count * repo.plans.team.price + repo.plans.business.subscribers_count * repo.plans.business.price + repo.plans.enterprise.subscribers_count * repo.plans.enterprise.price).toFixed(2) %></td>
+									<td><%=moment(repo.created_at).format('YYYY-MM-DD')%></td>
 	            </tr>
           <% }) %>
         </tbody>

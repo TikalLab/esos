@@ -1,0 +1,81 @@
+<div class="page-header">
+	<div class="page-title">
+		&nbsp;
+	</div>
+</div>
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h6 class="panel-title"><i class="icon-new"></i> User</h6></div>
+				<div class="panel-body">
+							<div class="form-group">
+									<label>id:</label>
+									<input type="text" class="form-control" name="recipient_name" value="<%=user._id%>">
+							</div>
+							<div class="form-group">
+			            <label>github login:</label>
+									<input type="text" class="form-control" name="line1" value="<%=user.github.login%>">
+			        </div>
+			        <div class="form-group">
+			            <label>name:</label>
+									<input type="text" class="form-control" name="line1" value="<%=user.name%>">
+			        </div>
+							<div class="form-group">
+			            <label>email:</label>
+									<input type="text" class="form-control" name="line2" value="<%=user.email%>">
+			        </div>
+		    </div>
+		</div>
+
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Supported Repos</h6></div>
+	    <div class="datatable">
+	      <table class="table">
+	        <thead>
+	          <tr>
+	            <th>id</th>
+							<th>name</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	          <% supported_repos.forEach(function(repo){ %>
+		            <tr>
+			              <td><a href="/admin/repo/<%=repo._id%>"><%=repo._id%></a></td>
+										<td><%=repo.full_name%></td>
+		            </tr>
+	          <% }) %>
+	        </tbody>
+	      </table>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Subscriptions</h6></div>
+			<div class="datatable">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>id</th>
+							<th>plan</th>
+							<th>since</th>
+							<th>type</th>
+							<th>beneficient</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% subscriptions.forEach(function(subscription){ %>
+								<tr>
+										<td><%=subscription._id%></td>
+										<td><%=subscription.plan%></td>
+										<td><%=moment(subscription.created_at).format('YYYY-MM-DD')%></td>
+										<td><%=('org' in subscription ? 'org' : ('team' in subscription ? 'team' : 'personal'))%></td>
+										<td><%=('org' in subscription ? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : subscription.github_login))%></td>
+								</tr>
+						<% }) %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
