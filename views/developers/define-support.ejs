@@ -5,7 +5,7 @@
 </div>
 
 
-<form role="form" action="/developers/support-repo"  method="POST">
+<form id="the-form" role="form" action="/developers/support-repo"  method="POST">
 	<input type="hidden" name="repo" value="<%=repo%>">
 	<div class="panel panel-default">
 		<div class="panel-heading"><h6 class="panel-title"><i class="icon-new"></i> Define Support for <%=repo%></h6></div>
@@ -34,3 +34,28 @@
 	    </div>
 	</div>
 </form>
+
+<script>
+$(function(){
+	$('#the-form').validate({
+		rules: {
+			pricing_personal: {
+				required: true,
+				number: true
+			},
+			pricing_team: {
+				required: true,
+				number: true
+			},
+			pricing_business: {
+				required: true,
+				number: true
+			},
+			pricing_enterprise: {
+				required: true,
+				number: true
+			},
+		}
+	})
+})
+</script>
