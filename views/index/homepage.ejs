@@ -1,8 +1,85 @@
+<section class="section3" id="why-it-works">
+
+<div class="container">
+
+	<!-- SECTION HEADING -->
+
+	<h2>Why It Works</h2>
+
+	<div class="colored-line">
+	</div>
+
+	<div class="features">
+
+		<!-- FEATURES ROW 1 -->
+		<div class="row">
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-3">
+				<div class="feature">
+					<div class="icon">
+						<span class="ion-link"></span>
+					</div>
+					<h4>You went open source</h4>
+					<p>
+            You may have started it from scratch, or you may have open sourced some proprietary work you’ve done. You wanted to give back to the community, to gain recognition, maybe just to get some feedback. You published an open source project. Next thing you know, you have users. Sometimes tens, hundreds and maybe even thousands of them.
+          </p>
+				</div>
+			</div>
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-3">
+				<div class="feature">
+					<div class="icon">
+						<span class="ion-help-buoy"></span>
+					</div>
+					<h4>Your users rely on you</h4>
+					<p>
+						Your users love what you did. They use it, and they come to rely on it. Sometimes they have problems and they ask for your help. Sometimes they go as far as to solve their problems and they send you pull requests so you can integrate it with your core project.
+					</p>
+				</div>
+			</div>
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-3">
+				<div class="feature">
+					<div class="icon">
+						<span class="ion-ios-pricetag"></span>
+					</div>
+					<h4>Work piles up</h4>
+					<p>
+						Suddenly your project becomes a burden. You can’t commit to it because you do it voluntarily, and on the other hand you get pressure from your users as if you were a commercial provider. Someone will suffer - Either you, your users, or you may even decide to quit the project altogether.
+					</p>
+				</div>
+			</div>
+
+			<!-- SINGLE FEATURE BOX -->
+			<div class="col-md-3">
+				<div class="feature">
+					<div class="icon">
+						<span class="ion-ios-pricetag"></span>
+					</div>
+					<h4>Vizsla to the help</h4>
+					<p>
+						This is where Vizsla fits in. We fill the gap between your resources and user expectations. We create an infrastructure for you to provide your users with obligatory attentiveness on your end. And in return, they’ll support you financially on the other hand. It’s a great deal where everybody becomes happy.
+					</p>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div> <!-- /END CONTAINER -->
+</section>
+
+
+
 
 <!-- =========================
      SECTION 3
 ============================== -->
-<section class="section3" id="how-it-works">
+<section class="section3 bgcolor-2" id="how-it-works">
 
 <div class="container">
 
@@ -66,7 +143,7 @@
 
 
 
-<section class="section2 bgcolor-2" id="faq">
+<section class="section2" id="faq">
 <div class="container">
 
 	<h2>Frequently Asked Questions</h2>
@@ -127,10 +204,27 @@
 					<div class="details pull-left">
 						<h6>What Github permission are you requiring and why?</h6>
 						<p>
-							We ask for <code>user:email</code> so we can contact you via email, <code>admin:repo_hook</code> so we can be notified by Github of new issues and pull requests on your repository, and <code>public_repo</code> so we can add the Vizsla badge to your repository's README.md file and SLA.md file to your repository
+							We ask for <code>user:email</code> so we can contact you via email, <code>admin:repo_hook</code> so we can setup a hook on your repository and be notified by Github of new issues and pull requests, and <code>public_repo</code> so we can add the Vizsla badge to your repository's README.md file and SLA.md file to your repository
 						</p>
 					</div>
 					</li>
+
+					
+
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<!-- DETAILS WITH LIST -->
+			<div class="brief text-left">
+
+
+
+				<!-- FEATURE LIST -->
+				<ul class="feature-list-2">
+
 
 					<!-- FEATURE -->
 					<li>
@@ -155,9 +249,9 @@
 					</div>
 					<!-- DETAILS -->
 					<div class="details pull-left">
-						<h6>How do I screen developers?</h6>
+						<h6>What excatly am I commiting for here?</h6>
 						<p>
-							That's part of the beauty of <%=config.get('app.name')%> -- It's based completely on GitHub, where each developer has their public profile, and you can trace their work and style.
+							You define it for yourself, we can't dictate anything. We provide a <a href="#">basic SLA</a> file that defines the parameters of the service you intend to provide. Modify it as you will to suit your wishes. This SLA is what you're commiting to.
 						</p>
 					</div>
 					</li>
@@ -170,85 +264,9 @@
 					</div>
 					<!-- DETAILS -->
 					<div class="details pull-left">
-						<h6>Do I have control over which developer work on my tasks?</h6>
+						<h6>Can I quit if it's not for me?</h6>
 						<p>
-							On private repositories, simply don't grant access to anyone you're not feel comfortable with. On public repositories, any developer can take the task, but you can unassign them for any reason.
-						</p>
-					</div>
-					</li>
-
-
-
-				</ul>
-			</div>
-		</div>
-
-		<div class="col-md-6">
-			<!-- DETAILS WITH LIST -->
-			<div class="brief text-left">
-
-
-
-				<!-- FEATURE LIST -->
-				<ul class="feature-list-2">
-
-
-					<!-- FEATURE -->
-					<li>
-					<!-- ICON -->
-					<div class="icon-container pull-left">
-						<span class="ion-ios-people"></span>
-					</div>
-					<!-- DETAILS -->
-					<div class="details pull-left">
-						<h6>Do many developers work on each task?</h6>
-						<p>
-							No, just one at a time. Once a developer grabs a task, it's theirs. If you're not happy with their progress though, you can unassign them and then other developers will be able to grab it again.
-						</p>
-					</div>
-					</li>
-
-					<!-- FEATURE -->
-					<li>
-					<!-- ICON -->
-					<div class="icon-container pull-left">
-						<span class="ion-shuffle"></span>
-					</div>
-					<!-- DETAILS -->
-					<div class="details pull-left">
-						<h6>Sometimes developers seem to be be assigned to the issue once they grab it, and sometimes it seems <%=config.get('app.name')%> assigns them via a comment on my behalf. What's the difference?</h6>
-						<p>
-							It depends if it's a personal repository or one that belongs to an organization. With organization repositories, we are given much more flexibility from the GitHub API. For example, we can add collaborators with only the pull permission, and that's what we do in order to assign the developer to the issue. However, with personal repositories, we can only add collaborators will full permissions and we wouldn't want to do that. So we simply add a comment on your behalf, mentioning the developer instead.
-						</p>
-					</div>
-					</li>
-
-					<!-- FEATURE -->
-					<li>
-					<!-- ICON -->
-					<div class="icon-container pull-left">
-						<span class="icon_chat"></span>
-					</div>
-					<!-- DETAILS -->
-					<div class="details pull-left">
-						<h6>Can I communicate with developers working on my tasks?</h6>
-						<p>
-							Sure, please do. We didn't put our own mechanism in place specifically for that because we want to keep you away from GitHub for as little as possible. The best and most transparent approach is to communicate over comments on the GitHub issue, or alternatively by using <a href="http://gitter.im">Gitter</a>.
-						</p>
-					</div>
-					</li>
-
-					<!-- FEATURE -->
-					<li>
-					<!-- ICON -->
-					<div class="icon-container pull-left">
-						<span class="icon_currency"></span>
-					</div>
-					<!-- DETAILS -->
-					<div class="details pull-left">
-						<h6>How do payments work?</h6>
-						<p>
-							Payments are currently processed via pre-approved Paypal payments. For each new task you create, we'll ask you to pre-approve a payment for it. This preapprovment will only be utilized if you merge a pull request for that task, which implies that you got your job done.
+							Sure. We will simply notify your clients,stop collecting payments from them, and may even refund their last charge.
 						</p>
 					</div>
 					</li>
