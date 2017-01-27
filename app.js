@@ -29,7 +29,7 @@ var admin = require('./routes/admin');
 var app = express();
 
 app.use(session({
-	secret: 'MyBloody',
+	secret: config.get('app.cookie_secret'),
 	resave: false,
 	saveUninitialized: false,
 	store: new MongoStore({

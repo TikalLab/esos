@@ -1,0 +1,56 @@
+{
+	"github": {
+		"client_id": "7547c19e666bf1a7f4f1",
+		"client_secret": "",
+		"redirect_domain": "vizsla.io",
+		"webhook_domain": "vizsla.herokuapp.com",
+		"hook_secret": "",
+		"label": {
+			"name": "VIZSLA",
+			"color": "FF0000"
+		},
+		"sla": "SLA.md"
+	},
+	"app": {
+		"name": "Vizsla.io",
+		"domain": "vizsla.io",
+		"protocol": "http",
+		"email": "support@vizsla.io",
+		"unsubscribe_secret": "",
+		"paypal_email": "shahar@gighub.com",
+		"commission": 0.1,
+		"cdn_url": "",
+		"default_pricing": {
+			"personal": 5,
+			"team": 19,
+			"business": 49,
+			"enterprise": 99
+		}
+	},
+	"mongo": {
+		"uri": ""
+	},
+	"auth": {
+		"username": "admin",
+		"password": ""
+	},
+	"view": {
+		"list_limit": 2
+	},
+	"mailgun": {
+		"api_key": "",
+		"domain": "infoxicate.com"
+	},
+	"paypal": {
+		"client_id": "AZkvijDRrvv1DQhq2m7iRBiTgsLh9zTLPtS2n1KSCIUwD5Ru4d_I2LiSnCR2g7vuEFKgutXoOoKPFXwI",
+		"client_secret": "",
+		"mode": "live",
+		"webhook_domain": "vizsla.herokuapp.com",
+		"webhook_id": "7GP71202AB288702U"
+	},
+	"aws": {
+		"access_key_id": "",
+		"secret_access_key": "",
+		"svg_bucket": "svg.vizsla.io"
+	}
+}

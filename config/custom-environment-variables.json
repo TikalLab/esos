@@ -20,6 +20,7 @@
 		"secret_access_key": "AWS_SECRET_ACCESS_KEY"
 	},
 	"app": {
-		"unsubscribe_secret": "APP_UNSUBSCRIBE_SECRET"
+		"unsubscribe_secret": "APP_UNSUBSCRIBE_SECRET",
+		"cookie_secret": "APP_COOKIE_SECRET",
 	}
 }

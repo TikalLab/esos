@@ -17,6 +17,7 @@
 		"protocol": "http",
 		"email": "shahar@gnift.com",
 		"unsubscribe_secret": "FooFighters",
+		"cookie_secret": "MyBloody",
 		"paypal_email": "shahar@gighub.com",
 		"commission": 0.1,
 		"cdn_url": "",
