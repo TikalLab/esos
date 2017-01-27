@@ -63,7 +63,7 @@ module.exports = {
 	getBadgeUrl: function(price,callback){
 		var thisObject = this;
 		var badgeUrl = util.format('https://s3.amazonaws.com/%s/%s.svg',config.get('aws.svg_bucket'),price) // needs bucket and price
-		var shieldsUrl = util.format('https://img.shields.io/badge/Enterprise%20Support%20Available-starting%20at%20%24%s%2Fm-green.svg',price)
+		var shieldsUrl = util.format('https://img.shields.io/badge/SLA%20Support%20Available-starting%20at%20%24%s%2Fm-green.svg',price)
 		var key = util.format('%s.svg',price)
 		async.waterfall([
 			function(callback){
