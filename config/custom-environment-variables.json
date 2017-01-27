@@ -21,6 +21,6 @@
 	},
 	"app": {
 		"unsubscribe_secret": "APP_UNSUBSCRIBE_SECRET",
-		"cookie_secret": "APP_COOKIE_SECRET",
+		"cookie_secret": "APP_COOKIE_SECRET"
 	}
 }
