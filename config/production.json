@@ -19,7 +19,7 @@
 		"unsubscribe_secret": "",
 		"paypal_email": "shahar@gighub.com",
 		"commission": 0.1,
-		"cdn_url": "http://s3.amazonaws.com/assets.vizsla.io",
+		"cdn_url": "http://assets.vizsla.io.s3.amazonaws.com/",
 		"default_pricing": {
 			"personal": 5,
 			"team": 19,
