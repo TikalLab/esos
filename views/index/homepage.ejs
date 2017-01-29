@@ -59,9 +59,9 @@
 					<div class="icon">
 						<span class="ion-help-buoy"></span>
 					</div>
-					<h4>Vizsla to the rescue</h4>
+					<h4><%=config.get('app.name')%> to the rescue</h4>
 					<p>
-						This is where Vizsla fits in. We fill the gap between your resources and user expectations. We create an infrastructure for you to provide your users with obligatory attentiveness on your end. And in return, they’ll support you financially on the other hand. It’s a great deal where everybody becomes happy.
+						This is where <%=config.get('app.name')%> fits in. We fill the gap between your resources and user expectations. We create an infrastructure for you to provide your users with obligatory attentiveness on your end. And in return, they’ll support you financially on the other hand. It’s a great deal where everybody becomes happy.
 					</p>
 				</div>
 			</div>
@@ -204,7 +204,7 @@
 					<div class="details pull-left">
 						<h6>What Github permission are you requiring and why?</h6>
 						<p>
-							We ask for <code>user:email</code> so we can contact you via email, <code>admin:repo_hook</code> so we can setup a hook on your repository and be notified by Github of new issues and pull requests, and <code>public_repo</code> so we can add the Vizsla badge to your repository's README.md file and SLA.md file to your repository
+							We ask for <code>user:email</code> so we can contact you via email, <code>admin:repo_hook</code> so we can setup a hook on your repository and be notified by Github of new issues and pull requests, and <code>public_repo</code> so we can add the <%=config.get('app.name')%> badge to your repository's README.md file and SLA.md file to your repository
 						</p>
 					</div>
 					</li>
@@ -236,7 +236,7 @@
 					<div class="details pull-left">
 						<h6>Are you modifying anything in my repository?</h6>
 						<p>
-							The only two things that we touch is your README.md file, where we add the Vizsla badge, and we also add a <%=config.get('github.sla')%> file to your repository.
+							The only two things that we touch is your README.md file, where we add the <%=config.get('app.name')%> badge, and we also add a <%=config.get('github.sla')%> file to your repository.
 						</p>
 					</div>
 					</li>
