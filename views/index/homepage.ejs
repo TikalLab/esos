@@ -299,7 +299,7 @@
 		<h4>Are You Ready to take your open source project to the next level?</h4>
 		<h2>Offer SLA supoort, that's the missing link.</h2>
 		<div id="cta-4">
-			<a href="/github/authorize-developer" class="btn standard-button"><i class="ion-social-github"></i>  Get Started</a>
+			<a id="sign-in-button2" href="/github/authorize-developer" class="btn standard-button"><i class="ion-social-github"></i>  Get Started</a>
 		</div>
 
 
@@ -311,59 +311,17 @@
 
 
 
-<div id="create-issue-example" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Creating a Task via Submitting a New Issue</h4>
-			</div>
 
-			<div class="modal-body with-padding">
-				<img src="<%=config.get('app.cdn_url')%>/images/create-task.png"/>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="create-issue-comment-example" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Creating a Task via Commenting on an Existing Issue</h4>
-			</div>
-
-			<div class="modal-body with-padding">
-				<img src="<%=config.get('app.cdn_url')%>/images/create-task-from-comment.png"/>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="modify-task-price-example" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Modify Task Price</h4>
-			</div>
-
-			<div class="modal-body with-padding">
-				<img src="<%=config.get('app.cdn_url')%>/images/modify-task-price.png"/>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
+<% if(app.get('env') == 'production') { %>
+<script type="text/javascript">
+$(function() {
+    mixpanel.track("Homepage Loaded");
+		$('#sign-in-button1').click(function(){
+    	mixpanel.track("Sign In Button #1 Clicked");
+    });
+    $('#sign-in-button2').click(function(){
+    	mixpanel.track("Sign In Button #2 Clicked");
+    });
+});
+</script>
+<% } %>
