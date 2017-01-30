@@ -2,14 +2,21 @@
 <div class="container">
 
 	<!-- SECTION HEADING -->
-	<h2>Subscribe to <strong><%=repo.full_name%></strong> Enterprise Level Support</h2>
+	<h2>Subscribe to <strong><%=repo.full_name%></strong> SLA Support</h2>
 	<div class="colored-line">
 	</div>
 
 	<div class="sub-heading">
-		Get your issues and pull requests priorotized and rapidly addressed according to the <a href="#">SLA</a>.
+		Get your issues and pull requests priorotized and rapidly addressed according to the SLA:
 	</div>
 
+	<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="sla">
+				  <%-marked(sla)%>
+				</div>
+			</div>
+	</div>
 	<div class="pricing-table">
 
 		<!-- PRICING TABLES -->

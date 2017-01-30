@@ -7,12 +7,17 @@ var async = require('async');
 var request = require('request');
 var _ = require('underscore');
 var moment = require('moment')
+var marked = require('marked')
+var atob = require('atob')
 // var github = require('../app_modules/github');
 
 // var users = require('../models/users');
 var repos = require('../models/repos');
+var users = require('../models/users');
 
+var github = require('../app_modules/github');
 var unsubscriber = require('../app_modules/unsubscriber');
+var errorHandler = require('../app_modules/error');
 
 router.get('/',function(req,res,next){
 	if(!req.session.user){
@@ -34,19 +39,32 @@ router.get('/logout',function(req,res,next){
 })
 
 router.get('/subscribe/:owner/:name',function(req,res,next){
-	async.parallel([
+	async.waterfall([
 		function(callback){
 			var fullName = util.format('%s/%s',req.params.owner,req.params.name)
 			repos.getByFullName(req.db,fullName,function(err,repo){
 				callback(err,repo)
 			})
+		},
+		function(repo,callback){
+			users.get(req.db,repo.user_id,function(err,developer){
+				callback(err,repo,developer)
+			})
+		},
+		function(repo,developer,callback){
+			github.getSLA(developer.github.access_tokens.developer,repo.full_name,function(err,sla){
+				callback(err,repo,developer,sla)
+			})
 		}
-	],function(err,results){
+
+	],function(err,repo,developer,sla){
 		if(err){
 			errorHandler.error(req,res,next,err);
 		}else{
 			render(req,res,'index/subscribe',{
-				repo: results[0]
+				repo: repo,
+				developer: developer,
+				sla: atob(sla.content)
 			})
 		}
 	})
@@ -101,6 +119,7 @@ function render(req,res,template,params){
 	params.moment = moment;
 	params.config = config;
 	params.util = util;
+	params.marked = marked;
 
 	// params.alertIcons = alertIcons;
 	// params.alert = req.session.alert;
