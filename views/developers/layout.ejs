@@ -74,11 +74,7 @@
 	<div class="navbar navbar-inverse" role="navigation">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="/developers">
-				<% if(!('owner_org' in config.get('app'))){ %>
-					<img src="<%=config.get('app.cdn_url')%>/images/logo9.png">
-				<% }else{ %>
-					<img src="<%=config.get('app.org_logo')%>"><img src="<%=config.get('app.cdn_url')%>/images/powered-by-codemill-inside.png">
-				<% } %>
+					<img src="<%=config.get('app.cdn_url')%>/images/logo-black-white-small.png">
 			</a>
 			<a class="sidebar-toggle"><i class="icon-paragraph-justify2"></i></a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-icons">

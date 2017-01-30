@@ -6,7 +6,7 @@
 <meta name="keywords" content="software, open source, SLA">
 <meta name="author" content="Vizsla.io">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta property="og:image" content="http://codemill.io/images/logo-og.png" />
+<meta property="og:image" content="/images/logo-black-blue-large.png" />
 <meta name="google-site-verification" content="xFWY4HYMMP_oWHuPWh2DO1fVk6kEwvjhDWHNVFYkCL8" />
 <!-- SITE TITLE -->
 <title><%=config.get('app.name')%> - SLA support for open source</title>
@@ -117,11 +117,7 @@
 					</button>
 <!-- 					<a class="navbar-brand" href="#"><img src="<%=config.get('app.cdn_url')%>/landx/images/logo-dark.png" alt=""></a>
  -->					<a class="navbar-brand" href="/">
-                <% if(!('owner_org' in config.get('app'))){ %>
-                  <img src="<%=config.get('app.cdn_url')%>/images/logo6.png">
-                <% }else{ %>
-                  <img src="<%=config.get('app.org_logo')%>"><!--<img src="<%=config.get('app.cdn_url')%>/images/powered-by-codemill-outside.png">-->
-                <% } %>
+                  <img src="<%=config.get('app.cdn_url')%>/images/logo-black-blue-small.png">
               </a>
 
 				</div>
@@ -225,11 +221,8 @@
 
 	<div class="footer-logo">
 <!-- 		<img src="<%=config.get('app.cdn_url')%>/landx/images/logo-dark.png" alt="">
- -->		<% if(!('owner_org' in config.get('app'))){ %>
-   <img src="<%=config.get('app.cdn_url')%>/images/logo6.png">
- <% }else{ %>
-   <img src="<%=config.get('app.org_logo')%>">
- <% } %>
+ -->
+   <img src="<%=config.get('app.cdn_url')%>/images/logo-black-blue-small.png">
 	</div>
 
 	<div class="copyright">
@@ -242,11 +235,6 @@
 		<li><a href="https://gitter.im/Vizsla-io/Lobby"><img class="gitter-icon" src="<%=config.get('app.cdn_url')%>/images/gitter.png"></a></li>
 	</ul>
 
-  <% if('owner_org' in config.get('app')){ %>
-    <div>
-      <img class="powered-by-logo" src="<%=config.get('app.cdn_url')%>/images/powered-by-codemill-outside.png">
-    </div>
-  <% } %>
 </div>
 </footer>
 
