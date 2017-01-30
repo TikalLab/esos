@@ -12,7 +12,7 @@
 		"sla": "SLA.md"
 	},
 	"app": {
-		"name": "Vizsla.io",
+		"name": "Vizsla",
 		"domain": "vizsla.io",
 		"protocol": "http",
 		"email": "support@vizsla.io",
