@@ -12,4 +12,4 @@ Initial response to any issue, issue comment, and pull request, will be made wit
 
 ### Solution Time
 
-Issues and pull requests will be closed, merged or declined within 7 business days
+Issues and pull requests will be closed, merged or declined within 7 business days.
