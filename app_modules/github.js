@@ -171,7 +171,9 @@ module.exports = {
 			function(callback){
 				var qs = {
 					page: page,
-					type: 'owner'
+					visibility: 'public',
+					// type: 'owner'
+					affiliation: 'owner,organization_member'
 				}
 				request('https://api.github.com/user/repos',{headers: headers, qs: qs},function(error,response,body){
 					if(error){
