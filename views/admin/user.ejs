@@ -30,25 +30,24 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Supported Repos</h6></div>
-	    <div class="datatable">
-	      <table class="table">
-	        <thead>
-	          <tr>
-	            <th>id</th>
-							<th>name</th>
-	          </tr>
-	        </thead>
-	        <tbody>
-	          <% supported_repos.forEach(function(repo){ %>
-		            <tr>
-			              <td><a href="/admin/repo/<%=repo._id%>"><%=repo._id%></a></td>
-										<td><%=repo.full_name%></td>
-		            </tr>
-	          <% }) %>
-	        </tbody>
-	      </table>
-	    </div>
-	  </div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>id</th>
+						<th>name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% supported_repos.forEach(function(repo){ %>
+	            <tr>
+		              <td><a href="/admin/repo/<%=repo._id%>"><%=repo._id%></a></td>
+									<td><%=repo.full_name%></td>
+	            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
 	</div>
 
 	<div class="panel panel-default">
