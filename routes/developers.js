@@ -60,7 +60,7 @@ router.get('/dashboard',function(req,res,next){
 			}
 		],function(err,results){
 			var supportedRepos = results[0];
-console.log('suppored repos: %s',util.inspect(supportedRepos,{depth:8}))			
+console.log('suppored repos: %s',util.inspect(supportedRepos,{depth:8}))
 			var payments = results[1];
 
 			if(supportedRepos.length == 0){
@@ -275,7 +275,7 @@ router.post('/support-repo',function(req,res,next){
  		}else{
 			req.session.alert = {
 				type: 'success',
-				message: util.format('Repository %s can now accept subscriptions. We\'ve created a SLA file in your repository which will be presented to any potential subscriber before purchase. Please <a href="%s">review it and edit it</a> if you wish.',req.body.repo,sla.content.html_url)
+				message: util.format('Repository %s can now accept subscriptions.<br/><br/><ol><li>We\'ve created a SLA file in your repository which will be presented to any potential subscriber before purchase. Please <a href="%s">review it and edit it</a> if you wish.</li><li>We\'ve added a nifty badge to the top of your README file to attract customers.</li><li>The badge links to a landing page we\'ve created for your repository. If you want to share it, here\'s the link: <input class="copy-input" readonly type="text" value="http://%s/subscribe/%s"></li></ol>. ',req.body.repo,sla.content.html_url,config.get('app.domain'),req.body.repo)
 			};
  			res.redirect('/developers/repos/unsupported')
  		}
