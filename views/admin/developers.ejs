@@ -6,29 +6,28 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Developers</h6></div>
-    <div class="datatable">
-      <table class="table">
-        <thead>
-          <tr>
-						<th>id</th>
-						<th>name</th>
-            <th>github login</th>
-						<th>email</th>
-						<th>member since</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% developers.forEach(function(developer){ %>
-	            <tr>
-									<td><a href="/admin/user/<%=developer._id%>"><%=developer._id%></a></td>
-									<td><%=developer.name%></td>
-									<td><%=developer.github.login%></td>
-									<td><%=developer.email%></td>
-									<td><%=moment(developer.created_at).format('YYYY-MM-DD')%></td>
-	            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
+  <div class="datatable">
+    <table class="table">
+      <thead>
+        <tr>
+					<th>id</th>
+					<th>name</th>
+          <th>github login</th>
+					<th>email</th>
+					<th>member since</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% developers.forEach(function(developer){ %>
+            <tr>
+								<td><a href="/admin/user/<%=developer._id%>"><%=developer._id%></a></td>
+								<td><%=developer.name%></td>
+								<td><%=developer.github.login%></td>
+								<td><%=developer.email%></td>
+								<td><%=moment(developer.created_at).format('YYYY-MM-DD')%></td>
+            </tr>
+        <% }) %>
+      </tbody>
+    </table>
   </div>
 </div>

@@ -6,29 +6,28 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Clients</h6></div>
-    <div class="datatable">
-      <table class="table">
-        <thead>
-          <tr>
-						<th>id</th>
-						<th>name</th>
-            <th>github login</th>
-						<th>email</th>
-						<th>member since</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% clients.forEach(function(client){ %>
-	            <tr>
-									<td><a href="/admin/user/<%=client._id%>"><%=client._id%></a></td>
-									<td><%=client.name%></td>
-									<td><%=client.github.login%></td>
-									<td><%=client.email%></td>
-									<td><%=moment(client.created_at).format('YYYY-MM-DD')%></td>
-	            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
+  <div class="datatable">
+    <table class="table">
+      <thead>
+        <tr>
+					<th>id</th>
+					<th>name</th>
+          <th>github login</th>
+					<th>email</th>
+					<th>member since</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% clients.forEach(function(client){ %>
+            <tr>
+								<td><a href="/admin/user/<%=client._id%>"><%=client._id%></a></td>
+								<td><%=client.name%></td>
+								<td><%=client.github.login%></td>
+								<td><%=client.email%></td>
+								<td><%=moment(client.created_at).format('YYYY-MM-DD')%></td>
+            </tr>
+        <% }) %>
+      </tbody>
+    </table>
   </div>
 </div>
