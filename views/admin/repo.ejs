@@ -72,33 +72,32 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><h6 class="panel-title"><i class="icon-table"></i> Subscribers</h6></div>
-	    <div class="datatable">
-	      <table class="table">
-	        <thead>
-	          <tr>
-	            <th>id</th>
-							<th>client id</th>
-							<th>client name</th>
-							<th>plan</th>
-	            <th>since</th>
-	            <th>type</th>
-	            <th>beneficient</th>
-	          </tr>
-	        </thead>
-	        <tbody>
-	          <% subscriptions.forEach(function(subscription){ %>
-		            <tr>
-			              <td><%=subscription._id%></td>
-										<td><a href="/admin/user/<%=subscription.user_id%>"><%=subscription.user_id%></a></td>
-										<td><%=subscription.github_login%></td>
-										<td><%=subscription.plan%></td>
-	                  <td><%=moment(subscription.created_at).format('YYYY-MM-DD')%></td>
-	                  <td><%=('org' in subscription ? 'org' : ('team' in subscription ? 'team' : 'personal'))%></td>
-										<td><%=('org' in subscription ? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : subscription.github_login))%></td>
-		            </tr>
-	          <% }) %>
-	        </tbody>
-	      </table>
-	    </div>
-	  </div>
+    <div class="datatable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>id</th>
+						<th>client id</th>
+						<th>client name</th>
+						<th>plan</th>
+            <th>since</th>
+            <th>type</th>
+            <th>beneficient</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% subscriptions.forEach(function(subscription){ %>
+	            <tr>
+		              <td><%=subscription._id%></td>
+									<td><a href="/admin/user/<%=subscription.user_id%>"><%=subscription.user_id%></a></td>
+									<td><%=subscription.github_login%></td>
+									<td><%=subscription.plan%></td>
+                  <td><%=moment(subscription.created_at).format('YYYY-MM-DD')%></td>
+                  <td><%=('org' in subscription ? 'org' : ('team' in subscription ? 'team' : 'personal'))%></td>
+									<td><%=('org' in subscription ? subscription.org : ('team' in subscription ? subscription.team.org + '/' + subscription.team.name : subscription.github_login))%></td>
+	            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
 	</div>
