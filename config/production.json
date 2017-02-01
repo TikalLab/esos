@@ -39,7 +39,7 @@
 	},
 	"mailgun": {
 		"api_key": "",
-		"domain": "infoxicate.com"
+		"domain": "mg.vizsla.io"
 	},
 	"paypal": {
 		"client_id": "AZkvijDRrvv1DQhq2m7iRBiTgsLh9zTLPtS2n1KSCIUwD5Ru4d_I2LiSnCR2g7vuEFKgutXoOoKPFXwI",
