@@ -7,7 +7,7 @@
 		"hook_secret": "",
 		"label": {
 			"name": "VIZSLA",
-			"color": "FF0000"
+			"color": "B1642C"
 		},
 		"sla": "SLA.md"
 	},
