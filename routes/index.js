@@ -33,6 +33,13 @@ router.get('/dashboard',function(req,res,next){
 	render(req,res,'index/dashboard',{})
 })
 
+router.get('/tos',function(req, res, next) {
+		render(req,res,'index/tos',{
+
+		})
+})
+
+
 router.get('/logout',function(req,res,next){
 	delete req.session.user;
 	res.redirect('/')
