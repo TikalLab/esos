@@ -235,3 +235,11 @@
 </div> <!-- /END CONTAINER -->
 
 </section>
+
+<% if(app.get('env') == 'production'){%>
+	<script>
+		pingpoint.ping('uyRMpGzFpAvRRoSBPw0ZceGgz04gjeY3','lp viewed',{
+			repo: '<%=repo.full_name%>'
+		})
+	</script>
+<% } %>
