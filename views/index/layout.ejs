@@ -82,6 +82,10 @@
      mixpanel.init("91ef6418c476d5cadecb660c5e8a829a");</script><!-- end Mixpanel -->
 
 <% } %>
+<% if(app.get('env') == 'production'){%>
+  <script src="https://s3.amazonaws.com/assets.pingpoint.io/js/pingpoint.js"></script>
+<% } %>
+
 
 </head>
 
@@ -275,7 +279,6 @@ jQuery(window).load(function() {
 <script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.fitvids.js"></script>
 <script src="<%=config.get('app.cdn_url')%>/landx/js/jquery.ajaxchimp.min.js"></script>
 <script src="<%=config.get('app.cdn_url')%>/landx/js/custom.js"></script>
-<script src="https://s3.amazonaws.com/assets.pingpoint.io/js/pingpoint.js"></script>
 <!-- ****************
       After neccessary customization/modification, Please minify JavaScript/jQuery according to http://browserdiet.com/en/ for better performance
      **************** -->
